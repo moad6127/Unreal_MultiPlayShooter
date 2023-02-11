@@ -35,7 +35,7 @@ protected:
 	//
 
 	void OnCreateSesionComplete(FName SessionName, bool bWasSuccessful);
-	void OnFIndSessionComplete(bool bWasSuccessful);
+	void OnFindSessionComplete(bool bWasSuccessful);
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 	void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 	void OnStartSessionComplete(FName SessionName, bool bWasSuccessful);
@@ -49,9 +49,14 @@ private:
 	//
 
 	FOnCreateSessionCompleteDelegate CreateSessionCompleteDelegate;
+	FDelegateHandle CreateSessionCompleteDelegateHandle;
 	FOnFindSessionsCompleteDelegate FindSessionCompleteDelegate;
+	FDelegateHandle FindSessionCompleteDelegateHandle;
 	FOnJoinSessionCompleteDelegate JoinSessionCompleteDelegate;
-	FOnDestroySessionCompleteDelegate DestroySEssionCompleteDelegate;
+	FDelegateHandle JoinSessionCompleteDelegateHandle;
+	FOnDestroySessionCompleteDelegate DestroySessionCompleteDelegate;
+	FDelegateHandle DestroySessionCompleteDelegateHandle;
 	FOnStartSessionCompleteDelegate StartSessionCompleteDelegate;
+	FDelegateHandle StartSessionCompleteDelegateHandle;
 
 };

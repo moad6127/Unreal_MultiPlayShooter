@@ -4,7 +4,12 @@
 #include "MultiplayerSessionSubsystem.h"
 #include "OnlineSubsystem.h"
 
-UMultiplayerSessionSubsystem::UMultiplayerSessionSubsystem()
+UMultiplayerSessionSubsystem::UMultiplayerSessionSubsystem() :
+	CreateSessionCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateSesionComplete)),
+	FindSessionCompleteDelegate(FOnFindSessionsCompleteDelegate::CreateUObject(this, &ThisClass::OnFindSessionComplete)),
+	JoinSessionCompleteDelegate(FOnJoinSessionCompleteDelegate::CreateUObject(this,&ThisClass::OnJoinSessionComplete)),
+	DestroySessionCompleteDelegate(FOnDestroySessionCompleteDelegate::CreateUObject(this,&ThisClass::OnDestroySessionComplete)),
+	StartSessionCompleteDelegate(FOnStartSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnStartSessionComplete))
 {
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 	if (Subsystem)
@@ -38,7 +43,7 @@ void UMultiplayerSessionSubsystem::OnCreateSesionComplete(FName SessionName, boo
 {
 }
 
-void UMultiplayerSessionSubsystem::OnFIndSessionComplete(bool bWasSuccessful)
+void UMultiplayerSessionSubsystem::OnFindSessionComplete(bool bWasSuccessful)
 {
 }
 
