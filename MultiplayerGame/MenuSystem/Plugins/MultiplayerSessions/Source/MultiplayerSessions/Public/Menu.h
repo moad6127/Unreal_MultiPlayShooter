@@ -16,4 +16,20 @@ class MULTIPLAYERSESSIONS_API UMenu : public UUserWidget
 public:
 	UFUNCTION(BlueprintCallable)
 	void MenuSetup();
+
+protected:
+	virtual bool Initialize() override;
+private:
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* HostButtom;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* JoinButtom;
+
+	UFUNCTION()
+	void HostButtonClicked();
+
+	UFUNCTION()
+	void JoinButtonClicked();
 };
