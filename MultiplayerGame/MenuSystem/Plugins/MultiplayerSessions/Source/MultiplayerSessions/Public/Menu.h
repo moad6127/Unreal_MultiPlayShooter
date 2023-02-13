@@ -19,11 +19,12 @@ public:
 
 protected:
 	virtual bool Initialize() override;
+	virtual void NativeDestruct() override;
 private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* HostButtom;
-
+	 
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinButtom;
 
@@ -33,6 +34,7 @@ private:
 	UFUNCTION()
 	void JoinButtonClicked();
 
+	void MenuTearDown();
 	//The Subsystem disinged to handle all online session functoinality
 	class UMultiplayerSessionSubsystem* MultiplayerSessionSubsystem;
 };
