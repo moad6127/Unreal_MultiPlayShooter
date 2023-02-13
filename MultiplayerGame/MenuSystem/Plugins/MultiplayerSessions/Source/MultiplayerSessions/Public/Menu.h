@@ -20,6 +20,13 @@ public:
 protected:
 	virtual bool Initialize() override;
 	virtual void NativeDestruct() override;
+
+	//
+	// Callback for the custom delegate on the MultiplayerSessionSubsystem
+	//
+	UFUNCTION()
+	void OnCreateSessoin(bool bWasSuccessful);
+
 private:
 
 	UPROPERTY(meta = (BindWidget))
