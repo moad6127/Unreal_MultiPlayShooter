@@ -28,6 +28,7 @@ void UMenu::MenuSetup()
 	if (GameInstance)
 	{
 		MultiplayerSessionSubsystem = GameInstance->GetSubsystem<UMultiplayerSessionSubsystem>();
+
 	}
 }
 
@@ -63,6 +64,12 @@ void UMenu::HostButtonClicked()
 	if (MultiplayerSessionSubsystem)
 	{
 		MultiplayerSessionSubsystem->CreateSession(4, FString("FreeForAll"));
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			World->ServerTravel("/Game/ThirdPerson/Maps/Lobby?listen");
+
+		}
 	}
 }
 
