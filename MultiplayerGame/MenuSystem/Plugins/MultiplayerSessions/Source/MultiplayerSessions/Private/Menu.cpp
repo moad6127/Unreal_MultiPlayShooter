@@ -4,8 +4,11 @@
 #include "Menu.h"
 #include "Components/Button.h"
 #include "MultiplayerSessionSubsystem.h"
-void UMenu::MenuSetup()
+void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch)
 {
+	NumPublicConnections = NumberOfPublicConnections;
+	MatchType = TypeOfMatch;
+
 	AddToViewport();
 	SetVisibility(ESlateVisibility::Visible);
 	bIsFocusable = true;
@@ -69,7 +72,7 @@ void UMenu::HostButtonClicked()
 	}
 	if (MultiplayerSessionSubsystem)
 	{
-		MultiplayerSessionSubsystem->CreateSession(4, FString("FreeForAll"));
+		MultiplayerSessionSubsystem->CreateSession(NumPublicConnections, MatchType);
 		UWorld* World = GetWorld();
 		if (World)
 		{
