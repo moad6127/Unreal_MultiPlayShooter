@@ -106,6 +106,15 @@ void UMenu::OnCreateSessoin(bool bWasSuccessful)
 
 void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResults, bool bWasSuccessful)
 {
+	for (auto Result : SessionResults)
+	{
+		FString SettingValue;
+		Result.Session.SessionSettings.Get(FName("MatchType"), SettingValue);
+		if (SettingValue == MatchType)
+		{
+
+		}
+	}
 }
 
 void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
@@ -130,14 +139,9 @@ void UMenu::HostButtonClicked()
 
 void UMenu::JoinButtonClicked()
 {
-	if (GEngine)
+	if (MultiplayerSessionSubsystem)
 	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			15.f,
-			FColor::Yellow,
-			FString(TEXT("Join Button Clicked"))
-		);
+		MultiplayerSessionSubsystem->FindSession(10000);
 	}
 }
 
