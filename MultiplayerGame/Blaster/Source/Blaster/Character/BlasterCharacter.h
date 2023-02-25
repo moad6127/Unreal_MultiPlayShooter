@@ -67,6 +67,9 @@ private:
 	ETurningInPlace TurningInPlace;
 	void TurnInPlace(float DeltaTime);
 
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	class USoundBase* CrouchSound;
+
 public:	
 
 	void SetOverlappingWeapon(AWeapon* Weapon);
@@ -77,4 +80,5 @@ public:
 	FORCEINLINE float GetAO_Pitch()const { return AO_Pitch; }
 	AWeapon* GetEquippedWeapon();
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
+	FORCEINLINE USoundBase* GetCrouchSound() const { return CrouchSound; }
 };

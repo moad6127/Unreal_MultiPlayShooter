@@ -64,4 +64,8 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	ETurningInPlace TurningInPlace;
+
+	UFUNCTION()
+	void AnimNotify_CrouchWalk();
+
 };

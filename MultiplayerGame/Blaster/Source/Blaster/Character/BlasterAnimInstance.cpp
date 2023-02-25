@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Blaster/Weapon/Weapon.h"
+#include "Kismet/GameplayStatics.h"
 
 void UBlasterAnimInstance::NativeInitializeAnimation()
 {
@@ -65,5 +66,19 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		BlasterCharacter->GetMesh()->TransformToBoneSpace(FName("hand_r"), LeftHandTransform.GetLocation(), FRotator::ZeroRotator, OutPosition, OutRotation);
 		LeftHandTransform.SetLocation(OutPosition);
 		LeftHandTransform.SetRotation(FQuat(OutRotation));
+	}
+}
+
+void UBlasterAnimInstance::AnimNotify_CrouchWalk()
+{
+	if (BlasterCharacter)
+	{
+		if (BlasterCharacter->IsLocallyControlled())
+		{
+			if (BlasterCharacter->GetCrouchSound())
+			{
+				UGameplayStatics::PlaySound2D(this,BlasterCharacter->GetCrouchSound());
+			}
+		}
 	}
 }
