@@ -22,6 +22,8 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
+
+	void PlayFireMontage(bool bAiming);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,6 +38,8 @@ protected:
 	void AimButtonReleased();
 	void AimOffset(float DeltaTime);
 	virtual void Jump() override;
+	void FireButtonPressed();
+	void FireButtonReleased();
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
@@ -70,6 +74,8 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class USoundBase* CrouchSound;
 
+	UPROPERTY(EditAnywhere, Category = Combat)
+	class UAnimMontage* FireWeaponMontage;
 public:	
 
 	void SetOverlappingWeapon(AWeapon* Weapon);
