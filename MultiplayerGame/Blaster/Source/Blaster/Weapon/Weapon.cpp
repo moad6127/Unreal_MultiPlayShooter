@@ -133,7 +133,6 @@ void AWeapon::ShowPickupWidget(bool bShowWidget)
 void AWeapon::Fire(const FVector& HitTarget)
 {
 
-
 	if (FireAnimation)
 	{
 		WeaponMesh->PlayAnimation(FireAnimation, false);
@@ -144,6 +143,8 @@ void AWeapon::Fire(const FVector& HitTarget)
 		if (AmmoEjectSocekt)
 		{
 			FTransform SocketTransform = AmmoEjectSocekt->GetSocketTransform(GetWeaponMesh());
+			const FRotator RandRotator = UKismetMathLibrary::RandomRotator();
+			const FRotator LerpedRot = UKismetMathLibrary::RLerp(SocketTransform.GetRotation().Rotator(), RandRotator, 0.5f, true);
 
 			UWorld* World = GetWorld();
 			if (World)
@@ -151,7 +152,7 @@ void AWeapon::Fire(const FVector& HitTarget)
 				World->SpawnActor<ACasing>(
 					CasingClass,
 					SocketTransform.GetLocation(),
-					SocketTransform.GetRotation().Rotator()
+					LerpedRot
 					);
 			}
 		}

@@ -19,7 +19,8 @@ protected:
 
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
+ 
+	void ShellDestroy();
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -31,4 +32,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	class USoundCue* ShellSound;
 
+	FTimerHandle ShellDestroyTimer;
+
+	UPROPERTY(EditAnywhere)
+	float DestroyTime;
+
+	bool bCanSound;
 };
