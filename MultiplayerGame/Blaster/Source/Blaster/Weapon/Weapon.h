@@ -37,7 +37,7 @@ public:
 	UTexture2D* CrosshairsLeft;
 
 	UPROPERTY(EditAnywhere, Category = Crosshair)
-	UTexture2D* CrosshairsRigh;
+	UTexture2D* CrosshairsRight;
 
 	UPROPERTY(EditAnywhere, Category = Crosshair)
 	UTexture2D* CrosshairsTop;
