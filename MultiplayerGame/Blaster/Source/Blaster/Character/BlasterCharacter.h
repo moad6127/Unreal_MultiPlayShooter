@@ -87,4 +87,5 @@ public:
 	AWeapon* GetEquippedWeapon();
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FORCEINLINE USoundBase* GetCrouchSound() const { return CrouchSound; }
+	FVector GetHitTarget() const;
 };
