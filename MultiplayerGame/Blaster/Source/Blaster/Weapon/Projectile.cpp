@@ -57,8 +57,23 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		BlasterCharacter->MulticastHit();
 	}
-
+	if (HasAuthority())
+	{
+		Multicast_OnHit();
+	}
 	Destroy();
+}
+
+void AProjectile::Multicast_OnHit_Implementation()
+{
+	if (ImpactParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+	}
+	if (ImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+	}
 }
 
 void AProjectile::Tick(float DeltaTime)
