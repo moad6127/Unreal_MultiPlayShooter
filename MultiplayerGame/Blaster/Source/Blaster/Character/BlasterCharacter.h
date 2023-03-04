@@ -28,7 +28,7 @@ public:
 
 
 	UFUNCTION(NetMulticast, Unreliable)
-	void MulticastHit();
+	void MulticastHit(FVector_NetQuantize HitLocation);
 
 	virtual void OnRep_ReplicatedMovement() override;
 protected:

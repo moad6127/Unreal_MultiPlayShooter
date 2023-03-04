@@ -52,28 +52,43 @@ void AProjectile::BeginPlay()
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
-	if (BlasterCharacter)
+	HitBlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
+	if (HitBlasterCharacter)
 	{
-		BlasterCharacter->MulticastHit();
+		HitBlasterCharacter->MulticastHit(Hit.ImpactPoint);
 	}
 	if (HasAuthority())
 	{
-		Multicast_OnHit();
+		Multicast_OnHit(OtherActor);
 	}
 	Destroy();
 }
 
-void AProjectile::Multicast_OnHit_Implementation()
+void AProjectile::Multicast_OnHit_Implementation(AActor* OtherActor)
 {
-	if (ImpactParticles)
+	if (OtherActor->Implements<UInteractWithCrosshairsInterface>())
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+		if (PlayerImpactParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), PlayerImpactParticles, GetActorTransform());
+		}
+		if (PlayerImpactSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, PlayerImpactSound, GetActorLocation());
+		}
 	}
-	if (ImpactSound)
+	else
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+		if(ImpactParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+		}
+		if (ImpactSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+		}
 	}
+
 }
 
 void AProjectile::Tick(float DeltaTime)
@@ -81,16 +96,4 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AProjectile::Destroyed()
-{
-	Super::Destroyed();
-	if (ImpactParticles)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
-	}
-	if (ImpactSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-	}
-}
 

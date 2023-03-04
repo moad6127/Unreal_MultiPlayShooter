@@ -15,8 +15,6 @@ public:
 	
 	AProjectile();
 	virtual void Tick(float DeltaTime) override;
-	virtual void Destroyed() override;
-
 protected:
 
 	virtual void BeginPlay() override;
@@ -25,8 +23,12 @@ protected:
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION(NetMulticast, Reliable)
-	void Multicast_OnHit();
+	void Multicast_OnHit(AActor* OtherActor);
+	
 private:
+
+	class ABlasterCharacter* HitBlasterCharacter;
+
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* CollisionBox;
 
@@ -42,7 +44,13 @@ private:
 	UParticleSystem* ImpactParticles;
 
 	UPROPERTY(EditAnywhere)
+	UParticleSystem* PlayerImpactParticles;
+
+	UPROPERTY(EditAnywhere)
 	class USoundCue* ImpactSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundCue* PlayerImpactSound;
 
 public:	
 
