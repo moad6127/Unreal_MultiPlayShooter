@@ -24,10 +24,11 @@ protected:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_OnHit(AActor* OtherActor);
+
+	UPROPERTY(EditAnywhere)
+	float Damage = 20.f;
 	
 private:
-
-	class ABlasterCharacter* HitBlasterCharacter;
 
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* CollisionBox;
@@ -51,6 +52,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	USoundCue* PlayerImpactSound;
+
 
 public:	
 
