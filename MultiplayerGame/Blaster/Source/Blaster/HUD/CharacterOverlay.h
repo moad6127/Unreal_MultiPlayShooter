@@ -33,5 +33,6 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* KillerName;
 
-	
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* WeaponAmmoAmount;
 };
