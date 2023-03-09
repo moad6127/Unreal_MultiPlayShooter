@@ -7,6 +7,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Blaster/Character/BlasterCharacter.h"
+#include "Blaster/PlayerState/BlasterPlayerState.h"
 
 void ABlasterPlayerController::BeginPlay()
 {
@@ -22,6 +23,12 @@ void ABlasterPlayerController::OnPossess(APawn* InPawn)
 	if (BlasterCharacter)
 	{
 		SetHUDHealth(BlasterCharacter->GetHealth(), BlasterCharacter->GetMAXHealth());
+		HideDeathMessage();
+		ABlasterPlayerState* BlasterPlayerState =BlasterCharacter->GetPlayerState<ABlasterPlayerState>();
+		if (BlasterPlayerState)
+		{
+			BlasterPlayerState->UpdateDeathMessage(FString(""));
+		}
 	}
 
 }
@@ -66,6 +73,36 @@ void ABlasterPlayerController::SetHUDDefeats(int32 Defeats)
 	{
 		FString DefeatText = FString::Printf(TEXT("%d"),Defeats);
 		BlasterHUD->CharacterOverlay->DefeatAmount->SetText(FText::FromString(DefeatText));
+	}
+}
+
+void ABlasterPlayerController::VisibleDeathMessage(FString KillerName)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	bool bHUDValid = BlasterHUD &&
+		BlasterHUD->CharacterOverlay &&
+		BlasterHUD->CharacterOverlay->DeathMessage &&
+		BlasterHUD->CharacterOverlay->KillerName;
+	if (bHUDValid)
+	{
+		BlasterHUD->CharacterOverlay->KillerName->SetText(FText::FromString(KillerName));
+		BlasterHUD->CharacterOverlay->DeathMessage->SetVisibility(ESlateVisibility::Visible);
+		BlasterHUD->CharacterOverlay->KillerName->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void ABlasterPlayerController::HideDeathMessage()
+{
+	
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	bool bHUDValid = BlasterHUD &&
+		BlasterHUD->CharacterOverlay &&
+		BlasterHUD->CharacterOverlay->DeathMessage &&
+		BlasterHUD->CharacterOverlay->KillerName;
+	if (bHUDValid)
+	{
+		BlasterHUD->CharacterOverlay->DeathMessage->SetVisibility(ESlateVisibility::Collapsed);
+		BlasterHUD->CharacterOverlay->KillerName->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 

@@ -170,6 +170,18 @@ void ABlasterCharacter::BeginPlay()
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
+	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
+	BlasterPlayerState = BlasterPlayerState == nullptr ? GetPlayerState<ABlasterPlayerState>() : BlasterPlayerState;
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->HideDeathMessage();
+		if (BlasterPlayerState)
+		{
+			BlasterPlayerState->UpdateDeathMessage(TEXT(""));
+		}
+		
+	}
+	
 }
 void ABlasterCharacter::Tick(float DeltaTime)
 {
