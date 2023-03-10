@@ -7,6 +7,7 @@
 #include "Blaster/BlasterType/TurningInPlace.h"
 #include "Blaster/Interfaces/InteractWithCrosshairsInterface.h"
 #include "Components/TimelineComponent.h"
+#include "Blaster/BlasterType/CombatState.h"
 #include "BlasterCharacter.generated.h"
 
 UCLASS()
@@ -76,7 +77,7 @@ private:
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UCombatComponent* Combat;
 
 	UFUNCTION(Server, Reliable)
@@ -203,4 +204,5 @@ public:
 	FORCEINLINE bool IsElimmed() const { return bElimed; }
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetMAXHealth() const { return MAXHealth; }
+	ECombatState GetCombatState() const;
 };

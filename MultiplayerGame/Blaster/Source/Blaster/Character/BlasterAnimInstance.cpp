@@ -7,6 +7,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Blaster/Weapon/Weapon.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blaster/BlasterType/CombatState.h"
 
 void UBlasterAnimInstance::NativeInitializeAnimation()
 {
@@ -78,6 +79,8 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		}
 
 	}
+	bUseFABRIK = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+
 }
 
 void UBlasterAnimInstance::AnimNotify_CrouchWalk()
