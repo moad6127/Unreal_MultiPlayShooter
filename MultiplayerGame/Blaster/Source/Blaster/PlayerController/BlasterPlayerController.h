@@ -20,6 +20,7 @@ public:
 	void VisibleDeathMessage(FString KillerName);
 	void HideDeathMessage();
 	void SetHUDWeaponAmmo(int32 Ammo);
+	void SetHUDCarriedAmmo(int32 Ammo);
 
 	virtual void OnPossess(APawn* InPawn) override;
 protected:
