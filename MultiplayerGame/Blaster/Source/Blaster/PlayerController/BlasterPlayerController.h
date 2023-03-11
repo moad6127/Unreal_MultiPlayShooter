@@ -17,6 +17,7 @@ public:
 	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDScore(float Score);
 	void SetHUDDefeats(int32 Defeats);
+	void SetHUDWeaponType(FString WeaponType);
 	void VisibleDeathMessage(FString KillerName);
 	void HideDeathMessage();
 	void SetHUDWeaponAmmo(int32 Ammo);

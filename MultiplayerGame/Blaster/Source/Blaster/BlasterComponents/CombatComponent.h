@@ -65,6 +65,8 @@ private:
 	UPROPERTY()
 	class ABlasterPlayerController* Controller;
 	UPROPERTY()
+	class ABlasterPlayerState* PlayerState;
+	UPROPERTY()
 	class ABlasterHUD* HUD;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)

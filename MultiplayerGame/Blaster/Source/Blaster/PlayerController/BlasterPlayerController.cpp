@@ -76,6 +76,18 @@ void ABlasterPlayerController::SetHUDDefeats(int32 Defeats)
 	}
 }
 
+void ABlasterPlayerController::SetHUDWeaponType(FString WeaponType)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	bool bHUDValid = BlasterHUD &&
+		BlasterHUD->CharacterOverlay &&
+		BlasterHUD->CharacterOverlay->WeaponType;
+	if (bHUDValid)
+	{
+		BlasterHUD->CharacterOverlay->WeaponType->SetText(FText::FromString(WeaponType));
+	}
+}
+
 void ABlasterPlayerController::VisibleDeathMessage(FString KillerName)
 {
 	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;

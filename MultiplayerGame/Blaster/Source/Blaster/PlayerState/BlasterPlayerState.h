@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "Blaster/Weapon/WeaponTypes.h"
 #include "BlasterPlayerState.generated.h"
 
 /**
@@ -29,10 +30,14 @@ public:
 	UFUNCTION()
 	virtual void OnRep_KillerName();
 
+	UFUNCTION()
+	virtual void OnRep_WeaponType();
+
 
 	void AddToScore(float ScoreAmount);
 	void AddToDefeats(int32 DefeatsAmount);
 	void UpdateDeathMessage(FString Name);
+	void UpdateWeaponTpye(EWeaponType Type);
 private:
 	UPROPERTY()
 	class ABlasterCharacter* Character;
@@ -44,4 +49,9 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_KillerName)
 	FString KillerName;
+
+	UPROPERTY(ReplicatedUsing = OnRep_WeaponType)
+	EWeaponType WeaponType;
+
+	FString WeaponTypeToString(EWeaponType Type);
 };

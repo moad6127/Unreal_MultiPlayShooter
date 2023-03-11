@@ -12,6 +12,7 @@ void ABlasterPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 
 	DOREPLIFETIME(ABlasterPlayerState, Defeats);
 	DOREPLIFETIME(ABlasterPlayerState, KillerName);
+	DOREPLIFETIME(ABlasterPlayerState, WeaponType);
 }
 
 void ABlasterPlayerState::AddToScore(float ScoreAmount)
@@ -70,6 +71,7 @@ void ABlasterPlayerState::OnRep_Defeat()
 		}
 	}
 }
+
 void ABlasterPlayerState::UpdateDeathMessage(FString Name)
 {
 	KillerName = Name;
@@ -88,6 +90,8 @@ void ABlasterPlayerState::UpdateDeathMessage(FString Name)
 	}
 }
 
+
+
 void ABlasterPlayerState::OnRep_KillerName()
 {
 	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
@@ -100,6 +104,44 @@ void ABlasterPlayerState::OnRep_KillerName()
 		}
 	}
 
+}
+
+void ABlasterPlayerState::UpdateWeaponTpye(EWeaponType Type)
+{
+	WeaponType = Type;
+	FString TypeToString = WeaponTypeToString(WeaponType);
+	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	if (Character)
+	{
+		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDWeaponType(TypeToString);
+		}
+	}
+}
+void ABlasterPlayerState::OnRep_WeaponType()
+{
+	FString TypeToString = WeaponTypeToString(WeaponType);
+	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	if (Character)
+	{
+		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDWeaponType(TypeToString);
+		}
+	}
+}
+FString ABlasterPlayerState::WeaponTypeToString(EWeaponType Type)
+{
+	switch (Type)
+	{
+	case EWeaponType::EWT_AssaultRifle:
+		return FString("AssaultRifle");
+		break;
+	}
+	return FString();
 }
 
 

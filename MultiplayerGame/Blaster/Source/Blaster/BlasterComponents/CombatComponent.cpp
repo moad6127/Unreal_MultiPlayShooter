@@ -14,6 +14,7 @@
 #include "Camera/CameraComponent.h"
 #include "TimerManager.h"
 #include "Sound/SoundCue.h"
+#include "Blaster/PlayerState/BlasterPlayerState.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -173,6 +174,11 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	{
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
+	PlayerState = PlayerState == nullptr ? Character->GetPlayerState<ABlasterPlayerState>() : PlayerState;
+	if (PlayerState)
+	{
+		PlayerState->UpdateWeaponTpye(EquippedWeapon->GetWeaponType());
+	}
 	if (EquippedWeapon->EquipSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(
@@ -303,6 +309,11 @@ void UCombatComponent::OnRep_EquippedWeapon()
 				EquippedWeapon->EquipSound,
 				Character->GetActorLocation()
 			);
+		}
+		PlayerState = PlayerState == nullptr ? Character->GetPlayerState<ABlasterPlayerState>() : PlayerState;
+		if (PlayerState)
+		{
+			PlayerState->UpdateWeaponTpye(EquippedWeapon->GetWeaponType());
 		}
 	}
 }
