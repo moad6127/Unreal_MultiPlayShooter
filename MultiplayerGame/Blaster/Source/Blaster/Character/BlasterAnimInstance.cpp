@@ -80,7 +80,8 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	}
 	bUseFABRIK = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
-
+	bUseAimOffset = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+	bTransformRighthand = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
 }
 
 void UBlasterAnimInstance::AnimNotify_CrouchWalk()
