@@ -138,7 +138,9 @@ FString ABlasterPlayerState::WeaponTypeToString(EWeaponType Type)
 	switch (Type)
 	{
 	case EWeaponType::EWT_AssaultRifle:
-		return FString("AssaultRifle");
+		return FString("Assault Rifle");
+	case EWeaponType::EWT_RocketLauncher:
+		return FString("Rocket Launcher");
 		break;
 	}
 	return FString();
