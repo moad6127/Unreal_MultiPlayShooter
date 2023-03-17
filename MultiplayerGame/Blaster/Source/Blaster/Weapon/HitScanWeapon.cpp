@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
+#include "DrawDebugHelpers.h"
 
 void AHitScanWeapon::Fire(const FVector& HitTarget)
 {
@@ -99,4 +100,14 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 			);
 		}
 	}
+}
+
+FVector AHitScanWeapon::TraceEndWithScatter(const FVector& TraceStart, const FVector& HitTarget)
+{
+	FVector ToTargetNomarlized = (HitTarget - TraceStart).GetSafeNormal();
+	FVector SphereCenter = TraceStart + ToTargetNomarlized * DistanceToSphere;
+
+	DrawDebugSphere(GetWorld(), SphereCenter, SphereRadius, 12, FColor::Red, true);
+
+	return FVector::ZeroVector;
 }

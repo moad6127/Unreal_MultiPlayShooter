@@ -149,6 +149,9 @@ FString ABlasterPlayerState::WeaponTypeToString(EWeaponType Type)
 	case EWeaponType::EWT_SubmachineGune:
 		return FString("SMG");
 		break;
+	case EWeaponType::EWT_Shotgun:
+		return FString("Shotgun");
+		break;
 	}
 	return FString();
 }
