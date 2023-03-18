@@ -155,6 +155,9 @@ FString ABlasterPlayerState::WeaponTypeToString(EWeaponType Type)
 	case EWeaponType::EWT_SniperRifle:
 		return FString("Sniper Rifle");
 		break;
+	case EWeaponType::EWT_GrenadeLauncher:
+		return FString("Grenade Launcher");
+		break;
 	}
 	return FString();
 }
