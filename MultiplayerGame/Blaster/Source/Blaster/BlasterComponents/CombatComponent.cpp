@@ -45,6 +45,11 @@ void UCombatComponent::ShotgunShellReload()
 }
 
 
+void UCombatComponent::ThrowGrenadeFinished()
+{
+	CombatState = ECombatState::ECS_Unoccupied;
+}
+
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -169,6 +174,10 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	{
 		return;
 	}
+	if (CombatState != ECombatState::ECS_Unoccupied)
+	{
+		return;
+	}
 	if (EquippedWeapon)
 	{
 		EquippedWeapon->Dropped();
@@ -215,7 +224,7 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 
 void UCombatComponent::Reload()
 {
-	if (CarriedAmmo > 0 && CombatState != ECombatState::ECS_Reloading &&EquippedWeapon->GetAmmo() != EquippedWeapon->GetMagCapacity())
+	if (CarriedAmmo > 0 && CombatState == ECombatState::ECS_Unoccupied &&EquippedWeapon->GetAmmo() != EquippedWeapon->GetMagCapacity())
 	{
 		ServerReload();
 	}
@@ -317,6 +326,12 @@ void UCombatComponent::OnRep_CombatState()
 			Fire();
 		}
 		break;
+	case ECombatState::ECS_ThrowingGrenade:
+		if (Character && !Character->IsLocallyControlled())
+		{
+			Character->PlayThrowGreandeMontage();
+		}
+		break;
 	}
 }
 
@@ -341,6 +356,32 @@ int32 UCombatComponent::AmountToReload()
 		return FMath::Clamp(RoomInMag, 0, Least);
 	}
 	return 0;
+}
+
+void UCombatComponent::ThrowGrenade()
+{
+	if (CombatState != ECombatState::ECS_Unoccupied)
+	{
+		return;
+	}
+	CombatState = ECombatState::ECS_ThrowingGrenade;
+	if (Character)
+	{
+		Character->PlayThrowGreandeMontage();
+	}
+	if (Character && !Character->HasAuthority())
+	{
+		ServerThrowGrenade();
+	}
+}
+
+void UCombatComponent::ServerThrowGrenade_Implementation()
+{
+	CombatState = ECombatState::ECS_ThrowingGrenade;
+	if (Character)
+	{
+		Character->PlayThrowGreandeMontage();
+	}
 }
 
 void UCombatComponent::OnRep_EquippedWeapon()
