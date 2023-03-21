@@ -208,6 +208,10 @@ void ABlasterCharacter::BeginPlay()
 		}
 		
 	}
+	if (AttachGrenade)
+	{
+		AttachGrenade->SetVisibility(false);
+	}
 	
 }
 void ABlasterCharacter::Tick(float DeltaTime)

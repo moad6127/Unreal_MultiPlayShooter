@@ -51,6 +51,12 @@ void UCombatComponent::ThrowGrenadeFinished()
 	AttachActorToRightHand(EquippedWeapon);
 }
 
+void UCombatComponent::LaunchGrenade()
+{
+	ShowAttachGrenade(false);
+
+}
+
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -277,6 +283,7 @@ void UCombatComponent::ReloadEmptyWeapon()
 	}
 }
 
+
 void UCombatComponent::Reload()
 {
 	if (CarriedAmmo > 0 && CombatState == ECombatState::ECS_Unoccupied &&EquippedWeapon && !EquippedWeapon->IsFull())
@@ -386,6 +393,7 @@ void UCombatComponent::OnRep_CombatState()
 		{
 			Character->PlayThrowGreandeMontage();
 			AttachActorToLeftHand(EquippedWeapon);
+			ShowAttachGrenade(true);
 		}
 		break;
 	}
@@ -425,6 +433,7 @@ void UCombatComponent::ThrowGrenade()
 	{
 		Character->PlayThrowGreandeMontage();
 		AttachActorToLeftHand(EquippedWeapon);
+		ShowAttachGrenade(true);
 	}
 	if (Character && !Character->HasAuthority())
 	{
@@ -439,6 +448,14 @@ void UCombatComponent::ServerThrowGrenade_Implementation()
 	{
 		Character->PlayThrowGreandeMontage();
 		AttachActorToLeftHand(EquippedWeapon);
+		ShowAttachGrenade(true);
+	}
+}
+void UCombatComponent::ShowAttachGrenade(bool bShowGrenade)
+{
+	if (Character && Character->GetAttachGrenade())
+	{
+		Character->GetAttachGrenade()->SetVisibility(bShowGrenade);
 	}
 }
 
