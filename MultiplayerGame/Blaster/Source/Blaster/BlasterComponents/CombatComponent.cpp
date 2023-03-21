@@ -34,6 +34,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UCombatComponent, bAiming);
 	DOREPLIFETIME_CONDITION(UCombatComponent, CarriedAmmo, COND_OwnerOnly);
 	DOREPLIFETIME(UCombatComponent, CombatState);
+	DOREPLIFETIME(UCombatComponent, Grenade);
 }
 
 void UCombatComponent::ShotgunShellReload()
@@ -55,11 +56,18 @@ void UCombatComponent::ThrowGrenadeFinished()
 void UCombatComponent::LaunchGrenade()
 {
 	ShowAttachGrenade(false);
+	if (Character && Character->IsLocallyControlled())
+	{
+		ServerLaunchGrenade(HitTarget);
+	}
+}
 
-	if (Character && Character->HasAuthority() && GrenadeClass && Character->GetAttachGrenade())
+void UCombatComponent::ServerLaunchGrenade_Implementation(const FVector_NetQuantize& Target)
+{
+	if (Character && GrenadeClass && Character->GetAttachGrenade())
 	{
 		const FVector StartingLocation = Character->GetAttachGrenade()->GetComponentLocation();
-		FVector ToTarget = HitTarget - StartingLocation;
+		FVector ToTarget = Target - StartingLocation;
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = Character;
 		SpawnParams.Instigator = Character;
@@ -384,6 +392,13 @@ void UCombatComponent::UpdateShotgunAmmoValue()
 	}
 
 }
+
+void UCombatComponent::OnRep_Grenade()
+{
+	UpdateHUDGrenade();
+}
+
+
 void UCombatComponent::JumpToShotgunEnd()
 {
 	//Jump to ShotgunEnd Section
@@ -443,6 +458,10 @@ int32 UCombatComponent::AmountToReload()
 
 void UCombatComponent::ThrowGrenade()
 {
+	if (Grenade == 0)
+	{
+		return;
+	}
 	if (CombatState != ECombatState::ECS_Unoccupied || EquippedWeapon == nullptr)
 	{
 		return;
@@ -458,10 +477,19 @@ void UCombatComponent::ThrowGrenade()
 	{
 		ServerThrowGrenade();
 	}
+	if (Character && Character->HasAuthority())
+	{
+		Grenade = FMath::Clamp(Grenade - 1, 0, MaxGrenade);
+		UpdateHUDGrenade();
+	}
 }
 
 void UCombatComponent::ServerThrowGrenade_Implementation()
 {
+	if (Grenade == 0)
+	{
+		return;
+	}
 	CombatState = ECombatState::ECS_ThrowingGrenade;
 	if (Character)
 	{
@@ -469,7 +497,19 @@ void UCombatComponent::ServerThrowGrenade_Implementation()
 		AttachActorToLeftHand(EquippedWeapon);
 		ShowAttachGrenade(true);
 	}
+	Grenade = FMath::Clamp(Grenade - 1, 0, MaxGrenade);
+	UpdateHUDGrenade();
 }
+
+void UCombatComponent::UpdateHUDGrenade()
+{
+	Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
+	if (Controller)
+	{
+		Controller->SetHUDGrenade(Grenade);
+	}
+}
+
 void UCombatComponent::ShowAttachGrenade(bool bShowGrenade)
 {
 	if (Character && Character->GetAttachGrenade())
