@@ -29,7 +29,7 @@ protected:
 			bool bFroSweep,
 			const FHitResult& SweepResult
 		);
-
+	
 private:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* OverlapSphere;
