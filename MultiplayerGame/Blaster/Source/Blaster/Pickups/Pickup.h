@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-		virtual void OnSphereOverlap(
+	virtual void OnSphereOverlap(
 			UPrimitiveComponent* OVerlappdComponent,
 			AActor* OtherActor,
 			UPrimitiveComponent* OtherComp,
