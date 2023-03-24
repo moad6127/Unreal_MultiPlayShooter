@@ -43,6 +43,7 @@ public:
 	void ShowSniperScopeWidget(bool bShowScope);
 
 	void UpdateHUDHealth();
+	void UpdateHUDShield();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -153,6 +154,19 @@ private:
 	UFUNCTION()
 	void OnRep_Health(float LastHealth);
 
+	/**
+	* Player Shield
+	*/
+	UPROPERTY(EditAnywhere, Category = "Player Stats")
+	float MAXShield = 100.f;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Shield, EditAnywhere, Category = "Player Stats")
+	float Shield = 100.f;
+
+	UFUNCTION()
+	void OnRep_Shield(float LastShield);
+
+
 	UPROPERTY()
 	class ABlasterPlayerController* BlasterPlayerController;
 
@@ -224,8 +238,10 @@ public:
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
 	FORCEINLINE bool IsElimmed() const { return bElimed; }
 	FORCEINLINE float GetHealth() const { return Health; }
+	FORCEINLINE float GetShield() const { return Shield; }
 	FORCEINLINE void SetHealth(float Amount) { Health = Amount; }
 	FORCEINLINE float GetMAXHealth() const { return MAXHealth; }
+	FORCEINLINE float GetMAXShield() const { return MAXShield; }
 	ECombatState GetCombatState() const;
 	FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
 	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
