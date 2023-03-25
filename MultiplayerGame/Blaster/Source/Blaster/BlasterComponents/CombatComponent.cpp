@@ -226,6 +226,7 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	}
 
 	DropEquippedWeapon();
+	
 
 	EquippedWeapon = WeaponToEquip;
 	EquippedWeapon->SetWeaponStaete(EWeaponState::EWS_Equipped);
