@@ -241,6 +241,27 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	Character->bUseControllerRotationYaw = true;
 }
 
+void UCombatComponent::SwapWeapon()
+{
+	AWeapon* TempWeapon = EquippedWeapon;
+	EquippedWeapon = SecondaryWeapon;
+	SecondaryWeapon = TempWeapon;
+
+	EquippedWeapon->SetWeaponStaete(EWeaponState::EWS_Equipped);
+	AttachActorToRightHand(EquippedWeapon);
+	EquippedWeapon->SetHUDAmmo();
+	UpdateCarriedAmmo();
+	PlayerState = PlayerState == nullptr ? Character->GetPlayerState<ABlasterPlayerState>() : PlayerState;
+	if (PlayerState)
+	{
+		PlayerState->UpdateWeaponTpye(EquippedWeapon->GetWeaponType());
+	}
+	PlayEquipWeaponSound(EquippedWeapon);
+
+	SecondaryWeapon->SetWeaponStaete(EWeaponState::EWS_EquippedSecondary);
+	AttachActorToBackpack(SecondaryWeapon);
+}
+
 void UCombatComponent::EquipPrimaryWeapon(AWeapon* WeaponToEquip)
 {
 	if (WeaponToEquip == nullptr)
@@ -261,7 +282,6 @@ void UCombatComponent::EquipPrimaryWeapon(AWeapon* WeaponToEquip)
 	}
 	PlayEquipWeaponSound(WeaponToEquip);
 	ReloadEmptyWeapon();
-	EquippedWeapon->EnableCumstomDepth(false);
 }
 
 void UCombatComponent::EquipSecondaryWeapon(AWeapon* WeaponToEquip)
@@ -567,6 +587,11 @@ void UCombatComponent::UpdateHUDGrenade()
 	}
 }
 
+bool UCombatComponent::ShouldSwapWeapon()
+{
+	return (EquippedWeapon != nullptr && SecondaryWeapon != nullptr);
+}
+
 void UCombatComponent::ShowAttachGrenade(bool bShowGrenade)
 {
 	if (Character && Character->GetAttachGrenade())
@@ -590,6 +615,7 @@ void UCombatComponent::OnRep_EquippedWeapon()
 			PlayerState->UpdateWeaponTpye(EquippedWeapon->GetWeaponType());
 		}
 		EquippedWeapon->EnableCumstomDepth(false);
+		EquippedWeapon->SetHUDAmmo();
 	}
 }
 

@@ -406,12 +406,10 @@ void ABlasterPlayerController::PollInit()
 				}
 				if (bInitializeCarriedAmmo)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("HUDCarriedAmmoCheck"));
 					SetHUDCarriedAmmo(HUDCarriedAmmo);
 				}
 				if (bInitializeWeaponAmmo)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("HUDWeaponAmmoCheck"));
 					SetHUDWeaponAmmo(HUDWeaponAmmo);
 				}
 				

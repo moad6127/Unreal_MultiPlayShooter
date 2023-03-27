@@ -23,6 +23,7 @@ public:
 
 
 	void EquipWeapon(class AWeapon* WeaponToEquip);
+	void SwapWeapon();
 	void Reload();
 
 	UFUNCTION(BlueprintCallable)
@@ -213,5 +214,5 @@ private:
 	void UpdateHUDGrenade();
 public:	
 	FORCEINLINE int32 GetGrenade()const { return Grenade; }
-		
+	bool ShouldSwapWeapon();
 };
