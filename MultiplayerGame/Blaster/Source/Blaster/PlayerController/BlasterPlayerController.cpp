@@ -59,7 +59,6 @@ void ABlasterPlayerController::CheckPing(float DeltaTime)
 		}
 		HighPingRunningTime = 0;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("HighPingRunningTime : %f"), HighPingRunningTime);
 	bool bHighPingAnimationPlaying =
 		BlasterHUD &&
 		BlasterHUD->CharacterOverlay &&
