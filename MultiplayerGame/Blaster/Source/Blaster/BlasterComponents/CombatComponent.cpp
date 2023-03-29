@@ -253,6 +253,16 @@ void UCombatComponent::MulticastFire_Implementation(const FVector_NetQuantize& T
 	LocalFire(TraceHitTarget);
 }
 
+void UCombatComponent::ServerShotgunFire_Implementation(const TArray<FVector_NetQuantize>& TraceHitTarget)
+{
+	MulticastShotgunFire(TraceHitTarget);
+}
+
+void UCombatComponent::MulticastShotgunFire_Implementation(const TArray<FVector_NetQuantize>& TraceHitTarget)
+{
+
+}
+
 void UCombatComponent::LocalFire(const FVector_NetQuantize& TraceHitTarget)
 {
 	if (EquippedWeapon == nullptr)

@@ -73,6 +73,12 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastFire(const FVector_NetQuantize& TraceHitTarget);
 
+	UFUNCTION(Server, Reliable)
+	void ServerShotgunFire(const TArray<FVector_NetQuantize>& TraceHitTarget);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastShotgunFire(const TArray<FVector_NetQuantize>& TraceHitTarget);
+
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
 	void SetHUDCrosshair(float DeltaTime);

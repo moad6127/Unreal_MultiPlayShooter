@@ -9,9 +9,9 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/KismetMathLibrary.h"
 
-void AShotgun::Fire(const FVector& HitTarget)
+void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 {
-	AWeapon::Fire(HitTarget);
+	AWeapon::Fire(FVector());
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn == nullptr)
 	{
@@ -22,17 +22,18 @@ void AShotgun::Fire(const FVector& HitTarget)
 	const USkeletalMeshSocket* MuzzleFlashSocket = GetWeaponMesh()->GetSocketByName("MuzzleFlash");
 	if (MuzzleFlashSocket)
 	{
-		FTransform SocketTransform = MuzzleFlashSocket->GetSocketTransform(GetWeaponMesh());
-		FVector Start = SocketTransform.GetLocation();
+		const FTransform SocketTransform = MuzzleFlashSocket->GetSocketTransform(GetWeaponMesh());
+		const FVector Start = SocketTransform.GetLocation();
 
+		//Maps hit character to nuber of times hit
 		TMap<ABlasterCharacter*, uint32> HitMap;
-		for (uint32 i = 0; i < NumberOfPellets; i++)
+		for (FVector_NetQuantize HitTarget : HitTargets)
 		{
 			FHitResult FireHit;
 			WeaponTraceHit(Start, HitTarget, FireHit);
 
 			ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
-			if (BlasterCharacter && HasAuthority() && InstigatorController)
+			if (BlasterCharacter)
 			{
 				if (HitMap.Contains(BlasterCharacter))
 				{
@@ -42,28 +43,28 @@ void AShotgun::Fire(const FVector& HitTarget)
 				{
 					HitMap.Emplace(BlasterCharacter, 1);
 				}
-			}
-			if (ImpactParticle)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(
-					GetWorld(),
-					ImpactParticle,
-					FireHit.ImpactPoint,
-					FireHit.ImpactNormal.Rotation()
-				);
-			}
-			if (HitSound)
-			{
-				UGameplayStatics::PlaySoundAtLocation(
-					this,
-					HitSound,
-					FireHit.ImpactPoint,
-					.5f,
-					FMath::FRandRange(-.5f,.5f)
-				);
+
+				if (ImpactParticle)
+				{
+					UGameplayStatics::SpawnEmitterAtLocation(
+						GetWorld(),
+						ImpactParticle,
+						FireHit.ImpactPoint,
+						FireHit.ImpactNormal.Rotation()
+					);
+				}
+				if (HitSound)
+				{
+					UGameplayStatics::PlaySoundAtLocation(
+						this,
+						HitSound,
+						FireHit.ImpactPoint,
+						.5f,
+						FMath::FRandRange(-.5f, .5f)
+					);
+				}
 			}
 		}
-		
 		for (auto HitPair : HitMap)
 		{
 			if (InstigatorController)
@@ -71,8 +72,8 @@ void AShotgun::Fire(const FVector& HitTarget)
 				if (HitPair.Key && HasAuthority() && InstigatorController)
 				{
 					UGameplayStatics::ApplyDamage(
-						HitPair.Key,
-						Damage * HitPair.Value,
+						HitPair.Key, //character hit
+						Damage * HitPair.Value, // Multiply damge by nubmer of times hit
 						InstigatorController,
 						this,
 						UDamageType::StaticClass()
@@ -80,9 +81,8 @@ void AShotgun::Fire(const FVector& HitTarget)
 				}
 			}
 		}
-
-		
 	}
+
 }
 
 void AShotgun::ShotgunTraceEndWithScatter(const FVector& HitTarget, TArray<FVector>& HitTargets)
