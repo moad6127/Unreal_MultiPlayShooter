@@ -16,7 +16,7 @@ class BLASTER_API AShotgun : public AHitScanWeapon
 public:
 
 	virtual void FireShotgun(const TArray<FVector_NetQuantize>& HitTargets);
-	void ShotgunTraceEndWithScatter(const FVector& HitTarget, TArray<FVector>& HitTargets);
+	void ShotgunTraceEndWithScatter(const FVector& HitTarget, TArray<FVector_NetQuantize>& HitTargets);
 private:
 
 	UPROPERTY(EditAnywhere , Category = "Weapon Scatter")

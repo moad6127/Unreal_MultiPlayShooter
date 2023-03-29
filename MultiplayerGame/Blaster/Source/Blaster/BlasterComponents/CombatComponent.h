@@ -66,6 +66,7 @@ protected:
 	void FireShotgun();
 
 	void LocalFire(const FVector_NetQuantize& TraceHitTarget);
+	void LocalShotgunFire(const TArray<FVector_NetQuantize>& TraceHitTarget);
 
 	UFUNCTION(Server, Reliable)
 	void ServerFire(const FVector_NetQuantize& TraceHitTarget);
