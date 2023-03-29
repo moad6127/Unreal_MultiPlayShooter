@@ -114,7 +114,7 @@ protected:
 	* Trace end with scatter
 	*/
 	UPROPERTY(EditAnywhere, Category = "Weapon Scatter")
-	float DistanceToSphere = 800.f;
+	float DistanceToSphere = 80.f;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Scatter")
 	float SphereRadius = 75.f;
@@ -184,5 +184,5 @@ public:
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
 	FORCEINLINE int32 GetAmmo() const { return Ammo; }
 	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity; }
-
+	void SetScatterRadius(float Radius);
 };

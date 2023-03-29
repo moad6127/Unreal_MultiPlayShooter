@@ -304,6 +304,11 @@ bool AWeapon::IsFull()
 	return Ammo == MagCapacity;
 }
 
+void AWeapon::SetScatterRadius(float Radius)
+{
+	SphereRadius = Radius;
+}
+
 FVector AWeapon::TraceEndWithScatter(const FVector& HitTarget)
 {
 	const USkeletalMeshSocket* MuzzleFlashSocket = GetWeaponMesh()->GetSocketByName("MuzzleFlash");

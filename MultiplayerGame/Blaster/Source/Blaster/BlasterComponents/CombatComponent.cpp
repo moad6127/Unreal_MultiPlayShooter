@@ -133,6 +133,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		HitTarget = HitResult.ImpactPoint;
 
 		SetHUDCrosshair(DeltaTime);
+
 		InterpFOV(DeltaTime);
 	}
 
@@ -157,7 +158,8 @@ void UCombatComponent::Fire()
 		if (EquippedWeapon)
 		{
 			CrosshairShootingFactor = 0.75f;
-
+			EquippedWeapon->SetScatterRadius(ScatterRadius);
+			UE_LOG(LogTemp,Warning,TEXT("ScatterRadius : %f"), ScatterRadius)
 			switch (EquippedWeapon->FireType)
 			{
 			case EFireType::EFT_Projectile:
@@ -840,6 +842,7 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 				CrosshairAimFactor +
 				CrosshairShootingFactor -
 				CrosshairOtherCharacterFactor;
+			ScatterRadius = HUDPackage.CrosshairSpread * 10;
 
 			CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.f, DeltaTime, 40.f);
 			HUD->SetHUDPackage(HUDPackage);

@@ -225,6 +225,8 @@ private:
 	int32 MaxGrenade = 4;
 
 	void UpdateHUDGrenade();
+
+	float ScatterRadius = 0.f;
 public:	
 	FORCEINLINE int32 GetGrenade()const { return Grenade; }
 	bool ShouldSwapWeapon();
