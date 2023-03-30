@@ -157,9 +157,8 @@ void UCombatComponent::Fire()
 		bCanFire = false;
 		if (EquippedWeapon)
 		{
-			CrosshairShootingFactor = 0.75f;
+			CrosshairShootingFactor = 0.25f;
 			EquippedWeapon->SetScatterRadius(ScatterRadius);
-			UE_LOG(LogTemp,Warning,TEXT("ScatterRadius : %f"), ScatterRadius)
 			switch (EquippedWeapon->FireType)
 			{
 			case EFireType::EFT_Projectile:
@@ -536,7 +535,7 @@ void UCombatComponent::UpdateAmmoValue()
 	{
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
-	EquippedWeapon->AddAmmo(-ReloadAmount);
+	EquippedWeapon->AddAmmo(ReloadAmount);
 }
 
 void UCombatComponent::UpdateShotgunAmmoValue()
@@ -556,7 +555,7 @@ void UCombatComponent::UpdateShotgunAmmoValue()
 	{
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
-	EquippedWeapon->AddAmmo(-1);
+	EquippedWeapon->AddAmmo(1);
 	bCanFire = true;
 	if (EquippedWeapon->IsFull() ||CarriedAmmo == 0)
 	{
@@ -844,7 +843,7 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 				CrosshairOtherCharacterFactor;
 			ScatterRadius = HUDPackage.CrosshairSpread * 10;
 
-			CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.f, DeltaTime, 40.f);
+			CrosshairShootingFactor = FMath::FInterpTo(CrosshairShootingFactor, 0.f, DeltaTime, 10.f);
 			HUD->SetHUDPackage(HUDPackage);
 		}
 	}
