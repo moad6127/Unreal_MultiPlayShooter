@@ -47,6 +47,9 @@ public:
 	void UpdateHUDAmmo();
 
 	void SpawnDefaultWeapon();
+
+	UPROPERTY()
+	TMap<FName, class UBoxComponent*> HitCollisionBox;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -82,7 +85,7 @@ protected:
 	*/
 
 	UPROPERTY(EditAnywhere)
-	class UBoxComponent* head;
+	UBoxComponent* head;
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* Pelvis;
@@ -134,6 +137,8 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UBoxComponent* Foot_R;
+
+
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
