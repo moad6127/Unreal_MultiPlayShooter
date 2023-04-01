@@ -334,4 +334,5 @@ public:
 	FORCEINLINE UStaticMeshComponent* GetAttachGrenade() const { return AttachGrenade; }
 	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
 	bool IsLocallyReloading();
+	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 };
