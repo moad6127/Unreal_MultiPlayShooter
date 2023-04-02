@@ -191,6 +191,7 @@ void ULagCompensationComponent::EnableCharacterMeshCollision(ABlasterCharacter* 
 	}
 }
 
+
 void ULagCompensationComponent::ShowFramePackage(const FFramePackage& Package,const FColor& Color)
 {
 	for (auto& BoxInfo : Package.HitBoxInfo)
@@ -292,6 +293,11 @@ void ULagCompensationComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	SaveFramePackage();
+}
+
+void ULagCompensationComponent::SaveFramePackage()
+{
 	if (Character == nullptr || !Character->HasAuthority())
 	{
 		return;
@@ -314,9 +320,6 @@ void ULagCompensationComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 		SaveFramePackage(ThisFrame);
 		FrameHistory.AddHead(ThisFrame);
 
-		ShowFramePackage(ThisFrame, FColor::Red);
+		//ShowFramePackage(ThisFrame, FColor::Red);
 	}
 }
-
-
-
