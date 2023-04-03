@@ -332,6 +332,7 @@ FFramePackage ULagCompensationComponent::GetFrameToCheck(ABlasterCharacter* HitC
 	}
 	//Frame Package that we check to verify a hit
 	FFramePackage FrameToCheck;
+
 	bool bShouldInterpolate = true;
 
 	// Frame history of the HitCharacter
@@ -380,6 +381,7 @@ FFramePackage ULagCompensationComponent::GetFrameToCheck(ABlasterCharacter* HitC
 		//Interpolate between younger and older
 		FrameToCheck = InterpBetweenFrames(Older->GetValue(), Younger->GetValue(), HitTime);
 	}
+	FrameToCheck.Character = HitCharacter;
 	return FrameToCheck;
 }
 
