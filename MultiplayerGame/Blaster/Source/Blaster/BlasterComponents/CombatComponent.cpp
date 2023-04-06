@@ -332,28 +332,18 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 
 void UCombatComponent::SwapWeapon()
 {
-	if (CombatState != ECombatState::ECS_Unoccupied)
+	if (CombatState != ECombatState::ECS_Unoccupied || Character == nullptr)
 	{
 		return;
 	}
 
-	AWeapon* TempWeapon = EquippedWeapon;
-	EquippedWeapon = SecondaryWeapon;
-	SecondaryWeapon = TempWeapon;
-
-	EquippedWeapon->SetWeaponStaete(EWeaponState::EWS_Equipped);
-	AttachActorToRightHand(EquippedWeapon);
-	EquippedWeapon->SetHUDAmmo();
-	UpdateCarriedAmmo();
-	PlayerState = PlayerState == nullptr ? Character->GetPlayerState<ABlasterPlayerState>() : PlayerState;
-	if (PlayerState)
+	Character->PlaySwapMontage();
+	Character->bFinishSwapping = false;
+	CombatState = ECombatState::ECS_SwappingWeapon;
+	if (SecondaryWeapon)
 	{
-		PlayerState->UpdateWeaponTpye(EquippedWeapon->GetWeaponType());
+		SecondaryWeapon->EnableCumstomDepth(false);
 	}
-	PlayEquipWeaponSound(EquippedWeapon);
-
-	SecondaryWeapon->SetWeaponStaete(EWeaponState::EWS_EquippedSecondary);
-	AttachActorToBackpack(SecondaryWeapon);
 }
 
 void UCombatComponent::EquipPrimaryWeapon(AWeapon* WeaponToEquip)
@@ -531,6 +521,43 @@ void UCombatComponent::FinishReload()
 		Fire();
 	}
 }
+void UCombatComponent::FinishSwap()
+{
+	if (Character && Character->HasAuthority())
+	{
+		CombatState = ECombatState::ECS_Unoccupied;
+	}
+	if (Character)
+	{
+		Character->bFinishSwapping = true;
+	}
+	if (SecondaryWeapon)
+	{
+		SecondaryWeapon->EnableCumstomDepth(true);
+	}
+}
+
+void UCombatComponent::FinishSwapAttachWeapon()
+{
+	AWeapon* TempWeapon = EquippedWeapon;
+	EquippedWeapon = SecondaryWeapon;
+	SecondaryWeapon = TempWeapon;
+
+	EquippedWeapon->SetWeaponStaete(EWeaponState::EWS_Equipped);
+	AttachActorToRightHand(EquippedWeapon);
+	EquippedWeapon->SetHUDAmmo();
+	UpdateCarriedAmmo();
+	PlayerState = PlayerState == nullptr ? Character->GetPlayerState<ABlasterPlayerState>() : PlayerState;
+	if (PlayerState)
+	{
+		PlayerState->UpdateWeaponTpye(EquippedWeapon->GetWeaponType());
+	}
+	PlayEquipWeaponSound(EquippedWeapon);
+
+	SecondaryWeapon->SetWeaponStaete(EWeaponState::EWS_EquippedSecondary);
+	AttachActorToBackpack(SecondaryWeapon);
+
+}
 
 void UCombatComponent::UpdateAmmoValue()
 {
@@ -617,6 +644,13 @@ void UCombatComponent::OnRep_CombatState()
 			AttachActorToLeftHand(EquippedWeapon);
 			ShowAttachGrenade(true);
 		}
+		break;
+	case ECombatState::ECS_SwappingWeapon:
+		if (Character && !Character->IsLocallyControlled())
+		{
+			Character->PlaySwapMontage();
+		}
+
 		break;
 	}
 }
@@ -930,13 +964,15 @@ bool UCombatComponent::CanFire()
 	{
 		return false;
 	}
-	if (bLocallyReloading)
-	{
-		return false;
-	}
+
 	if (!EquippedWeapon->IsEmpty() && bCanFire && CombatState == ECombatState::ECS_Reloading && EquippedWeapon->GetWeaponType() == EWeaponType::EWT_Shotgun)
 	{
 		return true;
+	}
+
+	if (bLocallyReloading)
+	{
+		return false;
 	}
 	return !EquippedWeapon->IsEmpty() && bCanFire && CombatState == ECombatState::ECS_Unoccupied;
 }
