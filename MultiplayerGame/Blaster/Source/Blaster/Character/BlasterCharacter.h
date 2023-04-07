@@ -77,6 +77,7 @@ protected:
 	void ReloadButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
+	void ADSPressed();
 	void AimOffset(float DeltaTime);
 	void CalculateAO_Pitch();
 	void SimProxiesTurn();
@@ -323,6 +324,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeapon> DefaultWeaponClass;
 
+	/**
+	* ADS
+	*/
+	bool bADS = false;;
+	void ADSSystem();
 public:	
 
 	void SetOverlappingWeapon(AWeapon* Weapon);

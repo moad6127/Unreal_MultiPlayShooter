@@ -419,6 +419,8 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ABlasterCharacter::ReloadButtonPressed);
 	PlayerInputComponent->BindAction("ThrowGrenade", IE_Pressed, this, &ABlasterCharacter::GrenadeButtonPressed);
+
+	//PlayerInputComponent->BindAction("ADS", IE_Pressed, this, &ABlasterCharacter::ADSPressed);
 }
 void ABlasterCharacter::PostInitializeComponents()
 {
@@ -724,6 +726,12 @@ void ABlasterCharacter::AimButtonReleased()
 	}
 }
 
+void ABlasterCharacter::ADSPressed()
+{
+	bADS = !bADS;
+	ADSSystem();
+}
+
 float ABlasterCharacter::CalculateSpeed()
 {
 	FVector Velocity = GetVelocity();
@@ -995,6 +1003,22 @@ void ABlasterCharacter::StartDissolve()
 	{
 		DissolveTimeline->AddInterpFloat(DissolveCurve, DissolveTrack);
 		DissolveTimeline->Play();
+	}
+}
+
+void ABlasterCharacter::ADSSystem()
+{
+	if (bADS)
+	{
+		if (Combat && Combat->EquippedWeapon)
+		{
+			FollowCamera->AttachToComponent(Combat->EquippedWeapon->GetWeaponMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ADSSocket"));
+		}
+		
+	}
+	else
+	{
+		FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	}
 }
 
