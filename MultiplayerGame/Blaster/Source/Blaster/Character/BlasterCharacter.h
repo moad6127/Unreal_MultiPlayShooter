@@ -64,6 +64,13 @@ public:
 	void ServerLeaveGame();
 
 	FOnLeftGame OnLeftGame;
+
+	UFUNCTION(NetMulticast,Reliable)
+	void MulticastGainTheLead();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLostTheLead();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -310,6 +317,12 @@ private:
 
 	UPROPERTY()
 	class ABlasterPlayerState* BlasterPlayerState;
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* CrownSystem;
+
+	UPROPERTY()
+	class UNiagaraComponent* CrownComponent;
 
 	/**
 	* Grenade
