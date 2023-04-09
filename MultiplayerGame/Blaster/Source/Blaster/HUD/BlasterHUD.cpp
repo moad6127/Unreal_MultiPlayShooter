@@ -11,7 +11,6 @@ void ABlasterHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AddElimAnnouncement("Player1", "Player2");
 }
 
 void ABlasterHUD::AddCharacterOverlay()
