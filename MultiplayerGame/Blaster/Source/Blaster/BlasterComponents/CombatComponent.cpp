@@ -723,11 +723,12 @@ void UCombatComponent::ThrowGrenade()
 	}
 	if (Character && !Character->HasAuthority())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("GrenadeThorw!"));
+		UE_LOG(LogTemp, Warning, TEXT("not Has Authority GrenadeThorw!"));
 		ServerThrowGrenade();
 	}
 	if (Character && Character->HasAuthority())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Has Authority GrenadeThorw!"));
 		Grenade = FMath::Clamp(Grenade - 1, 0, MaxGrenade);
 		UpdateHUDGrenade();
 	}
