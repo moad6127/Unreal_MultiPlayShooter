@@ -715,12 +715,14 @@ void UCombatComponent::ThrowGrenade()
 	CombatState = ECombatState::ECS_ThrowingGrenade;
 	if (Character)
 	{
+		
 		Character->PlayThrowGreandeMontage();
 		AttachActorToLeftHand(EquippedWeapon);
 		ShowAttachGrenade(true);
 	}
 	if (Character && !Character->HasAuthority())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("GrenadeThorw!"));
 		ServerThrowGrenade();
 	}
 	if (Character && Character->HasAuthority())
