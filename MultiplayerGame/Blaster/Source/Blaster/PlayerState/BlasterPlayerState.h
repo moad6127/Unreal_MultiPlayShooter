@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "Blaster/BlasterType/Team.h"
 #include "Blaster/Weapon/WeaponTypes.h"
 #include "BlasterPlayerState.generated.h"
-
 /**
  * 
  */
@@ -54,4 +54,11 @@ private:
 	EWeaponType WeaponType;
 
 	FString WeaponTypeToString(EWeaponType Type);
+
+	UPROPERTY(Replicated)
+	ETeam Team = ETeam::ET_NoTeam;
+
+public:
+	FORCEINLINE ETeam GetTeam() const { return Team; }
+	FORCEINLINE void SetTeam(ETeam TeamToSet) { Team = TeamToSet; }
 };
