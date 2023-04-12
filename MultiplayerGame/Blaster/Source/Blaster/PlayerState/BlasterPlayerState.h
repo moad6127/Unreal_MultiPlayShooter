@@ -22,6 +22,7 @@ public:
 	*
 	* Replication notifies
 	*/
+
 	virtual void OnRep_Score() override;
 
 	UFUNCTION()
@@ -32,6 +33,9 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_WeaponType();
+
+	UFUNCTION()
+	void OnRep_Team();
 
 
 	void AddToScore(float ScoreAmount);
@@ -58,8 +62,6 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_Team)
 	ETeam Team = ETeam::ET_NoTeam;
 
-	UFUNCTION()
-	void OnRep_Team();
 
 public:
 	FORCEINLINE ETeam GetTeam() const { return Team; }

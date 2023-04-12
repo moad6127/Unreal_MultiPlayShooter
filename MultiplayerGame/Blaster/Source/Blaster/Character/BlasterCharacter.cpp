@@ -387,8 +387,6 @@ void ABlasterCharacter::SetTeamColor(ETeam Team)
 		GetMesh()->SetMaterial(0, RedMaterial);
 		DissolveMaterialInstance = RedDissolveMatInst;
 		break;
-
-
 	}
 }
 
@@ -400,6 +398,7 @@ void ABlasterCharacter::BeginPlay()
 	UpdateHUDAmmo();
 	UpdateHUDHealth();
 	UpdateHUDShield();
+
 	if (Combat)
 	{
 		Combat->UpdateHUDGrenade();
@@ -416,6 +415,7 @@ void ABlasterCharacter::BeginPlay()
 		if (BlasterPlayerState)
 		{
 			BlasterPlayerState->UpdateDeathMessage(TEXT(""));
+			SetTeamColor(BlasterPlayerState->GetTeam());
 		}
 		
 	}

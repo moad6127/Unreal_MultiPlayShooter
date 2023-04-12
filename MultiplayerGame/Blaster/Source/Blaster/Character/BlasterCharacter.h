@@ -301,7 +301,7 @@ private:
 	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
 
 	//Material instance set on the blueprint, used with the dynamic material instance
-	UPROPERTY(VisibleAnywhere, Category = Elim)
+	UPROPERTY(EditAnywhere, Category = Elim)
 	UMaterialInstance* DissolveMaterialInstance;
 
 	/**
