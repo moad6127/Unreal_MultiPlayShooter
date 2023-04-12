@@ -141,6 +141,11 @@ void ABlasterGameMode::PlayerEliminated(ABlasterCharacter* ElimmedCharacter, ABl
 	}
 }
 
+float ABlasterGameMode::CalculateDamage(AController* Attacker, AController* Victim, float BaseDamage)
+{
+	return BaseDamage;
+}
+
 void ABlasterGameMode::RequestRespawn(ACharacter* ElimmedCharactr, AController* ElimmedController)
 {
 	if (ElimmedCharactr)
@@ -174,4 +179,5 @@ void ABlasterGameMode::PlayerLeftGame(ABlasterPlayerState* PlayerLeaving)
 		CharacterLeaving->Elim(true);
 	}
 }
+
 

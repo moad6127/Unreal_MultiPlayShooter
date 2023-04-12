@@ -362,6 +362,9 @@ private:
 	*/
 	bool bADS = false;;
 	void ADSSystem();
+
+	UPROPERTY()
+	class ABlasterGameMode* BlasterGameMode;
 public:	
 
 	void SetOverlappingWeapon(AWeapon* Weapon);
