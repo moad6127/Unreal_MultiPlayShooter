@@ -297,7 +297,10 @@ void ABlasterPlayerController::ServerCheckMatchState_Implementation()
 		CooldownTime = GameMode->CooldownTime;
 		LevelStartingTime = GameMode->LevelStartingTime;
 		MatchState = GameMode->GetMatchState();
-		ClientJoinMidgame(MatchState, WarmupTime, MatchTime,CooldownTime, LevelStartingTime);
+		bShowTeamScore = GameMode->bTeamsMatch;
+
+		ClientJoinMidgame(MatchState, WarmupTime, MatchTime,CooldownTime, LevelStartingTime, bShowTeamScore);
+		
 		if (BlasterHUD && MatchState == MatchState::WaitingToStart)
 		{
 			BlasterHUD->AddAnnouncement();
@@ -305,7 +308,7 @@ void ABlasterPlayerController::ServerCheckMatchState_Implementation()
 	}
 }
 
-void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMatch, float Warmup, float Match, float Cooldown, float StartingTime)
+void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMatch, float Warmup, float Match, float Cooldown, float StartingTime, bool bIsTeamsMatch)
 {
 	if (!HasAuthority())
 	{
@@ -314,6 +317,7 @@ void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMat
 		CooldownTime = Cooldown;
 		LevelStartingTime = StartingTime;
 		MatchState = StateOfMatch;
+		bShowTeamScore = bIsTeamsMatch;
 		OnMatchStateSet(MatchState);
 		if (BlasterHUD && MatchState == MatchState::WaitingToStart)
 		{
@@ -647,6 +651,14 @@ void ABlasterPlayerController::PollInit()
 				if (bInitializeWeaponAmmo)
 				{
 					SetHUDWeaponAmmo(HUDWeaponAmmo);
+				}
+				if (bShowTeamScore)
+				{
+					InitTeamScores();
+				}
+				else
+				{
+					HideTeamScores();
 				}
 				
 				HideDeathMessage();

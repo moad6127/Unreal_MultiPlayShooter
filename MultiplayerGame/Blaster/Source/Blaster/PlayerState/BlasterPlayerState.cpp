@@ -165,21 +165,25 @@ FString ABlasterPlayerState::WeaponTypeToString(EWeaponType Type)
 
 void ABlasterPlayerState::SetTeam(ETeam TeamToSet)
 {
+	if (Team != ETeam::ET_NoTeam)
+	{
+		return;
+	}
 	Team = TeamToSet;
 
-	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
-	if (BlasterCharacter)
+	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	if (Character)
 	{
-		BlasterCharacter->SetTeamColor(Team);
+		Character->SetTeamColor(Team);
 	}
 }
 
 void ABlasterPlayerState::OnRep_Team()
 {
-	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
-	if (BlasterCharacter)
+	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	if (Character)
 	{
-		BlasterCharacter->SetTeamColor(Team);
+		Character->SetTeamColor(Team);
 	}
 }
 
