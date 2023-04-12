@@ -370,20 +370,32 @@ void ABlasterCharacter::MulticastLostTheLead_Implementation()
 	}
 }
 
+
+
 void ABlasterCharacter::SetTeamColor(ETeam Team)
 {
-	if (GetMesh() == nullptr || OriginalMaterial == nullptr) return;
+	if (GetMesh() == nullptr || OriginalMaterial == nullptr)
+	{
+		return;
+	}
+	BlasterPlayerState = BlasterPlayerState == nullptr ? GetPlayerState<ABlasterPlayerState>() : BlasterPlayerState;
+	FString PlayerName = BlasterPlayerState->GetPlayerName();
+	UE_LOG(LogTemp, Warning, TEXT("Name : %s"),*PlayerName);
 	switch (Team)
 	{
 	case ETeam::ET_NoTeam:
 		GetMesh()->SetMaterial(0, OriginalMaterial);
 		DissolveMaterialInstance = BlueDissolveMatInst;
 		break;
+
 	case ETeam::ET_BlueTeam:
+		UE_LOG(LogTemp, Warning, TEXT("BlueColor"));
 		GetMesh()->SetMaterial(0, BlueMaterial);
 		DissolveMaterialInstance = BlueDissolveMatInst;
 		break;
+
 	case ETeam::ET_RedTeam:
+		UE_LOG(LogTemp, Warning, TEXT("RedColor"));
 		GetMesh()->SetMaterial(0, RedMaterial);
 		DissolveMaterialInstance = RedDissolveMatInst;
 		break;
@@ -415,7 +427,6 @@ void ABlasterCharacter::BeginPlay()
 		if (BlasterPlayerState)
 		{
 			BlasterPlayerState->UpdateDeathMessage(TEXT(""));
-			SetTeamColor(BlasterPlayerState->GetTeam());
 		}
 		
 	}

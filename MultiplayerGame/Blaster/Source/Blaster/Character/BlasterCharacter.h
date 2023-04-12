@@ -235,6 +235,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CameraThreshold = 200.f;
 
+
 	bool bRotateRootBone;
 	float TurnThreshold = 0.5f;
 	FRotator ProxyRotationLastFrame;
@@ -301,7 +302,7 @@ private:
 	UMaterialInstanceDynamic* DynamicDissolveMaterialInstance;
 
 	//Material instance set on the blueprint, used with the dynamic material instance
-	UPROPERTY(EditAnywhere, Category = Elim)
+	UPROPERTY(VisibleAnywhere, Category = Elim)
 	UMaterialInstance* DissolveMaterialInstance;
 
 	/**
@@ -321,7 +322,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Elim)
 	UMaterialInstance* OriginalMaterial;
-
 	/**
 	* Elim bot
 	*/

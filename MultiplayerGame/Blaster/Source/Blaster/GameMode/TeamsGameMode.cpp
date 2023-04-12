@@ -7,7 +7,6 @@
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
-
 ATeamsGameMode::ATeamsGameMode()
 {
 	bTeamsMatch = true;
@@ -52,8 +51,8 @@ void ATeamsGameMode::Logout(AController* Exiting)
 			BGameState->BlueTeam.Remove(BPState);
 		}
 	}
-}
 
+}
 
 void ATeamsGameMode::HandleMatchHasStarted()
 {
@@ -86,15 +85,11 @@ float ATeamsGameMode::CalculateDamage(AController* Attacker, AController* Victim
 {
 	ABlasterPlayerState* AttackerPState = Attacker->GetPlayerState<ABlasterPlayerState>();
 	ABlasterPlayerState* VictimPState = Victim->GetPlayerState<ABlasterPlayerState>();
-	if (AttackerPState == nullptr || VictimPState == nullptr)
-	{
-		return BaseDamage;
-	}
+	if (AttackerPState == nullptr || VictimPState == nullptr) return BaseDamage;
 	if (VictimPState == AttackerPState)
 	{
 		return BaseDamage;
 	}
-
 	if (AttackerPState->GetTeam() == VictimPState->GetTeam())
 	{
 		return 0.f;

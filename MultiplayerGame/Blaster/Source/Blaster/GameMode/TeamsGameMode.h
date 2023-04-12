@@ -7,7 +7,7 @@
 #include "TeamsGameMode.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class BLASTER_API ATeamsGameMode : public ABlasterGameMode

@@ -167,21 +167,25 @@ void ABlasterPlayerState::SetTeam(ETeam TeamToSet)
 {
 	Team = TeamToSet;
 
-	ABlasterCharacter* BCharacter = Cast<ABlasterCharacter>(GetPawn());
-	if (BCharacter)
+	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
+	if (BlasterCharacter)
 	{
-		BCharacter->SetTeamColor(Team);
+		BlasterCharacter->SetTeamColor(Team);
 	}
 }
 
 void ABlasterPlayerState::OnRep_Team()
 {
-	ABlasterCharacter* BCharacter = Cast<ABlasterCharacter>(GetPawn());
-	if (BCharacter)
+	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
+	if (BlasterCharacter)
 	{
-		BCharacter->SetTeamColor(Team);
+		BlasterCharacter->SetTeamColor(Team);
 	}
 }
+
+
+
+
 
 
 
