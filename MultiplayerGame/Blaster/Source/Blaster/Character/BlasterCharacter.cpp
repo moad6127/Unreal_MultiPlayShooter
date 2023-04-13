@@ -419,17 +419,7 @@ void ABlasterCharacter::BeginPlay()
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
-	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
-	BlasterPlayerState = BlasterPlayerState == nullptr ? GetPlayerState<ABlasterPlayerState>() : BlasterPlayerState;
-	if (BlasterPlayerController)
-	{
-		BlasterPlayerController->HideDeathMessage();
-		if (BlasterPlayerState)
-		{
-			BlasterPlayerState->UpdateDeathMessage(TEXT(""));
-		}
-		
-	}
+
 	if (AttachGrenade)
 	{
 		AttachGrenade->SetVisibility(false);
@@ -1074,6 +1064,7 @@ void ABlasterCharacter::PollInit()
 			BlasterPlayerState->AddToScore(0.f);
 			BlasterPlayerState->AddToDefeats(0);
 			SetTeamColor(BlasterPlayerState->GetTeam());
+			BlasterPlayerState->UpdateDeathMessage(TEXT(""));
 
 			ABlasterGameState* BlasterGameState = Cast<ABlasterGameState>(UGameplayStatics::GetGameState(this));
 			if (BlasterGameState && BlasterGameState->TopScoringPlayer.Contains(BlasterPlayerState))
