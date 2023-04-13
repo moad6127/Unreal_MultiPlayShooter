@@ -59,7 +59,7 @@ private:
 	FString WeaponTypeToString(EWeaponType Type);
 
 	UPROPERTY(ReplicatedUsing = OnRep_Team)
-	ETeam Team;
+	ETeam Team = ETeam::ET_NoTeam;
 
 	UFUNCTION()
 	void OnRep_Team();
