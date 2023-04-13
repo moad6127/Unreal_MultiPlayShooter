@@ -86,6 +86,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bTransformRighthand;
 
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	bool bHoldingTheFlag;
+
 	UFUNCTION()
 	void AnimNotify_CrouchWalk();
 
