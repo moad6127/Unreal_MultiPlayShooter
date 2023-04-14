@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "WeaponTypes.h"
+#include "Blaster/BlasterType/Team.h"
 #include "Weapon.generated.h"
 
 UENUM(BlueprintType)
@@ -189,7 +190,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	EWeaponType WeaponType;
 
-
+	UPROPERTY(EditAnywhere)
+	ETeam Team;
 public:	
 
 
