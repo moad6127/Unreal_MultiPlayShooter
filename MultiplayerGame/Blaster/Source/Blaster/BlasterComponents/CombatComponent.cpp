@@ -891,6 +891,7 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 	{
 		return;
 	}
+
 	Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
 
 	if (Controller)
@@ -898,6 +899,11 @@ void UCombatComponent::SetHUDCrosshair(float DeltaTime)
 		HUD = HUD == nullptr ? Cast<ABlasterHUD>(Controller->GetHUD()) : HUD;
 		if (HUD)
 		{
+			if (Character->IsADS())
+			{
+				HUD->SetHUDPackage(FHUDPackage());
+				return;
+			}
 			if (EquippedWeapon)
 			{
 				HUDPackage.CrosshairsCenter = EquippedWeapon->CrosshairsCenter;

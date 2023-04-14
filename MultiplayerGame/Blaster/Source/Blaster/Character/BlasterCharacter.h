@@ -173,6 +173,12 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* FollowCamera;
 
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	USpringArmComponent* ADSCameraBoom;
+
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	UCameraComponent* ADSCamera;
+
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* OverheadWidget;
 
@@ -398,4 +404,6 @@ public:
 	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 	FORCEINLINE bool IsHoldingTheFlag() const;
 	ETeam GetTeam();
+	FORCEINLINE bool IsADS() const { return bADS; };
+	
 };

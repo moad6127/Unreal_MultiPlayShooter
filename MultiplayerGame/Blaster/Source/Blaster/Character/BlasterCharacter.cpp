@@ -31,6 +31,8 @@
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/PlayerStart/TeamPlayerStart.h"
 
+#include "Engine/SkeletalMeshSocket.h"
+
 // Sets default values
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -45,6 +47,11 @@ ABlasterCharacter::ABlasterCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+
+	ADSCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ADSCamera"));
+	ADSCamera->SetupAttachment(GetMesh(), FName("RightHandSocket"));
+	ADSCamera->bUsePawnControlRotation = true;
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -534,7 +541,7 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ABlasterCharacter::ReloadButtonPressed);
 	PlayerInputComponent->BindAction("ThrowGrenade", IE_Pressed, this, &ABlasterCharacter::GrenadeButtonPressed);
 
-	//PlayerInputComponent->BindAction("ADS", IE_Pressed, this, &ABlasterCharacter::ADSPressed);
+	PlayerInputComponent->BindAction("ADS", IE_Pressed, this, &ABlasterCharacter::ADSPressed);
 }
 void ABlasterCharacter::PostInitializeComponents()
 {
@@ -840,6 +847,10 @@ void ABlasterCharacter::AimButtonPressed()
 	{
 		return;
 	}
+	if (bADS)
+	{
+		return;
+	}
 	if (Combat)
 	{
 		if (Combat->bHoldingTheFlag)
@@ -856,6 +867,10 @@ void ABlasterCharacter::AimButtonReleased()
 	{
 		return;
 	}
+	if (bADS)
+	{
+		return;
+	}
 	if (Combat)
 	{
 		Combat->SetAiming(false);
@@ -864,6 +879,13 @@ void ABlasterCharacter::AimButtonReleased()
 
 void ABlasterCharacter::ADSPressed()
 {
+	if (Combat && Combat->EquippedWeapon)
+	{
+		if (Combat->EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle)
+		{
+			return;
+		}
+	}
 	bADS = !bADS;
 	ADSSystem();
 }
@@ -1042,6 +1064,10 @@ void ABlasterCharacter::HideCameraIfCharacterCloas()
 	{
 		return;
 	}
+	if (bADS)
+	{
+		return;
+	}
 	if ((FollowCamera->GetComponentLocation() - GetActorLocation()).Size() < CameraThreshold)
 	{
 		GetMesh()->SetVisibility(false);
@@ -1169,17 +1195,31 @@ void ABlasterCharacter::StartDissolve()
 
 void ABlasterCharacter::ADSSystem()
 {
+
 	if (bADS)
 	{
 		if (Combat && Combat->EquippedWeapon)
 		{
-			FollowCamera->AttachToComponent(Combat->EquippedWeapon->GetWeaponMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("ADSSocket"));
+			Combat->SetAiming(true);
+			const USkeletalMeshSocket* ADSSocket = Combat->EquippedWeapon->GetWeaponMesh()->GetSocketByName(FName("ADSSocket"));
+			if (ADSSocket)
+			{
+				FVector SocketLocation = ADSSocket->GetSocketLocation(Combat->EquippedWeapon->GetWeaponMesh());
+				ADSCamera->SetWorldLocation(SocketLocation);
+			}
+			FollowCamera->Deactivate();
+			ADSCamera->Activate();
 		}
 		
 	}
 	else
 	{
-		FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+		if (Combat)
+		{
+			Combat->SetAiming(false);
+		}
+		ADSCamera->Deactivate();
+		FollowCamera->Activate();
 	}
 }
 
