@@ -419,6 +419,11 @@ void ABlasterCharacter::BeginPlay()
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
+	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->HideDeathMessage();
+	}
 
 	if (AttachGrenade)
 	{
@@ -616,6 +621,10 @@ void ABlasterCharacter::GrenadeButtonPressed()
 {
 	if (Combat)
 	{
+		if (Combat->bHoldingTheFlag)
+		{
+			return;
+		}
 		Combat->ThrowGrenade();
 	}
 }
@@ -711,6 +720,10 @@ void ABlasterCharacter::EquipButtonPressed()
 	}
 	if (Combat)
 	{
+		if (Combat->bHoldingTheFlag)
+		{
+			return;
+		}
 		if (Combat->CombatState == ECombatState::ECS_Unoccupied)
 		{
 			ServerEquipButtonPressed();
@@ -747,6 +760,10 @@ void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
 
 void ABlasterCharacter::CrouchButtonPressed()
 {
+	if (Combat && Combat->bHoldingTheFlag)
+	{
+		return;
+	}
 	if (bDisableGameplay)
 	{
 		return;
@@ -770,6 +787,10 @@ void ABlasterCharacter::ReloadButtonPressed()
 	}
 	if (Combat)
 	{
+		if (Combat->bHoldingTheFlag)
+		{
+			return;
+		}
 		Combat->Reload();
 	}
 }
@@ -782,6 +803,10 @@ void ABlasterCharacter::AimButtonPressed()
 	}
 	if (Combat)
 	{
+		if (Combat->bHoldingTheFlag)
+		{
+			return;
+		}
 		Combat->SetAiming(true);
 	}
 }
@@ -900,6 +925,10 @@ void ABlasterCharacter::SimProxiesTurn()
 
 void ABlasterCharacter::Jump()
 {
+	if (Combat && Combat->bHoldingTheFlag)
+	{
+		return;
+	}
 	if (bDisableGameplay)
 	{
 		return;
@@ -922,6 +951,10 @@ void ABlasterCharacter::FireButtonPressed()
 	}
 	if (Combat)
 	{
+		if (Combat->bHoldingTheFlag)
+		{
+			return;
+		}
 		Combat->FireButtonPressed(true);
 	}
 }
@@ -934,6 +967,10 @@ void ABlasterCharacter::FireButtonReleased()
 	}
 	if (Combat)
 	{
+		if (Combat->bHoldingTheFlag)
+		{
+			return;
+		}
 		Combat->FireButtonPressed(false);
 	}
 }
@@ -1065,7 +1102,6 @@ void ABlasterCharacter::PollInit()
 			BlasterPlayerState->AddToDefeats(0);
 			SetTeamColor(BlasterPlayerState->GetTeam());
 			BlasterPlayerState->UpdateDeathMessage(TEXT(""));
-
 			ABlasterGameState* BlasterGameState = Cast<ABlasterGameState>(UGameplayStatics::GetGameState(this));
 			if (BlasterGameState && BlasterGameState->TopScoringPlayer.Contains(BlasterPlayerState))
 			{
