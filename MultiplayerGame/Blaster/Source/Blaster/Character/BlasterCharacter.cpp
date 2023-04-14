@@ -106,7 +106,7 @@ ABlasterCharacter::ABlasterCharacter()
 	lowerarm_l = CreateDefaultSubobject<UBoxComponent>(TEXT("lowerarm_l"));
 	lowerarm_l->SetupAttachment(GetMesh(), FName("lowerarm_l"));
 	HitCollisionBox.Add(FName("lowerarm_l"), lowerarm_l);
-
+	
 	lowerarm_r = CreateDefaultSubobject<UBoxComponent>(TEXT("lowerarm_r"));
 	lowerarm_r->SetupAttachment(GetMesh(), FName("lowerarm_r"));
 	HitCollisionBox.Add(FName("lowerarm_r"), lowerarm_r);
@@ -317,7 +317,10 @@ void ABlasterCharacter::DropOrDestroyWeapons()
 		{
 			DropOrDestroyWeapon(Combat->SecondaryWeapon);
 		}
-
+		if (Combat->TheFlag)
+		{
+			Combat->TheFlag->Dropped();
+		}
 	}
 }
 

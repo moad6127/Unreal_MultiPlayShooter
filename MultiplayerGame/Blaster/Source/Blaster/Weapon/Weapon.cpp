@@ -204,7 +204,6 @@ void AWeapon::OnWeaponStateSet()
 	case EWeaponState::EWS_Dropped:
 		OnDropped();
 		break;
-
 	case EWeaponState::EWS_Initial:
 		break;
 
