@@ -162,6 +162,7 @@ void UCombatComponent::Fire()
 		{
 			CrosshairShootingFactor = 0.25f;
 			EquippedWeapon->SetScatterRadius(ScatterRadius);
+
 			switch (EquippedWeapon->FireType)
 			{
 			case EFireType::EFT_Projectile:
@@ -184,6 +185,7 @@ void UCombatComponent::FireProjectileWeapon()
 {
 	if (EquippedWeapon &&Character)
 	{
+		Character->StartRecoil();
 		HitTarget = EquippedWeapon->bUseScatter ? EquippedWeapon->TraceEndWithScatter(HitTarget) : HitTarget;
 		if (!Character->HasAuthority())
 		{
@@ -197,6 +199,7 @@ void UCombatComponent::FireHitScanWeapon()
 {
 	if (EquippedWeapon && Character)
 	{
+		Character->StartRecoil();
 		HitTarget = EquippedWeapon->bUseScatter ? EquippedWeapon->TraceEndWithScatter(HitTarget) : HitTarget;
 		if (!Character->HasAuthority())
 		{
@@ -212,6 +215,7 @@ void UCombatComponent::FireShotgun()
 	AShotgun* Shotgun = Cast<AShotgun>(EquippedWeapon);
 	if (Shotgun && Character)
 	{
+		Character->StartRecoil();
 		TArray<FVector_NetQuantize> HitTargets;
 		Shotgun->ShotgunTraceEndWithScatter(HitTarget, HitTargets);
 		if (!Character->HasAuthority())

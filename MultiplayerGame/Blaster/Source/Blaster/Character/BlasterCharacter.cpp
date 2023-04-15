@@ -341,6 +341,38 @@ void ABlasterCharacter::OnPlayerStateInitialize()
 	SetSpawnPoint();
 }
 
+void ABlasterCharacter::InitializeRecoilTimeline()
+{
+	if (HorizontalCurve == nullptr || VerticalCurve == nullptr)
+	{
+		return;
+	}
+
+	FOnTimelineFloat XRecoilCurve;
+	FOnTimelineFloat YRecoilCurve;
+
+	XRecoilCurve.BindUFunction(this, FName("StartHorizontalRecoil"));
+	YRecoilCurve.BindUFunction(this, FName("StartVerticalRecoil"));
+
+	RecoilTimeline.AddInterpFloat(HorizontalCurve, XRecoilCurve);
+	RecoilTimeline.AddInterpFloat(VerticalCurve, YRecoilCurve);
+}
+
+void ABlasterCharacter::StartHorizontalRecoil(float Value)
+{
+	AddControllerYawInput(Value);
+}
+
+void ABlasterCharacter::StartVerticalRecoil(float Value)
+{
+	AddControllerPitchInput(Value);
+}
+
+void ABlasterCharacter::StartRecoil()
+{
+	RecoilTimeline.PlayFromStart();
+}
+
 void ABlasterCharacter::SetSpawnPoint()
 {
 	if (HasAuthority() && BlasterPlayerState->GetTeam() != ETeam::ET_NoTeam)
@@ -475,6 +507,8 @@ void ABlasterCharacter::BeginPlay()
 	{
 		AttachGrenade->SetVisibility(false);
 	}
+	InitializeRecoilTimeline();
+
 
 }
 void ABlasterCharacter::Tick(float DeltaTime)
@@ -484,6 +518,11 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	RotateInPlace(DeltaTime);
 	HideCameraIfCharacterCloas();
 	PollInit();
+
+	if (RecoilTimeline.IsPlaying())
+	{
+		RecoilTimeline.TickTimeline(DeltaTime);
+	}
 }
 
 void ABlasterCharacter::RotateInPlace(float DeltaTime)

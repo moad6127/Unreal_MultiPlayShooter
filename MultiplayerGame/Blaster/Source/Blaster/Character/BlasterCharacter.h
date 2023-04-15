@@ -73,6 +73,19 @@ public:
 	void MulticastLostTheLead();
 
 	void SetTeamColor(ETeam Team);
+
+	/**
+	* ReColi
+	*/
+	void InitializeRecoilTimeline();
+
+	UFUNCTION()
+		void StartHorizontalRecoil(float Value);
+
+	UFUNCTION()
+		void StartVerticalRecoil(float Value);
+
+	void StartRecoil();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -99,6 +112,9 @@ protected:
 	void DropOrDestroyWeapons();
 	void SetSpawnPoint();
 	void OnPlayerStateInitialize();
+
+
+
 
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
@@ -373,6 +389,18 @@ private:
 
 	UPROPERTY()
 	class ABlasterGameMode* BlasterGameMode;
+
+
+	/**
+	* Recoil
+	*/
+	FTimeline RecoilTimeline;
+
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* VerticalCurve;
+
+	UPROPERTY(EditAnywhere)
+	UCurveFloat* HorizontalCurve;
 public:	
 
 	void SetOverlappingWeapon(AWeapon* Weapon);
