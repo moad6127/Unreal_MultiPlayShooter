@@ -5,7 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Blaster/Weapon/Flag.h"
 #include "Blaster/GameMode/CaptureTheFlagGameMode.h"
-#include "Blaster/Character/BlasterCharacter.h"
+
 
 AFlagZone::AFlagZone()
 {
@@ -20,6 +20,7 @@ void AFlagZone::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	ZoneSphere->OnComponentBeginOverlap.AddDynamic(this, &AFlagZone::OnSphereOverlap);
 }
 
 void AFlagZone::OnSphereOverlap(UPrimitiveComponent* OVerlappdComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFroSweep, const FHitResult& SweepResult)
@@ -31,11 +32,7 @@ void AFlagZone::OnSphereOverlap(UPrimitiveComponent* OVerlappdComponent, AActor*
 		if (GameMode)
 		{
 			GameMode->FlagCaptured(OverlappingFlag, this);
-			ABlasterCharacter* FlagBearer = Cast<ABlasterCharacter>(OverlappingFlag->GetOwner());
-			if (FlagBearer)
-			{
-				FlagBearer->SetHoldingTheFlag(false);
-			}
+			OverlappingFlag->ResetFlag();
 		}
 	}
 }
