@@ -18,6 +18,7 @@
 #include "Blaster/Character/BlasterAnimInstance.h"
 #include "Blaster/Weapon/Projectile.h"
 #include "Blaster/Weapon/Shotgun.h"
+#include "Blaster/Weapon/Flag.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -39,6 +40,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(UCombatComponent, CombatState);
 	DOREPLIFETIME(UCombatComponent, Grenade);
 	DOREPLIFETIME(UCombatComponent, bHoldingTheFlag);
+	DOREPLIFETIME(UCombatComponent, TheFlag);
 }
 
 void UCombatComponent::ShotgunShellReload()
@@ -341,12 +343,14 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 
 	if (WeaponToEquip->GetWeaponType() == EWeaponType::EWT_Flag)
 	{
+		TheFlag =Cast<AFlag>(WeaponToEquip);
 		Character->Crouch();
 		bHoldingTheFlag = true;
+		TheFlag->ResetFlag();
 		WeaponToEquip->SetWeaponStaete(EWeaponState::EWS_Equipped);
 		AttachFlagToLeftHand(WeaponToEquip);
 		WeaponToEquip->SetOwner(Character);
-		TheFlag = WeaponToEquip;
+		
 	}
 	else
 	{
@@ -787,6 +791,14 @@ void UCombatComponent::UpdateHUDGrenade()
 }
 
 
+
+void UCombatComponent::OnRep_TheFlag()
+{
+	if (TheFlag != nullptr)
+	{
+		TheFlag->ResetFlag();
+	}
+}
 
 bool UCombatComponent::ShouldSwapWeapon()
 {

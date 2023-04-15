@@ -248,8 +248,11 @@ private:
 	UFUNCTION()
 	void OnRep_HoldingTheFlag();
 
-	UPROPERTY()
-	AWeapon* TheFlag;
+	UPROPERTY(ReplicatedUsing = OnRep_TheFlag)
+	class AFlag* TheFlag = nullptr;
+
+	UFUNCTION()
+	void OnRep_TheFlag();
 public:	
 	FORCEINLINE int32 GetGrenade()const { return Grenade; }
 	bool ShouldSwapWeapon();

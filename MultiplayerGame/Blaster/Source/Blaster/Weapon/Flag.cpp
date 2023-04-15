@@ -9,6 +9,9 @@
 
 AFlag::AFlag()
 {
+	bReplicates = true;
+	SetReplicateMovement(true);
+
 	FlagMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FlagMesh"));
 	SetRootComponent(FlagMesh);
 	GetAreaSphere()->SetupAttachment(FlagMesh);
@@ -16,6 +19,7 @@ AFlag::AFlag()
 
 	FlagMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	FlagMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 
 }
 
@@ -32,15 +36,31 @@ void AFlag::Dropped()
 
 void AFlag::ResetFlag()
 {
-	FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);
 
-	FlagMesh->DetachFromComponent(DetachRules);
+	FlagMesh->SetSimulatePhysics(false);
+	FlagMesh->SetEnableGravity(false);
+	FlagMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	FlagMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	ABlasterCharacter* FlagBearer = Cast<ABlasterCharacter>(GetOwner());
 	if (FlagBearer)
 	{
 		FlagBearer->SetHoldingTheFlag(false);
+		FlagBearer->SetOverlappingWeapon(nullptr);
+		FlagBearer->UnCrouch();
 	}
+
+
+	if (!HasAuthority())
+	{
+		return;
+	}
+	FDetachmentTransformRules DetachRules(EDetachmentRule::KeepWorld, true);
+	FlagMesh->DetachFromComponent(DetachRules);
+
+	SetWeaponStaete(EWeaponState::EWS_Initial);
+	GetAreaSphere()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetAreaSphere()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 	SetOwner(nullptr);
 	BlasterOwnerCharacter = nullptr;
