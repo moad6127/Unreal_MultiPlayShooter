@@ -405,5 +405,5 @@ public:
 	FORCEINLINE bool IsHoldingTheFlag() const;
 	ETeam GetTeam();
 	FORCEINLINE bool IsADS() const { return bADS; };
-	
+	void SetHoldingTheFlag(bool bHolding);
 };

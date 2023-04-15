@@ -56,3 +56,9 @@ void AFlag::OnDropped()
 	FlagMesh->MarkRenderStateDirty();
 	EnableCumstomDepth(true);
 }
+
+void AFlag::BeginPlay()
+{
+	Super::BeginPlay();
+	InitialTransform = GetActorTransform();
+}
