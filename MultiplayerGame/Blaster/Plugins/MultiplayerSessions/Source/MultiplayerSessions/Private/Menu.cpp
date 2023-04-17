@@ -117,6 +117,7 @@ void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResul
 	{
 		FString SettingValue;
 		Result.Session.SessionSettings.Get(FName("MatchType"), SettingValue);
+		
 		if (SettingValue == MatchType)
 		{
 			MultiplayerSessionSubsystem->JoinSession(Result);
