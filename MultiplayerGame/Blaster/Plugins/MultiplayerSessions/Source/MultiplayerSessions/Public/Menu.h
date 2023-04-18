@@ -41,11 +41,33 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinButton;
 
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* SubMenuSystem;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* HostMenuHostButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* CancelButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* HostMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget* InitMenu;
+
+
 	UFUNCTION()
 	void HostButtonClicked();
 
 	UFUNCTION()
 	void JoinButtonClicked();
+
+	UFUNCTION()
+	void HostMenuHostButtonClicked();
+
+	UFUNCTION()
+	void CancelButtonClicked();
 
 	void MenuTearDown();
 	//The Subsystem disinged to handle all online session functoinality

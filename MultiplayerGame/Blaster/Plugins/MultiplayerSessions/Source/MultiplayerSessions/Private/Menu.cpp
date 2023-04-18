@@ -6,6 +6,7 @@
 #include "MultiplayerSessionSubsystem.h"
 #include "OnlineSessionSettings.h"
 #include "OnlineSubsystem.h"
+#include "Components/WidgetSwitcher.h"
 
 void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch, FString LobbyPath)
 {
@@ -59,6 +60,14 @@ bool UMenu::Initialize()
 	if (JoinButton)
 	{
 		JoinButton->OnClicked.AddDynamic(this, &ThisClass::JoinButtonClicked);
+	}
+	if (HostMenuHostButton)
+	{
+		HostMenuHostButton->OnClicked.AddDynamic(this, &ThisClass::HostMenuHostButtonClicked);
+	}
+	if (CancelButton)
+	{
+		CancelButton->OnClicked.AddDynamic(this, &ThisClass::CancelButtonClicked);
 	}
 
 	return true;
@@ -164,11 +173,15 @@ void UMenu::OnStartSession(bool bWasSuccessful)
 
 void UMenu::HostButtonClicked()
 {
-	HostButton->SetIsEnabled(false);
-	if (MultiplayerSessionSubsystem)
+	if (SubMenuSystem == nullptr)
 	{
-		MultiplayerSessionSubsystem->CreateSession(NumPublicConnections, MatchType);
+		return;
 	}
+	if (HostMenu == nullptr)
+	{
+		return;
+	}
+	SubMenuSystem->SetActiveWidget(HostMenu);
 }
 
 void UMenu::JoinButtonClicked()
@@ -178,6 +191,28 @@ void UMenu::JoinButtonClicked()
 	{
 		MultiplayerSessionSubsystem->FindSession(10000);
 	}
+}
+
+void UMenu::HostMenuHostButtonClicked()
+{
+	HostMenuHostButton->SetIsEnabled(false);
+	if (MultiplayerSessionSubsystem)
+	{
+		MultiplayerSessionSubsystem->CreateSession(NumPublicConnections, MatchType);
+	}
+}
+
+void UMenu::CancelButtonClicked()
+{
+	if (SubMenuSystem == nullptr)
+	{
+		return;
+	}
+	if (InitMenu == nullptr)
+	{
+		return;
+	}
+	SubMenuSystem->SetActiveWidget(InitMenu);
 }
 
 void UMenu::MenuTearDown()
