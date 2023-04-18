@@ -35,6 +35,9 @@ protected:
 	void OnStartSession(bool bWasSuccessful);
 private:
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> ServerRowClass;
+
 	UPROPERTY(meta = (BindWidget))
 	class UButton* HostButton;
 	 
@@ -65,6 +68,8 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UWidget* JoinMenu;
 
+	UPROPERTY(meta = (BindWidget))
+	class UPanelWidget* ServerList;
 
 	UFUNCTION()
 	void HostButtonClicked();

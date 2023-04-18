@@ -7,6 +7,7 @@
 #include "OnlineSessionSettings.h"
 #include "OnlineSubsystem.h"
 #include "Components/WidgetSwitcher.h"
+#include "ServerRow.h"
 
 void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch, FString LobbyPath)
 {
@@ -230,11 +231,21 @@ void UMenu::CancelButtonClicked()
 
 void UMenu::JoinMenuJoinButtonClicked()
 {
-	JoinMenuJoinButton->SetIsEnabled(false);
-	if (MultiplayerSessionSubsystem)
+	//JoinMenuJoinButton->SetIsEnabled(false);
+	//if (MultiplayerSessionSubsystem)
+	//{
+	//	MultiplayerSessionSubsystem->FindSession(10000);
+	//}
+
+
+	UWorld* World = this->GetWorld();
+	if (World)
 	{
-		MultiplayerSessionSubsystem->FindSession(10000);
+		UServerRow* Row = CreateWidget<UServerRow>(World, ServerRowClass);
+		ServerList->AddChild(Row);
 	}
+
+
 }
 
 void UMenu::MenuTearDown()
