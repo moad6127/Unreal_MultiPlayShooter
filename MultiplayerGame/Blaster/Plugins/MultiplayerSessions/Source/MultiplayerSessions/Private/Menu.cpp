@@ -69,6 +69,14 @@ bool UMenu::Initialize()
 	{
 		CancelButton->OnClicked.AddDynamic(this, &ThisClass::CancelButtonClicked);
 	}
+	if (JoinMenuCancelButton)
+	{
+		JoinMenuCancelButton->OnClicked.AddDynamic(this, &ThisClass::CancelButtonClicked);
+	}
+	if (JoinMenuJoinButton)
+	{
+		JoinMenuJoinButton->OnClicked.AddDynamic(this, &ThisClass::JoinMenuJoinButtonClicked);
+	}
 
 	return true;
 }
@@ -135,7 +143,7 @@ void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResul
 	}
 	if (!bWasSuccessful || SessionResults.Num() == 0)
 	{
-		JoinButton->SetIsEnabled(true);
+		JoinMenuJoinButton->SetIsEnabled(true);
 	}
 }
 
@@ -159,7 +167,7 @@ void UMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 	}
 	if (Result != EOnJoinSessionCompleteResult::Success)
 	{
-		JoinButton->SetIsEnabled(true);
+		JoinMenuJoinButton->SetIsEnabled(true);
 	}
 }
 
@@ -186,11 +194,15 @@ void UMenu::HostButtonClicked()
 
 void UMenu::JoinButtonClicked()
 {
-	JoinButton->SetIsEnabled(false);
-	if (MultiplayerSessionSubsystem)
+	if (SubMenuSystem == nullptr)
 	{
-		MultiplayerSessionSubsystem->FindSession(10000);
+		return;
 	}
+	if (JoinMenu == nullptr)
+	{
+		return;
+	}
+	SubMenuSystem->SetActiveWidget(JoinMenu);
 }
 
 void UMenu::HostMenuHostButtonClicked()
@@ -213,6 +225,16 @@ void UMenu::CancelButtonClicked()
 		return;
 	}
 	SubMenuSystem->SetActiveWidget(InitMenu);
+}
+
+
+void UMenu::JoinMenuJoinButtonClicked()
+{
+	JoinMenuJoinButton->SetIsEnabled(false);
+	if (MultiplayerSessionSubsystem)
+	{
+		MultiplayerSessionSubsystem->FindSession(10000);
+	}
 }
 
 void UMenu::MenuTearDown()
