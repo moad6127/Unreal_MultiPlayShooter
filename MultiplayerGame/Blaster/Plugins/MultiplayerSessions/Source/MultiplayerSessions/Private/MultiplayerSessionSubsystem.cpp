@@ -4,6 +4,7 @@
 #include "MultiplayerSessionSubsystem.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
+#include "Menu.h"
 
 UMultiplayerSessionSubsystem::UMultiplayerSessionSubsystem() :
 	CreateSessionCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateSesionComplete)),
@@ -75,7 +76,6 @@ void UMultiplayerSessionSubsystem::FindSession(int32 MaxSearchResults)
 	LastSessionSearch->MaxSearchResults = MaxSearchResults;
 	LastSessionSearch->bIsLanQuery = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
 	LastSessionSearch->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
-	
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if (!SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), LastSessionSearch.ToSharedRef()))
@@ -85,6 +85,11 @@ void UMultiplayerSessionSubsystem::FindSession(int32 MaxSearchResults)
 		MultiplayerOnFindSessionComplete.Broadcast(TArray<FOnlineSessionSearchResult>(), false);
 	}
 
+
+}
+
+void UMultiplayerSessionSubsystem::FindSession(const FString& Address)
+{
 
 }
 

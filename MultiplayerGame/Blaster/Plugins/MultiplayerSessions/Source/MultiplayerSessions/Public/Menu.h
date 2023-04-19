@@ -18,6 +18,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void MenuSetup(int32 NumberOfPublicConnections = 4 , FString TypeOfMatch = FString(TEXT("FreeForAll")),FString LobbyPath = FString(TEXT("/Game/ThirdPerson/Maps/Lobby")));
 
+	void SetServerList(FOnlineSessionSearchResult ServerNames);
+
+	UPROPERTY(meta = (BindWidget))
+	class UPanelWidget* ServerList;
 protected:
 	virtual bool Initialize() override;
 	virtual void NativeDestruct() override;
@@ -68,8 +72,7 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UWidget* JoinMenu;
 
-	UPROPERTY(meta = (BindWidget))
-	class UPanelWidget* ServerList;
+
 
 	UFUNCTION()
 	void HostButtonClicked();
@@ -100,4 +103,6 @@ private:
 
 
 	FString PathToLobby{ TEXT("") };
+
+
 };

@@ -8,6 +8,7 @@
 #include "OnlineSubsystem.h"
 #include "Components/WidgetSwitcher.h"
 #include "ServerRow.h"
+#include "Components/TextBlock.h"
 
 void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch, FString LobbyPath)
 {
@@ -47,6 +48,8 @@ void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch, FStr
 		MultiplayerSessionSubsystem->MultiplayerOnStartySessionComplete.AddDynamic(this, &ThisClass::OnStartSession);
 	}
 }
+
+
 
 bool UMenu::Initialize()
 {
@@ -135,7 +138,7 @@ void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResul
 	{
 		FString SettingValue;
 		Result.Session.SessionSettings.Get(FName("MatchType"), SettingValue);
-		
+		SetServerList(Result);
 		if (SettingValue == MatchType)
 		{
 			MultiplayerSessionSubsystem->JoinSession(Result);
@@ -231,23 +234,31 @@ void UMenu::CancelButtonClicked()
 
 void UMenu::JoinMenuJoinButtonClicked()
 {
-	//JoinMenuJoinButton->SetIsEnabled(false);
-	//if (MultiplayerSessionSubsystem)
-	//{
-	//	MultiplayerSessionSubsystem->FindSession(10000);
-	//}
-
-
-	UWorld* World = this->GetWorld();
-	if (World)
+	JoinMenuJoinButton->SetIsEnabled(false);
+	if (MultiplayerSessionSubsystem)
 	{
-		UServerRow* Row = CreateWidget<UServerRow>(World, ServerRowClass);
-		ServerList->AddChild(Row);
+		MultiplayerSessionSubsystem->FindSession(10000);
 	}
-
-
 }
 
+void UMenu::SetServerList(FOnlineSessionSearchResult ServerNames)
+{
+	UWorld* World = this->GetWorld();
+	if (World == nullptr)
+	{
+		return;
+	}
+
+	UServerRow* Row = CreateWidget<UServerRow>(World, ServerRowClass);
+	if (Row == nullptr)
+	{
+		return;
+	}
+
+	Row->ServerName->SetText(FText::FromString(ServerNames.Session.OwningUserName));
+	ServerList->AddChild(Row);
+
+}
 void UMenu::MenuTearDown()
 {
 	RemoveFromParent();
