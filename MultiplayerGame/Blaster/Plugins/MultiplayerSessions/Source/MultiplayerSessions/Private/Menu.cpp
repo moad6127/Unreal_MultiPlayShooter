@@ -145,6 +145,8 @@ void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResul
 			return;
 		}
 	}
+	//TODO
+	//서버 리스트에서 들어가고싶은 서버 선택한후 접속하기
 	if (!bWasSuccessful || SessionResults.Num() == 0)
 	{
 		JoinMenuJoinButton->SetIsEnabled(true);
