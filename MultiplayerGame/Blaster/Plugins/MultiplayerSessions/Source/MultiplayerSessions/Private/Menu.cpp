@@ -254,7 +254,7 @@ void UMenu::SetServerList(FOnlineSessionSearchResult ServerNames, uint32 Index)
 	{
 		return;
 	}
-	
+	ServerList->ClearChildren();
 	
 	UServerRow* Row = CreateWidget<UServerRow>(World, ServerRowClass);
 	if (Row == nullptr)
