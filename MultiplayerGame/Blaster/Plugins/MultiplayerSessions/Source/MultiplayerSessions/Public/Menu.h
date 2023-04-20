@@ -18,7 +18,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void MenuSetup(int32 NumberOfPublicConnections = 4 , FString TypeOfMatch = FString(TEXT("FreeForAll")),FString LobbyPath = FString(TEXT("/Game/ThirdPerson/Maps/Lobby")));
 
-	void SetServerList(FOnlineSessionSearchResult ServerNames);
+	void SetServerList(FOnlineSessionSearchResult ServerNames,uint32 Index);
+
+	void SelectIndex(uint32 Index);
 
 	UPROPERTY(meta = (BindWidget))
 	class UPanelWidget* ServerList;
@@ -73,6 +75,7 @@ private:
 	UWidget* JoinMenu;
 
 
+	TOptional<uint32> SelectedIndex;
 
 	UFUNCTION()
 	void HostButtonClicked();

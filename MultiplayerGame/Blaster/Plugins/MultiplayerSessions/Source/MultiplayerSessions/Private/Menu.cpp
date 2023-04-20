@@ -134,19 +134,19 @@ void UMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResul
 		return;
 	}
 
-	for (auto Result : SessionResults)
+	if (SelectedIndex.IsSet())
 	{
-		FString SettingValue;
-		Result.Session.SessionSettings.Get(FName("MatchType"), SettingValue);
-		SetServerList(Result);
-		if (SettingValue == MatchType)
+		MultiplayerSessionSubsystem->JoinSession(SessionResults[SelectedIndex.GetValue()]);
+	}
+	else
+	{
+		uint32 i = 0;
+		for (auto Result : SessionResults)
 		{
-			MultiplayerSessionSubsystem->JoinSession(Result);
-			return;
+			SetServerList(Result, i++);
 		}
 	}
-	//TODO
-	//서버 리스트에서 들어가고싶은 서버 선택한후 접속하기
+
 	if (!bWasSuccessful || SessionResults.Num() == 0)
 	{
 		JoinMenuJoinButton->SetIsEnabled(true);
@@ -209,6 +209,10 @@ void UMenu::JoinButtonClicked()
 		return;
 	}
 	SubMenuSystem->SetActiveWidget(JoinMenu);
+	if (MultiplayerSessionSubsystem)
+	{
+		MultiplayerSessionSubsystem->FindSession(10000);
+	}
 }
 
 void UMenu::HostMenuHostButtonClicked()
@@ -243,23 +247,33 @@ void UMenu::JoinMenuJoinButtonClicked()
 	}
 }
 
-void UMenu::SetServerList(FOnlineSessionSearchResult ServerNames)
+void UMenu::SetServerList(FOnlineSessionSearchResult ServerNames, uint32 Index)
 {
 	UWorld* World = this->GetWorld();
 	if (World == nullptr)
 	{
 		return;
 	}
-
+	
+	
 	UServerRow* Row = CreateWidget<UServerRow>(World, ServerRowClass);
 	if (Row == nullptr)
 	{
 		return;
 	}
+	FString SettingValue;
+	ServerNames.Session.SessionSettings.Get(FName("MatchType"), SettingValue);
 
 	Row->ServerName->SetText(FText::FromString(ServerNames.Session.OwningUserName));
+	Row->MatchType->SetText(FText::FromString(SettingValue));
+
+	Row->Setup(this, Index);
 	ServerList->AddChild(Row);
 
+}
+void UMenu::SelectIndex(uint32 Index)
+{
+	SelectedIndex = Index;
 }
 void UMenu::MenuTearDown()
 {
