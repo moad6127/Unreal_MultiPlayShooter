@@ -77,6 +77,8 @@ private:
 
 	TOptional<uint32> SelectedIndex;
 
+	void UpdateServerListChildren();
+
 	UFUNCTION()
 	void HostButtonClicked();
 

@@ -22,6 +22,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* MatchType;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool Selected = false;
+
 	void Setup(class UMenu* InParent, uint32 InIndex);
 
 private:

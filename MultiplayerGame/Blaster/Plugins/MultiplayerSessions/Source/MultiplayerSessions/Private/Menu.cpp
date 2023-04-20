@@ -185,6 +185,8 @@ void UMenu::OnStartSession(bool bWasSuccessful)
 {
 }
 
+
+
 void UMenu::HostButtonClicked()
 {
 	if (SubMenuSystem == nullptr)
@@ -274,7 +276,21 @@ void UMenu::SetServerList(FOnlineSessionSearchResult ServerNames, uint32 Index)
 void UMenu::SelectIndex(uint32 Index)
 {
 	SelectedIndex = Index;
+	UpdateServerListChildren();
 }
+
+void UMenu::UpdateServerListChildren()
+{
+	for (int32 i = 0; i < ServerList->GetChildrenCount(); i++)
+	{
+		UServerRow* Row = Cast<UServerRow>(ServerList->GetChildAt(i));
+		if (Row != nullptr)
+		{
+			Row->Selected = ((SelectedIndex.IsSet()) && (SelectedIndex.GetValue() == i));
+		}
+	}
+}
+
 void UMenu::MenuTearDown()
 {
 	RemoveFromParent();
