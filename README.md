@@ -6,6 +6,10 @@
 <details><summary>구분</summary>
 <p>
 -멀티플레이 플러그인
+	
+	- Menu
+	- ServerRow
+	- MultiplayerSessionSubsystem
 
 -캐릭터
 
@@ -61,10 +65,10 @@
 	-탄약 픽업
 		-탄약 종류별로 픽업
 
-
-
-
-
-
 </p>
 </details>
+
+## 멀티플레이 플러그인
+멀티플레이 플러그인 주소
+
+- [플러그인](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Plugins/MultiplayerSessions).
