@@ -33,6 +33,7 @@ protected:
 	//
 	UFUNCTION()
 	void OnCreateSessoin(bool bWasSuccessful);
+
 	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResults, bool bWasSuccessful);
 	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
 	UFUNCTION()
@@ -44,6 +45,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> ServerRowClass;
 
+	/**
+	* BindWidget(Button, Switcher...)
+	*/
 	UPROPERTY(meta = (BindWidget))
 	class UButton* HostButton;
 	 
@@ -95,8 +99,8 @@ private:
 	void JoinMenuJoinButtonClicked();
 
 
-
 	void MenuTearDown();
+
 	//The Subsystem disinged to handle all online session functoinality
 	class UMultiplayerSessionSubsystem* MultiplayerSessionSubsystem;
 
