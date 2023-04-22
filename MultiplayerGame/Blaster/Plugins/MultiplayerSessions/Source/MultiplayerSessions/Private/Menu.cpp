@@ -237,6 +237,7 @@ void UMenu::CancelButtonClicked()
 		return;
 	}
 	SubMenuSystem->SetActiveWidget(InitMenu);
+	SelectedIndex.Reset();
 }
 
 
