@@ -40,7 +40,7 @@ public:
 	void StartSession();
 
 	//
-	// Our onw custom delegate for the Menu class to bind callback to
+	// Our own custom delegate for the Menu class to bind callback to
 	//
 	FMultiplayerOnCreateSessionComplete MultiplayerOnCreateSessionComplete;
 	FMultiplayerOnFindSessionComplete MultiplayerOnFindSessionComplete;
