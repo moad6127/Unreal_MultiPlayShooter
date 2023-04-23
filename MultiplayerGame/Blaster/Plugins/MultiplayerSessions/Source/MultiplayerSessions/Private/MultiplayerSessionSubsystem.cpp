@@ -4,7 +4,6 @@
 #include "MultiplayerSessionSubsystem.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
-#include "Menu.h"
 
 UMultiplayerSessionSubsystem::UMultiplayerSessionSubsystem() :
 	CreateSessionCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateSesionComplete)),
@@ -30,7 +29,6 @@ void UMultiplayerSessionSubsystem::CreateSession(int32 NumPublicConnections, FSt
 	{
 		return;
 	}
-
 	auto ExistingSession = SessionInterface->GetNamedSession(NAME_GameSession);
 	if (ExistingSession != nullptr)
 	{
