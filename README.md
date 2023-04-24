@@ -287,7 +287,7 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 프로젝트의 캐릭터와 그와 관련된 클래스들을 사용해서 캐릭터를 구성하게 만들었다.
 캐릭터의 기본적인 클래스와 애니메이션과 관련된 애님 인스턴스, 캐릭터의 여러가지 기능을 담당할 컴포넌트들과 HUD에 보여주거나 게임모드에서 사용될 정보들이 저장된 PlayerState와 Controller등으로 캐릭터를 구성하게 된다.
 
-## 캐릭터 클래스와 애님인스턴스
+## 캐릭터 클래스
 
 [캐릭터 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Character)
 
@@ -333,4 +333,42 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 </details>
 
 ----------------------------------------------------------------
+
+## 애님 인스턴스
+
+캐릭터의 애니메이션과 관련된 클래스로 엔진의 애니메이션블루프린트을 통해서 캐릭터의 애니메이션을 담당한다 애님인스턴스 클래스에는 블루프린트에 필요한 변수들과 변수들을 설정하는 함수로 이루어져 있으며 필요하다면 C++코드로 AninNotify함수를 만들어서 사용할수 있다.
+
+![AnimInstance_AnimGraph](https://user-images.githubusercontent.com/101626318/233910680-72c7772f-b668-44e4-a2e1-a65f0b24b258.PNG)
+>애님 인스턴스 블루프린트의 AnimGraph구조도
+
+<details><summary>Equip상태 State구조</summary>
+<p>
+	
+![AnimInstance_EquipState](https://user-images.githubusercontent.com/101626318/233912732-ced4d565-83ef-43bf-8ed1-db0bcf9db5a2.PNG)
+>Equip 상태에서의 State구조도
+
+</p>
+</details>
+
+
+<details><summary>애님 인스턴스 변수들</summary>
+<p>
+	
+![AnimInstance_V](https://user-images.githubusercontent.com/101626318/233912619-3f7a8c34-7c4d-4b1c-bc2e-9cf17a1635fb.PNG)
+>애님 인스턴스에서 사용되는 변수들 일부분
+
+	
+</p>
+</details>
+
+<details><summary>애님 인스턴스 기본함수</summary>
+<p>
+	
+![AnimInstance_Func](https://user-images.githubusercontent.com/101626318/233912870-d0341a54-08f0-4dd1-9eee-cf8593f7fc7e.PNG)
+>애님 인스턴스의 변수들은 캐릭터 클래스의 Getter함수로 얻어와서 변수를 설정하게 된다.
+
+</p>
+</details>
+
+
 
