@@ -1,4 +1,4 @@
-# Unreal_MultiPlayShooter
+# *Unreal_MultiPlayShooter*
 
 이 프로젝트는 언리얼 엔진을 사용해서 멀티플레이 3인칭 슈팅게임을 만들었습니다 
 또한 유데미 강좌중 하나인 Unreal Engine 5 C++ Multiplayer Shooter 코스를 기반으로 만들었으며 여기에 몇가지를 추가해서 만들었습니다.
@@ -13,6 +13,7 @@
 
 -캐릭터
 
+	- 애님인스턴스
  	- 캐릭터 컴포넌트
 		-CombatComponent
 			-전투및 움직임 관련 컴포넌트
@@ -69,16 +70,8 @@
 </details>
 
 
-<details><summary>사용자의 메인화면</summary>
-<p>
 
-	
-	
-</p>
-</details>
-
-
-## 멀티플레이 플러그인
+# *멀티플레이 플러그인*
 
 SteamSocket과 언리얼엔진의 OnlineSubSystem 활용한 멀티플레이 플러그인
 
@@ -118,7 +111,7 @@ SteamSocket과 언리얼엔진의 OnlineSubSystem 활용한 멀티플레이 플�
 
 ----------------------------------------------------------------------------------------------------
 
-### MainMenu 
+## MainMenu 
 
 - [헤더파일 주소](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/Menu.h)
 
@@ -202,7 +195,7 @@ MainMenu클래스는 화면에 보여주게 되는 위젯들과 멀티플레이 
 
 ---------------------------------------------------------------
 
-### MultiplayerSessionSubsystem
+## MultiplayerSessionSubsystem
 
 - [헤더파일 주소](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/MultiplayerSessionSubsystem.h)
 
@@ -245,7 +238,7 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 	
 ![SubSystemCreateFunc](https://user-images.githubusercontent.com/101626318/233839228-96aca037-3aba-4897-8c5e-d845a47b0e0e.PNG)
 
->Menu클래스에서 세션을 생성할때 호출하는 함수로 참가인원과 매치타입을 변수로 입력받으며 세션세팅을 마치고 성공적으로 함수가 끝나면 Menu클래스로 결과를 콜백시키는 기능을 한다.
+>Menu클래스에서 세션을 생성할때 호출하는 함수로 참가인원과 매치타입을 변수로 입력받으며 세션세팅을 마치고 성공적으로 함수가 끝나면 내부함수로 이동하고 내부함수에서 Menu클래스로 콜백한다.
 >이미 세션이 있을경우 기존 세션을 없애고 만드는 기능도 포함되어 있다.
 
 		
@@ -258,7 +251,7 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 	
 ![SubSystemFindFunc](https://user-images.githubusercontent.com/101626318/233839327-b2a7f95f-b913-461a-bba8-67a78cffe258.PNG)
 
->Menu클래스에서 세션들을 찾을때 사용되는 함수로 최대로 찾을 세션의 수를 입력받으며 성공적으로 할경우 써치 결과들을 Menu클래스로 보내게 된다.
+>Menu클래스에서 세션들을 찾을때 사용되는 함수로 최대로 찾을 세션의 수를 입력받으며 성공적으로 할경우 써치 결과를 내부함수로 보내고 Menu클래스로 콜백하게 된다.
 
 		
 </p>
@@ -287,4 +280,57 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 </p>
 </details>
 
+-------------------------------------------------------------------------------------------
+
+# *캐릭터*
+
+프로젝트의 캐릭터와 그와 관련된 클래스들을 사용해서 캐릭터를 구성하게 만들었다.
+캐릭터의 기본적인 클래스와 애니메이션과 관련된 애님 인스턴스, 캐릭터의 여러가지 기능을 담당할 컴포넌트들과 HUD에 보여주거나 게임모드에서 사용될 정보들이 저장된 PlayerState와 Controller등으로 캐릭터를 구성하게 된다.
+
+## 캐릭터 클래스와 애님인스턴스
+
+[캐릭터 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Character)
+
+
+캐릭터 클래스에는 캐릭터의 기능들을 위한 변수들과 함수들로 이루어져 있다.
+기본적인 움직임을 위함 함수들과 TPS에 필요한 조준및 발사기능들, ServerSideRewind를 위한 HitBox등으로 이루어져 있으며 프로젝트의 여러 클래스와 연결되어 있다.
+또한 멀티플레이를 위한 RPC들과 복제 함수들이 포함되어 서버클라이언트 멀티플레이에서 사용할수 있다.
+
+
+<details><summary>캐릭터 클래스의 기본적인 함수들</summary>
+<p>
+	
+![Character_BaseFunc](https://user-images.githubusercontent.com/101626318/233901044-c4e42ca6-a534-4c50-8137-88bae692fe94.PNG)
+![Character_KeyBind](https://user-images.githubusercontent.com/101626318/233901214-89e2cd54-0408-4c82-8eba-6c6c13b8725f.PNG)
+
+
+>캐릭터 클래스에서 기본적으로 사용되는 함수들, 각각 엔진에서 매핑된 함수들과 움직임 관련함수들, 발사키나 리로드같은 함수들이 있다.
+
+	
+</p>
+</details>
+
+<details><summary>움직임 관련 함수들</summary>
+<p>
+	
+
+![Character_MovementFunc](https://user-images.githubusercontent.com/101626318/233901243-647b617f-404d-4a50-ae36-8e1371479a13.PNG)
+
+>캐릭터의 기본적임 움직임을 담당하는 함수들
+	
+</p>
+</details>
+
+<details><summary>엔진에서 매핑된것들</summary>
+<p>
+	
+
+![EngineInput](https://user-images.githubusercontent.com/101626318/233901269-840c6adc-c38a-49e4-aec5-fcd4e47daa37.PNG)
+
+>엔진에서 설정된 매핑기능들
+	
+</p>
+</details>
+
+----------------------------------------------------------------
 
