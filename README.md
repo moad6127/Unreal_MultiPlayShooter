@@ -287,9 +287,12 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 프로젝트의 캐릭터와 그와 관련된 클래스들을 사용해서 캐릭터를 구성하게 만들었다.
 캐릭터의 기본적인 클래스와 애니메이션과 관련된 애님 인스턴스, 캐릭터의 여러가지 기능을 담당할 컴포넌트들과 HUD에 보여주거나 게임모드에서 사용될 정보들이 저장된 PlayerState와 Controller등으로 캐릭터를 구성하게 된다.
 
+[캐릭터 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Character)
+
 ## 캐릭터 클래스
 
-[캐릭터 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Character)
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterCharacter.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterCharacter.cpp)
 
 
 캐릭터 클래스에는 캐릭터의 기능들을 위한 변수들과 함수들로 이루어져 있다.
@@ -336,7 +339,14 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 
 ## 애님 인스턴스
 
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterAnimInstance.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterAnimInstance.cpp)
+
+
+
 캐릭터의 애니메이션과 관련된 클래스로 엔진의 애니메이션블루프린트을 통해서 캐릭터의 애니메이션을 담당한다 애님인스턴스 클래스에는 블루프린트에 필요한 변수들과 변수들을 설정하는 함수로 이루어져 있으며 필요하다면 C++코드로 AninNotify함수를 만들어서 사용할수 있다.
+
+
 
 ![AnimInstance_AnimGraph](https://user-images.githubusercontent.com/101626318/233910680-72c7772f-b668-44e4-a2e1-a65f0b24b258.PNG)
 >애님 인스턴스 블루프린트의 AnimGraph구조도
@@ -369,6 +379,20 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 
 </p>
 </details>
+
+----------------------------------------------------------------------------------
+
+## *캐릭터 액터 컴포넌트*
+
+캐릭터 클래스에 friend형식으로 붙여서 사용되는 컴포넌트로 각각의 컴포넌트들은 각각의 기능들을 담당하고 있으며, 캐릭터 클래스에서는 컴포넌트 클래스들의 함수를 호출해서 기능을 할수있게 만들었다.
+
+현재 컴포넌트는 3가지로 전투밎 총기 관련 컴포넌트인 Combat컴포넌트와 캐릭터의 버프를 담당하는 Buff컴포넌트, ServerSideRewind와 랙보상을 담당하는 Lag컴포넌트가 있다.
+
+
+[컴포넌트 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents)
+
+## Combat컴포넌트
+
 
 
 
