@@ -344,7 +344,8 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	{
 		return;
 	}
-
+	
+	//Flag Game 
 	if (WeaponToEquip->GetWeaponType() == EWeaponType::EWT_Flag)
 	{
 		TheFlag =Cast<AFlag>(WeaponToEquip);
@@ -545,6 +546,15 @@ void UCombatComponent::Reload()
 	}
 }
 
+void UCombatComponent::HandleReload()
+{
+	if (Character)
+	{
+		Character->PlayReloadMontage();
+	}
+
+}
+
 void UCombatComponent::ServerReload_Implementation()
 {
 	if (Character == nullptr || EquippedWeapon == nullptr)
@@ -711,14 +721,7 @@ void UCombatComponent::OnRep_CombatState()
 }
 
 
-void UCombatComponent::HandleReload()
-{
-	if (Character)
-	{
-		Character->PlayReloadMontage();
-	}
-	
-}
+
 
 int32 UCombatComponent::AmountToReload()
 {
