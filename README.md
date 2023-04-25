@@ -394,5 +394,54 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 ## Combat컴포넌트
 
 
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/CombatComponent.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/CombatComponent.cpp)
+
+캐릭터의 전투부분을 담당하는 컴포넌트로 대표적으로 발사기능과 재장전기능이 있으며 무기장착과 수류탄 발사, 조준선등의 기능들도 포함되어 있다.
+
+
+
+
+<details><summary>발사 함수 기능</summary>
+<p>
+
+![CharacterFireButtonPressed](https://user-images.githubusercontent.com/101626318/234179152-6a04d864-323d-448d-854e-b45c00bfabbb.PNG)
+
+![CombatFireButtonPressed](https://user-images.githubusercontent.com/101626318/234179194-61a4bc7a-b5d6-4863-80ad-983163fc4624.PNG)
+
+![CombatFire](https://user-images.githubusercontent.com/101626318/234179206-093b9a86-5871-4e2e-8daf-9fc11fcead0a.PNG)
+
+>Combat의 대표적인 함수인 발사 함수의 기능이다.
+>우선 플레이어가 발사를 위한 키를 누르게 되면 캐릭터 클래스에서 매핑된 함수를 호출하게 되고 매핑된 함수에서 Combat의 함수를 호출, Combat의 Fire함수를 호출하게된다.
+>이때 총의 종류에 호출되는 함수를 다르게 설정한다
+>이후 Weapon클래스에서 발사를 완료한다.
+
+</p>
+</details>
+
+<details><summary>재장전 기능</summary>
+<p>
+
+![CombatReload](https://user-images.githubusercontent.com/101626318/234180696-96b94da4-fcb8-4cbc-ab84-517344a358f7.PNG)
+
+![CharacterReload](https://user-images.githubusercontent.com/101626318/234180748-a38e0123-2b77-44a1-acf3-205f2e757ab2.PNG)
+
+![CombatFinishReload](https://user-images.githubusercontent.com/101626318/234180771-ef2e9e55-e5a9-47e6-b01e-52978c2e9347.PNG)
+
+![EngineReloadMontage](https://user-images.githubusercontent.com/101626318/234180795-8bf2ec13-9c61-474d-ba92-c083d737bfee.PNG)
+
+![CombatUpdateAmmo](https://user-images.githubusercontent.com/101626318/234180818-6965e754-c8c6-48f1-8e9a-e85619c70d21.PNG)
+
+>플레이어가 재장전 키를 누르게되면 발사기능과 마찬가지로 캐릭터 클래스에서 재장전키와 매핑된 함수를 호출하고 Combat의 Reload함수를 호출하게 된다.
+>이후 캐릭터 클래스의 ReloadMontage를 사용하며 총의 종류에 따라서 재생되는 애니메이션이 다르게 설정되어있다.
+>재장전 모션이 끝날때 정도에 BlueprintCallable로 설정된 FinishReload가 호출되며 탄약을 업데이트 하게 된다.
+
+
+</p>
+</details>
+
+------------------------------------------------------------------------------------------
+
+## Buff컴포넌트
 
 
