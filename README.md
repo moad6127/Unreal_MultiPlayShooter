@@ -1,4 +1,4 @@
-# Unreal_MultiPlayShooter
+# *Unreal_MultiPlayShooter*
 
 이 프로젝트는 언리얼 엔진을 사용해서 멀티플레이 3인칭 슈팅게임을 만들었습니다 
 또한 유데미 강좌중 하나인 Unreal Engine 5 C++ Multiplayer Shooter 코스를 기반으로 만들었으며 여기에 몇가지를 추가해서 만들었습니다.
@@ -13,6 +13,7 @@
 
 -캐릭터
 
+	- 애님인스턴스
  	- 캐릭터 컴포넌트
 		-CombatComponent
 			-전투및 움직임 관련 컴포넌트
@@ -69,16 +70,8 @@
 </details>
 
 
-<details><summary>사용자의 메인화면</summary>
-<p>
 
-	
-	
-</p>
-</details>
-
-
-## 멀티플레이 플러그인
+# *멀티플레이 플러그인*
 
 SteamSocket과 언리얼엔진의 OnlineSubSystem 활용한 멀티플레이 플러그인
 
@@ -118,7 +111,7 @@ SteamSocket과 언리얼엔진의 OnlineSubSystem 활용한 멀티플레이 플�
 
 ----------------------------------------------------------------------------------------------------
 
-### MainMenu 
+## MainMenu 
 
 - [헤더파일 주소](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/Menu.h)
 
@@ -202,7 +195,7 @@ MainMenu클래스는 화면에 보여주게 되는 위젯들과 멀티플레이 
 
 ---------------------------------------------------------------
 
-### MultiplayerSessionSubsystem
+## MultiplayerSessionSubsystem
 
 - [헤더파일 주소](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Plugins/MultiplayerSessions/Source/MultiplayerSessions/Public/MultiplayerSessionSubsystem.h)
 
@@ -245,7 +238,7 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 	
 ![SubSystemCreateFunc](https://user-images.githubusercontent.com/101626318/233839228-96aca037-3aba-4897-8c5e-d845a47b0e0e.PNG)
 
->Menu클래스에서 세션을 생성할때 호출하는 함수로 참가인원과 매치타입을 변수로 입력받으며 세션세팅을 마치고 성공적으로 함수가 끝나면 Menu클래스로 결과를 콜백시키는 기능을 한다.
+>Menu클래스에서 세션을 생성할때 호출하는 함수로 참가인원과 매치타입을 변수로 입력받으며 세션세팅을 마치고 성공적으로 함수가 끝나면 내부함수로 이동하고 내부함수에서 Menu클래스로 콜백한다.
 >이미 세션이 있을경우 기존 세션을 없애고 만드는 기능도 포함되어 있다.
 
 		
@@ -258,7 +251,7 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 	
 ![SubSystemFindFunc](https://user-images.githubusercontent.com/101626318/233839327-b2a7f95f-b913-461a-bba8-67a78cffe258.PNG)
 
->Menu클래스에서 세션들을 찾을때 사용되는 함수로 최대로 찾을 세션의 수를 입력받으며 성공적으로 할경우 써치 결과들을 Menu클래스로 보내게 된다.
+>Menu클래스에서 세션들을 찾을때 사용되는 함수로 최대로 찾을 세션의 수를 입력받으며 성공적으로 할경우 써치 결과를 내부함수로 보내고 Menu클래스로 콜백하게 된다.
 
 		
 </p>
@@ -286,5 +279,169 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 	
 </p>
 </details>
+
+-------------------------------------------------------------------------------------------
+
+# *캐릭터*
+
+프로젝트의 캐릭터와 그와 관련된 클래스들을 사용해서 캐릭터를 구성하게 만들었다.
+캐릭터의 기본적인 클래스와 애니메이션과 관련된 애님 인스턴스, 캐릭터의 여러가지 기능을 담당할 컴포넌트들과 HUD에 보여주거나 게임모드에서 사용될 정보들이 저장된 PlayerState와 Controller등으로 캐릭터를 구성하게 된다.
+
+[캐릭터 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Character)
+
+## 캐릭터 클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterCharacter.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterCharacter.cpp)
+
+
+캐릭터 클래스에는 캐릭터의 기능들을 위한 변수들과 함수들로 이루어져 있다.
+기본적인 움직임을 위함 함수들과 TPS에 필요한 조준및 발사기능들, ServerSideRewind를 위한 HitBox등으로 이루어져 있으며 프로젝트의 여러 클래스와 연결되어 있다.
+또한 멀티플레이를 위한 RPC들과 복제 함수들이 포함되어 서버클라이언트 멀티플레이에서 사용할수 있다.
+
+
+<details><summary>캐릭터 클래스의 기본적인 함수들</summary>
+<p>
+	
+![Character_BaseFunc](https://user-images.githubusercontent.com/101626318/233901044-c4e42ca6-a534-4c50-8137-88bae692fe94.PNG)
+![Character_KeyBind](https://user-images.githubusercontent.com/101626318/233901214-89e2cd54-0408-4c82-8eba-6c6c13b8725f.PNG)
+
+
+>캐릭터 클래스에서 기본적으로 사용되는 함수들, 각각 엔진에서 매핑된 함수들과 움직임 관련함수들, 발사키나 리로드같은 함수들이 있다.
+
+	
+</p>
+</details>
+
+<details><summary>움직임 관련 함수들</summary>
+<p>
+	
+
+![Character_MovementFunc](https://user-images.githubusercontent.com/101626318/233901243-647b617f-404d-4a50-ae36-8e1371479a13.PNG)
+
+>캐릭터의 기본적임 움직임을 담당하는 함수들
+	
+</p>
+</details>
+
+<details><summary>엔진에서 매핑된것들</summary>
+<p>
+	
+
+![EngineInput](https://user-images.githubusercontent.com/101626318/233901269-840c6adc-c38a-49e4-aec5-fcd4e47daa37.PNG)
+
+>엔진에서 설정된 매핑기능들
+	
+</p>
+</details>
+
+----------------------------------------------------------------
+
+## 애님 인스턴스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterAnimInstance.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Character/BlasterAnimInstance.cpp)
+
+
+
+캐릭터의 애니메이션과 관련된 클래스로 엔진의 애니메이션블루프린트을 통해서 캐릭터의 애니메이션을 담당한다 애님인스턴스 클래스에는 블루프린트에 필요한 변수들과 변수들을 설정하는 함수로 이루어져 있으며 필요하다면 C++코드로 AninNotify함수를 만들어서 사용할수 있다.
+
+
+
+![AnimInstance_AnimGraph](https://user-images.githubusercontent.com/101626318/233910680-72c7772f-b668-44e4-a2e1-a65f0b24b258.PNG)
+>애님 인스턴스 블루프린트의 AnimGraph구조도
+
+<details><summary>Equip상태 State구조</summary>
+<p>
+	
+![AnimInstance_EquipState](https://user-images.githubusercontent.com/101626318/233912732-ced4d565-83ef-43bf-8ed1-db0bcf9db5a2.PNG)
+>Equip 상태에서의 State구조도
+
+</p>
+</details>
+
+
+<details><summary>애님 인스턴스 변수들</summary>
+<p>
+	
+![AnimInstance_V](https://user-images.githubusercontent.com/101626318/233912619-3f7a8c34-7c4d-4b1c-bc2e-9cf17a1635fb.PNG)
+>애님 인스턴스에서 사용되는 변수들 일부분
+
+	
+</p>
+</details>
+
+<details><summary>애님 인스턴스 기본함수</summary>
+<p>
+	
+![AnimInstance_Func](https://user-images.githubusercontent.com/101626318/233912870-d0341a54-08f0-4dd1-9eee-cf8593f7fc7e.PNG)
+>애님 인스턴스의 변수들은 캐릭터 클래스의 Getter함수로 얻어와서 변수를 설정하게 된다.
+
+</p>
+</details>
+
+----------------------------------------------------------------------------------
+
+## *캐릭터 액터 컴포넌트*
+
+캐릭터 클래스에 friend형식으로 붙여서 사용되는 컴포넌트로 각각의 컴포넌트들은 각각의 기능들을 담당하고 있으며, 캐릭터 클래스에서는 컴포넌트 클래스들의 함수를 호출해서 기능을 할수있게 만들었다.
+
+현재 컴포넌트는 3가지로 전투밎 총기 관련 컴포넌트인 Combat컴포넌트와 캐릭터의 버프를 담당하는 Buff컴포넌트, ServerSideRewind와 랙보상을 담당하는 Lag컴포넌트가 있다.
+
+
+[컴포넌트 폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents)
+
+## Combat컴포넌트
+
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/CombatComponent.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/CombatComponent.cpp)
+
+캐릭터의 전투부분을 담당하는 컴포넌트로 대표적으로 발사기능과 재장전기능이 있으며 무기장착과 수류탄 발사, 조준선등의 기능들도 포함되어 있다.
+
+
+
+
+<details><summary>발사 함수 기능</summary>
+<p>
+
+![CharacterFireButtonPressed](https://user-images.githubusercontent.com/101626318/234179152-6a04d864-323d-448d-854e-b45c00bfabbb.PNG)
+
+![CombatFireButtonPressed](https://user-images.githubusercontent.com/101626318/234179194-61a4bc7a-b5d6-4863-80ad-983163fc4624.PNG)
+
+![CombatFire](https://user-images.githubusercontent.com/101626318/234179206-093b9a86-5871-4e2e-8daf-9fc11fcead0a.PNG)
+
+>Combat의 대표적인 함수인 발사 함수의 기능이다.
+>우선 플레이어가 발사를 위한 키를 누르게 되면 캐릭터 클래스에서 매핑된 함수를 호출하게 되고 매핑된 함수에서 Combat의 함수를 호출, Combat의 Fire함수를 호출하게된다.
+>이때 총의 종류에 호출되는 함수를 다르게 설정한다
+>이후 Weapon클래스에서 발사를 완료한다.
+
+</p>
+</details>
+
+<details><summary>재장전 기능</summary>
+<p>
+
+![CombatReload](https://user-images.githubusercontent.com/101626318/234180696-96b94da4-fcb8-4cbc-ab84-517344a358f7.PNG)
+
+![CharacterReload](https://user-images.githubusercontent.com/101626318/234180748-a38e0123-2b77-44a1-acf3-205f2e757ab2.PNG)
+
+![CombatFinishReload](https://user-images.githubusercontent.com/101626318/234180771-ef2e9e55-e5a9-47e6-b01e-52978c2e9347.PNG)
+
+![EngineReloadMontage](https://user-images.githubusercontent.com/101626318/234180795-8bf2ec13-9c61-474d-ba92-c083d737bfee.PNG)
+
+![CombatUpdateAmmo](https://user-images.githubusercontent.com/101626318/234180818-6965e754-c8c6-48f1-8e9a-e85619c70d21.PNG)
+
+>플레이어가 재장전 키를 누르게되면 발사기능과 마찬가지로 캐릭터 클래스에서 재장전키와 매핑된 함수를 호출하고 Combat의 Reload함수를 호출하게 된다.
+>이후 캐릭터 클래스의 ReloadMontage를 사용하며 총의 종류에 따라서 재생되는 애니메이션이 다르게 설정되어있다.
+>재장전 모션이 끝날때 정도에 BlueprintCallable로 설정된 FinishReload가 호출되며 탄약을 업데이트 하게 된다.
+
+
+</p>
+</details>
+
+------------------------------------------------------------------------------------------
+
+## Buff컴포넌트
 
 
