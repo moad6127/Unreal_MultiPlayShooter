@@ -56,7 +56,6 @@ private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastSpeedBuff(float BaseSpeed, float CrouchSpeed);
 
-
 	/**
 	*  JumpBuff
 	*/
