@@ -445,3 +445,151 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 ## Buff컴포넌트
 
 
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/BuffComponent.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/BuffComponent.cpp)
+
+
+버프픽업을 얻게되면 나오는 이벤트들을 담당하는 컴포넌트로 힐,쉴드회복,스피드업,점프업등이 있다.
+
+
+![Buffs](https://user-images.githubusercontent.com/101626318/234496622-89d31024-57d3-4609-94b1-d30f868e55b6.PNG)
+
+ 
+ 
+<details><summary>Buff 컴포넌트 코드일부분</summary>
+<p>
+
+![BuffCompV](https://user-images.githubusercontent.com/101626318/234497584-d3fdf6fa-45ad-44bf-8da6-9fc96633fa03.PNG)
+
+![BuffCompFunc](https://user-images.githubusercontent.com/101626318/234497640-e94ddf5d-d981-49d4-bb94-310b9b816ce3.PNG)
+
+>각각의 이벤트에서 필요한 변수와 함수들이다.
+
+</p>
+</details>
+
+<details><summary>Heal 함수</summary>
+<p>
+
+![BuffCompHeal](https://user-images.githubusercontent.com/101626318/234497847-e1a17ef6-66ec-4e65-ac49-a7a0f2a803ae.PNG)
+
+![BuffCompTickComp](https://user-images.githubusercontent.com/101626318/234498008-7976088b-9348-46e4-8f09-e9b388999ca5.PNG)
+
+
+> 캐릭터가 힐링픽업을 획득하게되면 먼저 Heal함수가 호출된다. 이후 캐릭터의 체력을 순차적으로 회복하도록 보이게 위해서 프레임마다 일정한 체력만 회복하게 하게 만든다.
+> 쉴드 회복도 같은 방식으로 회복한다.
+
+
+</p>
+</details>
+
+<details><summary>Speed 버프</summary>
+<p>
+	
+![BuffCompSpeedBuff](https://user-images.githubusercontent.com/101626318/234498760-2cddd093-199a-4785-9bdb-e9c501761839.PNG)
+
+>캐릭터가 스피드 버프 픽업을 획득하게 되면 발동되는 함수들이다. 버프픽업에서 세팅된 스피드의 속도와 시간을 받고 Timer를 사용해서 Time만큼만 버프가 지속되도록 만들었다.
+>또한 멀티플레이를 위해서 NetMulticast형식으로 만들어서 서버와 클라이언트모두 버프가 작동되도록 설정해놓았다.
+
+
+</p>
+</details>
+
+
+-----------------------------------------------------------------------------
+
+## Lag컴포넌트
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/LagCompensationComponent.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/LagCompensationComponent.cpp)
+
+
+
+클라이언트의 게임 경험을 좋게 하기 위해서 사용한 기술인 ServerSideRewind를 사용하기 위해서 필요한 기능들이 모여있는 컴포넌트로 캐릭터의 HitBox들을 저장하는 기능과
+각각의 총타입에 따라서 ServerSideRewind를 사용하기 위한 함수들로 이루어져 있다.
+ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아 지연이 있을경우 사용된다.
+
+![ScreenShot00001](https://user-images.githubusercontent.com/101626318/234503588-7fc0422d-8b03-4390-8f06-3f7b8e57b999.png)
+> 캐릭터의 HitBox를 저장한것을 보여주는 사진이다.
+
+
+<details><summary>LagComp 함수들</summary>
+<p>
+	
+![LagCompSaveFrame](https://user-images.githubusercontent.com/101626318/234506690-d4b7d6eb-e8a2-4335-aad6-a350bae8d282.PNG)
+![LagCompWeaponFunc](https://user-images.githubusercontent.com/101626318/234506711-5e6b9715-7382-45c8-87a2-1a7ac4efdeb7.PNG)
+>HitBox를 저장하는 함수들과 ServerSideRewind를 위한 함수들
+	
+</p>
+</details>
+
+<details><summary>LagComp 변수들</summary>
+<p>
+	
+![LagCompPrivate](https://user-images.githubusercontent.com/101626318/234506783-ab311b5c-51a7-4389-8d16-5ed0bd5c019a.PNG)
+
+> 더블링크리스트로 캐릭터의 HitBox를 MaxRecodeTime의 시간만큼 저장을 해둔다.
+
+</p>
+</details>
+
+<details><summary>LagComp 구조체</summary>
+<p>
+
+![LagCompStruct](https://user-images.githubusercontent.com/101626318/234507771-04c16da6-d8b1-4f83-b7e9-bae4a3c6ac3a.PNG)
+>HitBox들의 정보와 언제 저장했는지 알기위한 시간, 캐릭터들을 한번에 저장하기위해서 만든 구조체와 결과를 보내기위한 구조체
+	
+</p>
+</details>
+
+
+>HitBox저장을 위한 함수기능
+<details><summary>SaveFrame</summary>
+<p>
+
+![LagCompSaveFrameFunc1](https://user-images.githubusercontent.com/101626318/234511674-3caf4a70-4552-40e8-94a0-3485cdf50ea0.PNG)
+![LagCompSaveFrameFunc2](https://user-images.githubusercontent.com/101626318/234511745-8eb140f2-d385-4949-b68c-445dffaeaf3f.PNG)
+>ServerSideRewind를 위해서 캐릭터의 HitBox를 FrameHistory에 더블링크드로 저장한다.
+>History의 끝부분이 정한 시간보다 크면 끝부분을 삭제하면서 일정한 크기를 유지하도록 한다.
+>매 틱마다 호출되면서 저장된다.
+
+</p>
+</details>
+
+>ServerSideRewind 기능
+
+<details><summary>ServerSideRewind</summary>
+<p>
+
+![LagCompServerSideRewind1](https://user-images.githubusercontent.com/101626318/234512814-0e170778-f0c3-4885-8ab9-6a25166abcd2.PNG)
+	
+>ServerSideRewind를 위해서 함수가 호출이 되면 받은 변수들을 사용해서 어느시점의 HitBox를 체크해야될지 찾아낸다.
+![LagCompServerSideRewind_GetCheckFrame](https://user-images.githubusercontent.com/101626318/234512844-5b18adf8-4564-4275-a272-2a3c25d7bf1b.PNG)
+![LagCompServerSideRewind_GetCheckFrame2](https://user-images.githubusercontent.com/101626318/234512852-30f9154a-09ed-40de-8b70-f40e92b6ff17.PNG)
+
+	
+>체크할 HitBoxPackage를 이용해서 그때의 시간에 다른 캐릭터가 총에 맞았는지 확인하고 확인한 결과를 리턴한다.
+![LagCompServerSideRewind_confirmHit1](https://user-images.githubusercontent.com/101626318/234512863-f0bae19e-5494-4ccd-939b-b9cd2871d77f.PNG)
+![LagCompServerSideRewind_ConfirmHit2](https://user-images.githubusercontent.com/101626318/234512872-0286cbb2-a83c-4670-a90b-eb86466cad43.PNG)
+
+
+>HitBox들의 위치를 설정하고 되돌리기위한 함수들
+![LagCompServerSideRewind_otherFunc1](https://user-images.githubusercontent.com/101626318/234512880-5710c29a-e3bb-40a6-9dee-3f6375635b86.PNG)
+![LagCompServerSideRewind_otherFunc2](https://user-images.githubusercontent.com/101626318/234512884-43068149-f093-4e2e-99e5-0d3b6a7aef8a.PNG)
+
+
+</p>
+</details>
+
+-----------------------------------------------------------------------------------
+## PlayerState
+
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerState/BlasterPlayerState.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerState/BlasterPlayerState.cpp)
+
+멀티플레이 기능을위해서 APlayerState를 부모로 하는 PlayerState를 만들었다.
+기본 점수는 부모 클래스인APlayerState의 Score를 사용했지만 다른 변수들은 직접 만들어서 사용했다.
+
+
+
