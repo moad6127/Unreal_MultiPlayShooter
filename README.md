@@ -445,3 +445,59 @@ MultiplayerSessionSubsystem클래스는 UGameInstanceSubsystem를 부모로 하�
 ## Buff컴포넌트
 
 
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/BuffComponent.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/BlasterComponents/BuffComponent.cpp)
+
+
+버프픽업을 얻게되면 나오는 이벤트들을 담당하는 컴포넌트로 힐,쉴드회복,스피드업,점프업등이 있다.
+
+
+![Buffs](https://user-images.githubusercontent.com/101626318/234496622-89d31024-57d3-4609-94b1-d30f868e55b6.PNG)
+
+ 
+ 
+<details><summary>Buff 컴포넌트 코드일부분</summary>
+<p>
+
+![BuffCompV](https://user-images.githubusercontent.com/101626318/234497584-d3fdf6fa-45ad-44bf-8da6-9fc96633fa03.PNG)
+
+![BuffCompFunc](https://user-images.githubusercontent.com/101626318/234497640-e94ddf5d-d981-49d4-bb94-310b9b816ce3.PNG)
+
+>각각의 이벤트에서 필요한 변수와 함수들이다.
+
+</p>
+</details>
+
+<details><summary>Heal 함수</summary>
+<p>
+
+![BuffCompHeal](https://user-images.githubusercontent.com/101626318/234497847-e1a17ef6-66ec-4e65-ac49-a7a0f2a803ae.PNG)
+
+![BuffCompTickComp](https://user-images.githubusercontent.com/101626318/234498008-7976088b-9348-46e4-8f09-e9b388999ca5.PNG)
+
+
+> 캐릭터가 힐링픽업을 획득하게되면 먼저 Heal함수가 호출된다. 이후 캐릭터의 체력을 순차적으로 회복하도록 보이게 위해서 프레임마다 일정한 체력만 회복하게 하게 만든다.
+> 쉴드 회복도 같은 방식으로 회복한다.
+
+
+</p>
+</details>
+
+<details><summary>Speed 버프</summary>
+<p>
+	
+![BuffCompSpeedBuff](https://user-images.githubusercontent.com/101626318/234498760-2cddd093-199a-4785-9bdb-e9c501761839.PNG)
+
+>캐릭터가 스피드 버프 픽업을 획득하게 되면 발동되는 함수들이다. 버프픽업에서 세팅된 스피드의 속도와 시간을 받고 Timer를 사용해서 Time만큼만 버프가 지속되도록 만들었다.
+>또한 멀티플레이를 위해서 NetMulticast형식으로 만들어서 서버와 클라이언트모두 버프가 작동되도록 설정해놓았다.
+
+
+</p>
+</details>
+
+
+-----------------------------------------------------------------------------
+
+## Lag컴포넌트
+
+
