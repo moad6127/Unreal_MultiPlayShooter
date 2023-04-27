@@ -543,6 +543,7 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 </details>
 
 
+
 >HitBox저장을 위한 함수기능
 <details><summary>SaveFrame</summary>
 <p>
@@ -556,8 +557,8 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 </p>
 </details>
 
->ServerSideRewind 기능
 
+>ServerSideRewind 기능
 <details><summary>ServerSideRewind</summary>
 <p>
 
@@ -588,8 +589,90 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 - [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerState/BlasterPlayerState.h)
 - [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerState/BlasterPlayerState.cpp)
 
-멀티플레이 기능을위해서 APlayerState를 부모로 하는 PlayerState를 만들었다.
+
 기본 점수는 부모 클래스인APlayerState의 Score를 사용했지만 다른 변수들은 직접 만들어서 사용했다.
 
+<details><summary>Public부분</summary>
+<p>
+
+![PlayerStatePublicSection](https://user-images.githubusercontent.com/101626318/234775723-0df96fbd-51ef-43ce-b349-4653b0f8dc21.PNG)
+
+![PlayerStateScoreAdd](https://user-images.githubusercontent.com/101626318/234776045-d841d957-9ccc-43b9-b72c-bb70f63ebdea.PNG)
+
+>각종 복제 함수들과 업데이트 함수들이 저장되어 있다.
+>화면에 보여주는HUD등을 업데이트 하는 기능은 Controller에 함수로 만들어 두었다.
+
+
+</p>
+</details>
+
+<details><summary>Private부분</summary>
+<p>
+
+![PlayerStatePrivate](https://user-images.githubusercontent.com/101626318/234775625-0a28dc02-d973-44b6-bc7f-0df7e5022f9a.PNG)
+>플레이어의 정보들을 저장하고있다.
+
+
+</p>
+</details>
+
+-----------------------------------------------------------------------------
+## PlayerController 
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerController/BlasterPlayerController.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerController/BlasterPlayerController.cpp)
+
+플레이어 컨트롤러클래스 부분에 HUD와 관련된 것들을 연동시켜서 클라이언트의 개별적인 HUD를 담당하게 만들었다. 그리고 서버와 클라이언트의 시간을 동기화 하는 기능과 서버와 클라이언트의 지연등을 체크하고 관리하는 기능등 여려가지 기능들을 담당하고 있다.
+
+<details><summary>SetHUD 관련</summary>
+<p>
+
+![PlayerControllerSetHUD](https://user-images.githubusercontent.com/101626318/234779453-c485cf27-5da5-405e-bff6-7b11d7d39740.PNG)
+>클라이언트는 자신의 캐릭터의 컨트롤러에 접근할수 있으므로 자신의 HUD를 설정하는데 이용할수 있다.
+
+
+</p>
+</details>
+
+
+<details><summary>서버와 클라이언트 TimeSync</summary>
+<p>
+
+> 서버와 클라이언트의 시간을 동기화 하는데 필요한 함수들과 변수들,
+> 게임에서 모든사람들이 같은 시간을 사용하는것이 중요하다.
+![PlayerControllerSyncTime](https://user-images.githubusercontent.com/101626318/234779717-0f215bb7-e806-4abb-9dfa-df86eec5704a.PNG)
+
+>일정 시간마다 서버와 클라이언트의 시간을 동기화 하기, 
+>설정한 주기마다 클라이언트의 시간을 체크하고 서버의 시간과 같게 만든다.
+
+![PlayerControllerTimeCheck](https://user-images.githubusercontent.com/101626318/234779993-f89a42f0-b561-40fc-9c2d-402d4df5b6fe.PNG)
+![PlayerControllerTimeCheck2](https://user-images.githubusercontent.com/101626318/234780001-3350d89d-a74d-4211-929b-f7570f036fc4.PNG)
+
+>이렇게 동기화된 시간은 다시 화면에 HUD로 표시하고 남은 게임시간등을 표시할수 있다.
+	
+</p>
+</details>
+
+--------------------------------------------------------------------------
+# *GameMode && GameState*
+
+
+
+-------------------------------------------------------------------------
+# *Weapon클래스*
+
+
+
+
+---------------------------------------------------------------------------
+# *HUD클래스*
+
+- [HUD폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/HUD)
+
+![HUD](https://user-images.githubusercontent.com/101626318/234789338-ad1d28e5-5dc3-4e0a-bc09-5b1c086411d7.PNG)
+
+
+게임중 화면에 그려지는 모든것을 HUD라고 한다.
+HUD에는 기본 CharcterOverlayHUD와 WeaponPickupHUD등 여러가지가 있으며 게임중 정보를 알려주는 역할을 하게 된다.
 
 
