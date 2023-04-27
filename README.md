@@ -543,6 +543,7 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 </details>
 
 
+
 >HitBox저장을 위한 함수기능
 <details><summary>SaveFrame</summary>
 <p>
@@ -556,8 +557,8 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 </p>
 </details>
 
->ServerSideRewind 기능
 
+>ServerSideRewind 기능
 <details><summary>ServerSideRewind</summary>
 <p>
 
@@ -588,7 +589,7 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 - [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerState/BlasterPlayerState.h)
 - [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/PlayerState/BlasterPlayerState.cpp)
 
-멀티플레이 기능을위해서 APlayerState를 부모로 하는 PlayerState를 만들었다.
+
 기본 점수는 부모 클래스인APlayerState의 Score를 사용했지만 다른 변수들은 직접 만들어서 사용했다.
 
 
