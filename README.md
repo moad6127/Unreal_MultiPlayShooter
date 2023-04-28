@@ -719,12 +719,113 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 <details><summary>팀 설정</summary>
 <p>
-
+	
+> 게임에 들어오게 되면 GameState에 모든 플레이어의 팀을 저장하면서 개인의 팀을 설정하는 함수와 게임에서 나가게 되면 팀에서 제거하는 함수.
+	
 ![TeamsGameModeLogInLogou](https://user-images.githubusercontent.com/101626318/235122845-95d551d7-ee5e-47fc-8291-6e95b40d3837.PNG)
+
+>PlayerState에서 팀을 설정하고 팀컬러를 선택하도록 하는 함수
+![PlayerStateSetTeam](https://user-images.githubusercontent.com/101626318/235143035-cbe5874f-8281-4b76-87ee-e46f08d9224b.PNG)
+
+>Character클래스에서 팀 컬러를 세팅 하는 함수
+![CharacterSetTeamColor](https://user-images.githubusercontent.com/101626318/235143356-ec7fcb6c-952b-473d-b382-2d7aeb462c54.PNG)
+
+</p>
+</details>
+
+<details><summary>팀킬 방지 함수</summary>
+<p>
+
+> 같은 팀일경우 데미지가 들어가지 않게 만드는 함수.   
+![TeamsGameModeCalculateDamage](https://user-images.githubusercontent.com/101626318/235144014-ea21964c-33db-4b17-834c-0cc7e964da96.PNG)
+
+> 캐릭터 클래스의 ReceviveDamage함수에서 데미지를 설정할때 호출된다.
+![CharacterReceiveDamage](https://user-images.githubusercontent.com/101626318/235144388-e7bad525-c516-4726-8cc5-6f032715fba4.PNG)
 
 	
 </p>
 </details>
+
+<details><summary>TeamGameMode에서 플레이어 킬</summary>
+<p>
+
+>TeamsGameMode는 BlasterGameMode를 부모로 해서 PlayerElimination함수를 상속받아서 사용할수있다.   
+>TeamsGameMode에 맞게 기능을 더해서 함수를 만들수 있다.
+>적팀을 죽이면 TeamScore가 증가하도록 만들었다.
+
+	
+![TeamsGameModePlayerElim](https://user-images.githubusercontent.com/101626318/235144677-f1912de6-212f-435d-9308-cc664699ea79.PNG)
+
+	
+</p>
+</details>
+
+--------------------------------------------------------------------------------
+## CaptureTheFlagGameMode
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/GameMode/CaptureTheFlagGameMode.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/GameMode/CaptureTheFlagGameMode.cpp)
+
+
+![ScreenShot00000](https://user-images.githubusercontent.com/101626318/235148789-b83689eb-0df4-4b45-b9a4-48bdda787aa4.png)
+>TeamGameMode를 부모로 만들어진 클래스이다. 깃발로 설정된 물체를 자신의 팀 베이스에 있는 FlagZone에 깃발을 가져오면 점수를 획득한다.
+>깃발을 잡은 플레이어는 공격및 점프등의 모든 행동이 제약이 생기게 된다.
+
+
+- [FlagZone클래스폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/CaptureTheFlag)
+
+
+<details><summary>깃발 점수 획득</summary>
+<p>
+
+>FlagZone에 깃발로 설정된 물체가 들어오면 SpherOverlap함수가 호출되면서 GameMode의 깃발 점수획득 함수가 호출된다.
+
+![FlagZoneOverlap](https://user-images.githubusercontent.com/101626318/235150270-77162bc4-e0f5-418d-ab05-2bbd010ff899.PNG)
+![FlagAddScroe](https://user-images.githubusercontent.com/101626318/235150275-6e17bd3e-39cb-4ab5-96ff-609772ad5d6d.PNG)
+
+	
+</p>
+</details>
+
+
+--------------------------------------------------------------------------
+## GameState
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/GameState/BlasterGameState.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/GameState/BlasterGameState.cpp)
+
+
+>게임의 전체적인 상태를 저장하는 클래스로 TopScore를 저장하거나 팀게임경우 팀의 점수등을 저장하는 클래스이다.
+
+
+<details><summary>TopScore체크 함수</summary>
+<p>
+
+
+![GameStateTopScore](https://user-images.githubusercontent.com/101626318/235152795-953b97db-8cc3-4b5c-8cd9-80d163daee06.PNG)
+	
+>캐릭터를 킬하게 되면 GameMode의 PlayerEliminated함수에서 호출되는 함수이다.  
+>킬한 플레이어의 Score를 비교하면서 TopScore로 설정되면 머리위에 원반이 생기게 된다.
+	
+![ScreenShot00000](https://user-images.githubusercontent.com/101626318/235153928-1990c0df-e4e2-46be-a91b-875db6720de6.png)
+
+	
+</p>
+</details>
+
+<details><summary>TeamScore</summary>
+<p>
+
+
+![GameModeTeamScore](https://user-images.githubusercontent.com/101626318/235154154-03eb3c9b-e1e3-452d-b08c-a3b44079998d.PNG)
+
+> 팀게임에서 사용되는 함수들로 팀점수를 획득할때 나오게 된다.
+
+	
+</p>
+</details>
+
+
 
 -------------------------------------------------------------------------
 # *Weapon클래스*
