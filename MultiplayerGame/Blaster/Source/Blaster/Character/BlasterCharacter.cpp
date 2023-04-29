@@ -24,6 +24,7 @@
 #include "TimerManager.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
 #include "Blaster/Weapon/WeaponTypes.h"
+#include "Blaster/Weapon/Flag.h"
 #include "Components/BoxComponent.h"
 #include "Blaster/BlasterComponents/LagCompensationComponent.h"
 #include "NiagaraFunctionLibrary.h"
@@ -458,7 +459,6 @@ void ABlasterCharacter::SetTeamColor(ETeam Team)
 	}
 	BlasterPlayerState = BlasterPlayerState == nullptr ? GetPlayerState<ABlasterPlayerState>() : BlasterPlayerState;
 	FString PlayerName = BlasterPlayerState->GetPlayerName();
-	UE_LOG(LogTemp, Warning, TEXT("Name : %s"),*PlayerName);
 	switch (Team)
 	{
 	case ETeam::ET_NoTeam:
@@ -467,13 +467,11 @@ void ABlasterCharacter::SetTeamColor(ETeam Team)
 		break;
 
 	case ETeam::ET_BlueTeam:
-		UE_LOG(LogTemp, Warning, TEXT("BlueColor"));
 		GetMesh()->SetMaterial(0, BlueMaterial);
 		DissolveMaterialInstance = BlueDissolveMatInst;
 		break;
 
 	case ETeam::ET_RedTeam:
-		UE_LOG(LogTemp, Warning, TEXT("RedColor"));
 		GetMesh()->SetMaterial(0, RedMaterial);
 		DissolveMaterialInstance = RedDissolveMatInst;
 		break;
