@@ -828,8 +828,16 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 
 -------------------------------------------------------------------------
-# *Weapon클래스*
+# *Weapons*
 
+- [폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Weapon)
+
+
+![Weapons](https://user-images.githubusercontent.com/101626318/235296634-58b3b845-ba03-4651-9c24-22e51e0355e0.png)
+- 총과 관련된 모든 클래스들이 있는 폴더로 기본 베이스가되는 Weapon클래스와 Weapon클래스를 부모로 하는 히트스캔무기와 발사체 무기, 샷건등이 있고, 발사체 무기들의 발사체 클래스들도 모여있으며, 총의 탄피 클래스, 깃발뺏기 모드에서 사용되는 깃발도 Weapon폴더에 모여있다.
+
+--------------------------------------------------------------------------
+## Weapon클래스
 
 
 
