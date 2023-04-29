@@ -839,7 +839,13 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 --------------------------------------------------------------------------
 ## BaseWeapon클래스
 
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Weapon.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Weapon.cpp)
 
+
+- 모든 총의 클래스에서 기본이 되는 클래스로 히트스캔무기와 발사체 무기들은 Weapon클래스를 부모로 해서 만들어져있다.  
+- 히트스캔과 발사체 무기의 기본이 되는 기능들을 가지고 있으며 Crosshair또한 Weapon클래스에서 선택한것이 화면에 보여지게 된다.
+-
 
 
 ---------------------------------------------------------------------------
