@@ -828,7 +828,131 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 
 -------------------------------------------------------------------------
-# *Weapon클래스*
+# *Weapons*
+
+- [폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Weapon)
+
+
+![Weapons](https://user-images.githubusercontent.com/101626318/235296634-58b3b845-ba03-4651-9c24-22e51e0355e0.png)
+- 총과 관련된 모든 클래스들이 있는 폴더로 기본 베이스가되는 Weapon클래스와 Weapon클래스를 부모로 하는 히트스캔무기와 발사체 무기, 샷건등이 있고, 발사체 무기들의 발사체 클래스들도 모여있으며, 총의 탄피 클래스, 깃발뺏기 모드에서 사용되는 깃발도 Weapon폴더에 모여있다.
+
+--------------------------------------------------------------------------
+## BaseWeapon클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Weapon.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Weapon.cpp)
+
+
+- 모든 총의 클래스에서 기본이 되는 클래스로 히트스캔무기와 발사체 무기들은 Weapon클래스를 부모로 해서 만들어져있다.  
+- 히트스캔과 발사체 무기의 기본이 되는 기능들을 가지고 있으며 Crosshair또한 Weapon클래스에서 선택한것이 화면에 보여지게 된다.
+
+
+<details><summary>BaseWeaponFire</summary>
+<p>
+
+![BaseWeaponFIreFunc](https://user-images.githubusercontent.com/101626318/235344167-cd3e4168-ce25-40e2-96d2-8cc21023e214.PNG)
+>기본무기의 발사함수이다.  
+>무기의 Fire애니메이션을 재생한후, 탄피를 배출하는 기능과 Ammo를 소모하는 기능으로 이루어져있으며 HitScan과 발사체 무기클래스에서도 사용될수 있도록 만들었다.
+	
+</p>
+</details>
+
+
+<details><summary>무기 상태 변경함수</summary>
+<p>
+
+![BaseWeaponState](https://user-images.githubusercontent.com/101626318/235344209-d7398a25-62f0-44aa-afd9-99444461f1c1.PNG)
+>무기 상태들을 EnumClass로 만들어 낸것이다.  
+>기본 상태, 장착상태, 두번째무기 장착상태, 떨어진 상태등으로 이루어져 있다.
+
+	
+![BaseWeaponStateFunc](https://user-images.githubusercontent.com/101626318/235344239-a8cae369-ebd3-4332-a8c6-6923f356a2ac.PNG)
+![BaseWeaponStateEquip](https://user-images.githubusercontent.com/101626318/235344241-85213278-e06d-4ad2-967a-226aa99e543c.PNG)
+
+>무기의 상태가 변하게되면 각각의 함수들을 호출해서 무기의 콜리젼과 피직스들을 다시 설정하게 된다.
+
+</p>
+</details>
+
+---------------------------------------------------------------------------------
+## HitScan클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/HitScanWeapon.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/HitScanWeapon.cpp)
+
+![Shoot](https://user-images.githubusercontent.com/101626318/235344350-7e9f5dc9-3880-4c14-b66b-b703ee884a24.png)
+
+- HitScan무기클래스로 LineTrace를 사용해서 적이 적중했는지를 얻으며 적중했으면 데미지를 주는 방식이다.  
+- 발사체무기처럼 발사체를 발사하는 방식이 아니라 총구에서 발사하는 방향으로 Line를 그려서 적중했는지 확인하는 방식이라 적이 적중했는지 바로 알수있다.  
+- HitScan무기로는 권총, SMG, 스나이퍼 라이플이 있으며 샷건도HitScan무기이지만 여러개의 총알을 발사해야하므로 새로운 클래스로 만들어서 사용한다.
+
+<details><summary>LineTrace 함수</summary>
+<p>
+
+![HitScanWeaponLineTrace](https://user-images.githubusercontent.com/101626318/235344463-9f3054d8-0ce6-4fda-a455-779504a62e3e.PNG)
+> HitScan에서 LineTrace를 담당하는 함수이다.   
+> 적중했는지 여부를 알수있으며 SmokeTrail을 추가해서 End지점까지 연기로 보이게 만들었다.
+	
+</p>
+</details>
+
+<details><summary>HitScanFire함수</summary>
+<p>
+
+![HitScanWeaponFireFunc_1](https://user-images.githubusercontent.com/101626318/235344521-55500a19-61f4-4db3-9168-29e7e5a3da42.PNG)
+![HitScanWeaponFireFunc_2](https://user-images.githubusercontent.com/101626318/235344523-c4a4e877-1586-45f0-bede-cf88ce942335.PNG)
+![HitScanWeaponFireFunc_3](https://user-images.githubusercontent.com/101626318/235344526-ad837c92-063e-4509-b1a5-9cecd86eeb7b.PNG)
+
+> LineTrace를 통해서 얻은 적중값을 활용해서 적에게 대미지를 주도록 하는 함수이다.  
+> 만약 ServerSideRewind를 사용하면 ServerSideRewind를 통해서 데미지를 주도록 만들어져 있다.
+
+	
+</p>
+</details>
+
+
+-------------------------------------------------------------------------------
+## Shotgun클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Shotgun.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Shotgun.cpp)
+
+![FireShotgun](https://user-images.githubusercontent.com/101626318/235344716-8084778c-dca9-49b5-99ee-48ab2fbe5a6c.png)
+
+- HitScan무기이지만 한번 발사할때 여러발을 발사해야 하므로 새로운 클래스로 만들었다.
+
+<details><summary>ShotgunLineTrace</summary>
+<p>
+
+![ShotgunHitTargets](https://user-images.githubusercontent.com/101626318/235344943-9f307e2e-509a-48a0-b594-94cc83776fdb.PNG)
+> 샷건은 한번 발사에 여러발을 발사하게 되는데 이때 총알의 수는 변경가능하도록 만들어져 있고,  
+> 총알의 횟수만큼 반복문을 사용해 적중결과를 저장하게 된다.
+
+
+</p>
+</details>
+
+<details><summary>Shotgun Fire함수 일부분</summary>
+<p>
+
+![ShotgunFireFraction](https://user-images.githubusercontent.com/101626318/235344855-cf5b1ba4-45b7-4fd0-b539-bc8c1935bd27.PNG)
+![ShotgunFireDamageStore](https://user-images.githubusercontent.com/101626318/235344857-5b826bcf-4c6c-4fee-ae9e-a9278a877342.PNG)
+![ShotgunDamageSection](https://user-images.githubusercontent.com/101626318/235344860-fc320f1c-0c46-4320-9f34-3eba13322a91.PNG)
+
+> 샷건무기는 한번발사에 여러발을 발사하므로 Map을 사용해서 HeadShot과 Body샷을 구분해 저장했으며 여러 캐릭터를 한번에 맞출수도 있기때문에 Array를 사용해서 맞은 캐릭터도 저장한다   
+>이후 반복문을 사용해서 캐릭터당 데미지를 계산하고 저장한다음 ServerSideRewind여부를 통해서 데미지를 주게 된다.
+	
+	
+</p>
+</details>
+
+
+-----------------------------------------------------------------------
+## ProjectileWeapon 클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.cpp)
+
 
 
 
