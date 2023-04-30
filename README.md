@@ -947,6 +947,16 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 </details>
 
 
+-----------------------------------------------------------------------
+## ProjectileWeapon 클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.cpp)
+
+
+
+
+
 ---------------------------------------------------------------------------
 # *HUD클래스*
 
