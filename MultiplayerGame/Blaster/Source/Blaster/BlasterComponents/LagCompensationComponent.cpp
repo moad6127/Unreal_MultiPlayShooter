@@ -506,12 +506,12 @@ void ULagCompensationComponent::ShotgunServerScoreRequest_Implementation(const T
 		float TotalDamage = 0.f;
 		if (Confirm.HeadShot.Contains(HitCharacter))
 		{
-			float HeadShotDamage = Confirm.HeadShot[HitCharacter] * HitCharacter->GetEquippedWeapon()->GetHeadShotDamage();
+			float HeadShotDamage = Confirm.HeadShot[HitCharacter] * Character->GetEquippedWeapon()->GetHeadShotDamage();
 			TotalDamage += HeadShotDamage;
 		}
 		if (Confirm.BodyShot.Contains(HitCharacter))
 		{
-			float BodyShotDamage = Confirm.BodyShot[HitCharacter] * HitCharacter->GetEquippedWeapon()->GetDamage();
+			float BodyShotDamage = Confirm.BodyShot[HitCharacter] * Character->GetEquippedWeapon()->GetDamage();
 			TotalDamage += BodyShotDamage;
 		}
 		UGameplayStatics::ApplyDamage(
