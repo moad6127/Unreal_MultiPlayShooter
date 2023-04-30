@@ -50,17 +50,6 @@ void AProjectile::BeginPlay()
 }
 
 
-
-void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-
-	if (HasAuthority())
-	{
-		Multicast_OnHit(OtherActor);
-	}
-	Destroy();
-}
-
 void AProjectile::SpawnTrailSytem()
 {
 	if (TrailSystem)
@@ -75,6 +64,16 @@ void AProjectile::SpawnTrailSytem()
 			false
 		);
 	}
+}
+
+void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+
+	if (HasAuthority())
+	{
+		Multicast_OnHit(OtherActor);
+	}
+	Destroy();
 }
 
 void AProjectile::Multicast_OnHit_Implementation(AActor* OtherActor)
