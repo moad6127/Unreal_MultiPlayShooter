@@ -953,6 +953,166 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 - [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.h)
 - [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.cpp)
 
+![ProjectileWeapon](https://user-images.githubusercontent.com/101626318/235425362-d07e65a6-7ff5-4ffc-9911-5354a1035c93.png)
+
+- 총을 발사할때 총구에서 발사체를 소환하고 발사체를 발사하여 공격하는 무기로 지금 프로젝트에서 발사체 무기는 돌격소총, 수류탄발사기, 로켓런쳐등이 있다.
+- 총의 종류마다 발사체가 달라서 발사체 클래스가 따로 존재한다.
+
+
+<details><summary>ProjectileFire </summary>
+<p>
+
+![ProjectileWeaponFire](https://user-images.githubusercontent.com/101626318/235426375-3faedd06-4580-44f9-bf26-e5b1b40e9d94.PNG)
+![ProjectileServerSideRewindUse](https://user-images.githubusercontent.com/101626318/235426377-79ccc7ed-1bcc-46c7-9347-f4b073bc501b.PNG)
+![ProjectileServerSideRewindNotUse](https://user-images.githubusercontent.com/101626318/235426380-56614894-84b3-433e-928f-8246524b6a9b.PNG)
+
+>발사체 무기에서 Fire함수이다. 발사체 무기에서 Fire함수가 호출되면 각각의 발사체 무기에 맞는 발사체가 소환되여 진행하는 방식이다.  
+>ServerSideRewind를 사용할경우와 사용하지 않는 경우로 나누어서 사용하게 된다.
+
+
+
+![LagCompProjectileHitPredict](https://user-images.githubusercontent.com/101626318/235428426-df96b690-01f5-43a2-be85-cb93bdd50268.PNG)
+>ServerSideRewind를 사용할경우 LagComp에서 발사체 예측함수인 PredictProjectilePath함수를 사용해서 발사체의 예상경로로 적이 적중했는지 파악한다.  
+> 발사체의 예측함수, 각종 변수들은 Input으로 입력받는다.
+
+
+	
+</p>
+</details>
+
+--------------------------------------------------------------------------------
+## ProjectileClass
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Projectile.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Projectile.cpp)
+
+
+- 발사체의 기본이되는 클래스로 이 클래스를 부모로해서 각각의 발사체 클래스들을 만든다.
+- 각각의 발사체들의 기본이 되는 함수들로 이루어져 있으며 
+- 현재 만들어져 있는 클래스들로는 돌격소총에 사용되는 발사체인 ProjectileBullet과 로켓에 사용되는 ProjectileRocket, 수류탄발사기인 ProjectileGrenade클래스들이 있다.
+
+<details><summary>OnHitFunc</summary>
+<p>
+
+![ProjectileBulletOnHitFunc](https://user-images.githubusercontent.com/101626318/235427667-53dfafeb-6d1b-4121-96ee-93320187138b.PNG)
+>발사체의 OnHit함수이다. 발사체가 다른액터에 Hit할경우 함수가 호출되도록 되어있으며 멀티플레이를 위해서 Multicast로 만들어져 있다.  
+>플레이어와 맞을경우와 다른 액터에 맞을경우를 다르게 설정해서 다른 파티클과 사운드가 나오게 설정되어 있다.
+
+	
+</p>
+</details>
+
+<details><summary>ProjectileBulletClass</summary>
+<p>
+
+-----------------------------------------------------------------------------------------
+
+## ProjectileBullet
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileBullet.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileBullet.cpp)
+
+![ProjectileBulletFire](https://user-images.githubusercontent.com/101626318/235428296-c4379776-f0bc-46d8-b043-bcd44fad584f.png)
+
+-돌격소총무기의 발사체로 Tracer로 잔광이 남아서 발사체가 얼마나 진행했는지 확인할수 있다.
+
+<details><summary>OnHitFunc</summary>
+<p>
+
+![BulletOnHit](https://user-images.githubusercontent.com/101626318/235428979-2fb6f8cc-07c6-421e-a3de-51a4245f0aca.PNG)
+	
+>Bullet의 OnHit함수로 캐릭터가 맞을경우 데미지를 주도록 되어있으며 ServerSideRewind를 사용할경우와 사용하지 않을경우로 나누어져 있다.
+
+	
+</p>
+</details>
+	
+------------------------------------------------------------------------------------
+	
+</p>
+</details>
+
+
+<details><summary>ProjectileRocektClass</summary>
+<p>
+
+--------------------------------------------------------------------------
+
+## ProjectileRocketClass
+	
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileRocket.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileRocket.cpp)
+	
+
+![RocketClass](https://user-images.githubusercontent.com/101626318/235430463-a3030364-6254-4e16-b31a-73989743a3ff.PNG)
+
+>로켓의 발사체 클래스이다. 로켓은 로켓클래스만의 MovementComponent를 가지고 있으며 폭발성 대미지를 가지고 있기때문에 발사체에 직접맞지 않고 근처에 있기만 해도 어느정도의 대미지를 줄수 있다.
+>또한 날아가는 동안 TrailSystem을 활용해서 연기를 연출하고 있다.
+
+
+	
+<details><summary>RocketOnHitFunc</summary>
+<p>
+
+![RocketOnHit](https://user-images.githubusercontent.com/101626318/235431259-c5e2b94b-98e6-4a4c-bf8b-0bab90d98afa.PNG)
+![ExplodeDamage](https://user-images.githubusercontent.com/101626318/235431264-cf4497dc-1a71-4ced-a601-3f1a1cfddfcb.PNG)
+
+>Rocket클래스의 OnHit함수이다. 자기자신은 피해를 입지 않도록 설정되어있으며 RocketMovementComponent를 통해서 움직임도 그대로 이어가도록 만들었다.  
+>자기자신 말고 다른액터에 닿게되면 폭발데미지를 주고 일정시간이 지난후에 파괴되도록 Timer를 설정해서 사용한다.
+
+</p>
+</details>
+	
+<details><summary>TrailSystem</summary>
+<p>
+
+![BeginPlay](https://user-images.githubusercontent.com/101626318/235431515-55d23272-d191-4a15-872d-0e3b249611df.PNG)
+![TrailSystem](https://user-images.githubusercontent.com/101626318/235431520-59dc752f-803b-42ea-b035-f9ea50c8b188.PNG)
+>나이아가라 시스템을 사용해서 로켓의 연기를 연출한 함수들이다.  
+>기본 Projectile함수에서 TrailSystem함수를 만든후 RocketClass의 BeginPlay에서 호출해 연기를 연출하였다.  
+>OnHit함수에서 TrailSystem을 멈추도록 만들어져 있다.
+
+
+</p>
+</details>
+
+	
+------------------------------------------------------------------------------------------------------	
+
+
+</p>
+</details>
+
+
+<details><summary>ProjectileGrenadeClass</summary>
+<p>
+
+--------------------------------------------------------------------------
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileGrenade.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileGrenade.cpp)
+	
+![Grenade](https://user-images.githubusercontent.com/101626318/235433255-d5d764e9-c627-411b-9a4a-067b026ea743.png)
+
+- 수류탄 발사기에서 발사되는 클래스로 다른발사체와 다르게 OnHit될경우 바로 대미지를 주는것이 아닌 바운스 되는 점이 다르다.  
+
+>생성자와 BeginPlay함수, 생성자에서 Bounce할지를 선택해서 사용한다.
+![GreandeBeginPlay](https://user-images.githubusercontent.com/101626318/235433436-052a0b7d-73e5-41db-95d5-3a0ba36f317f.PNG)
+
+
+![GrenadeBounceAndDestroy](https://user-images.githubusercontent.com/101626318/235433440-5f2e8708-57d5-4082-9cee-5d7274b87ecf.PNG)
+>다른 발사체와는 다르게 적에게 맞을때 대미지를 주는것이 아니라 파괴될때 폭발성 대미지를 주도록 되어있다. 다른액터에 맞을경우 단순히 팅겨져 나오게 된다.
+	
+	
+	
+	
+	
+
+	
+	
+----------------------------------------------------------------------------------
+</p>
+</details>
+
 
 
 
