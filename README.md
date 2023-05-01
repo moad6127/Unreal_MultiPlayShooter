@@ -1027,15 +1027,57 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 </p>
 </details>
 	
+------------------------------------------------------------------------------------
+	
 </p>
 </details>
 
 
 <details><summary>ProjectileRocektClass</summary>
 <p>
+
 --------------------------------------------------------------------------
+
 ## ProjectileRocketClass
 	
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileRocket.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileRocket.cpp)
+	
+
+![RocketClass](https://user-images.githubusercontent.com/101626318/235430463-a3030364-6254-4e16-b31a-73989743a3ff.PNG)
+
+>로켓의 발사체 클래스이다. 로켓은 로켓클래스만의 MovementComponent를 가지고 있으며 폭발성 대미지를 가지고 있기때문에 발사체에 직접맞지 않고 근처에 있기만 해도 어느정도의 대미지를 줄수 있다.
+>또한 날아가는 동안 TrailSystem을 활용해서 연기를 연출하고 있다.
+
+
+	
+<details><summary>RocketOnHitFunc</summary>
+<p>
+
+![RocketOnHit](https://user-images.githubusercontent.com/101626318/235431259-c5e2b94b-98e6-4a4c-bf8b-0bab90d98afa.PNG)
+![ExplodeDamage](https://user-images.githubusercontent.com/101626318/235431264-cf4497dc-1a71-4ced-a601-3f1a1cfddfcb.PNG)
+
+>Rocket클래스의 OnHit함수이다. 자기자신은 피해를 입지 않도록 설정되어있으며 RocketMovementComponent를 통해서 움직임도 그대로 이어가도록 만들었다.  
+>자기자신 말고 다른액터에 닿게되면 폭발데미지를 주고 일정시간이 지난후에 파괴되도록 Timer를 설정해서 사용한다.
+
+</p>
+</details>
+	
+<details><summary>TrailSystem</summary>
+<p>
+
+![BeginPlay](https://user-images.githubusercontent.com/101626318/235431515-55d23272-d191-4a15-872d-0e3b249611df.PNG)
+![TrailSystem](https://user-images.githubusercontent.com/101626318/235431520-59dc752f-803b-42ea-b035-f9ea50c8b188.PNG)
+>나이아가라 시스템을 사용해서 로켓의 연기를 연출한 함수들이다.  
+>기본 Projectile함수에서 TrailSystem함수를 만든후 RocketClass의 BeginPlay에서 호출해 연기를 연출하였다.  
+>OnHit함수에서 TrailSystem을 멈추도록 만들어져 있다.
+
+
+</p>
+</details>
+
+	
+------------------------------------------------------------------------------------------------------	
 
 
 </p>
@@ -1044,8 +1086,30 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 <details><summary>ProjectileGrenadeClass</summary>
 <p>
---------------------------------------------------------------------------
 
+--------------------------------------------------------------------------
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileGrenade.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileGrenade.cpp)
+	
+![Grenade](https://user-images.githubusercontent.com/101626318/235433255-d5d764e9-c627-411b-9a4a-067b026ea743.png)
+
+- 수류탄 발사기에서 발사되는 클래스로 다른발사체와 다르게 OnHit될경우 바로 대미지를 주는것이 아닌 바운스 되는 점이 다르다.  
+
+>생성자와 BeginPlay함수, 생성자에서 Bounce할지를 선택해서 사용한다.
+![GreandeBeginPlay](https://user-images.githubusercontent.com/101626318/235433436-052a0b7d-73e5-41db-95d5-3a0ba36f317f.PNG)
+
+
+![GrenadeBounceAndDestroy](https://user-images.githubusercontent.com/101626318/235433440-5f2e8708-57d5-4082-9cee-5d7274b87ecf.PNG)
+>다른 발사체와는 다르게 적에게 맞을때 대미지를 주는것이 아니라 파괴될때 폭발성 대미지를 주도록 되어있다. 다른액터에 맞을경우 단순히 팅겨져 나오게 된다.
+	
+	
+	
+	
+	
+
+	
+	
+----------------------------------------------------------------------------------
 </p>
 </details>
 
