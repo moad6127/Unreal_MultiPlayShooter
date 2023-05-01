@@ -953,6 +953,102 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 - [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.h)
 - [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileWeapon.cpp)
 
+![ProjectileWeapon](https://user-images.githubusercontent.com/101626318/235425362-d07e65a6-7ff5-4ffc-9911-5354a1035c93.png)
+
+- 총을 발사할때 총구에서 발사체를 소환하고 발사체를 발사하여 공격하는 무기로 지금 프로젝트에서 발사체 무기는 돌격소총, 수류탄발사기, 로켓런쳐등이 있다.
+- 총의 종류마다 발사체가 달라서 발사체 클래스가 따로 존재한다.
+
+
+<details><summary>ProjectileFire </summary>
+<p>
+
+![ProjectileWeaponFire](https://user-images.githubusercontent.com/101626318/235426375-3faedd06-4580-44f9-bf26-e5b1b40e9d94.PNG)
+![ProjectileServerSideRewindUse](https://user-images.githubusercontent.com/101626318/235426377-79ccc7ed-1bcc-46c7-9347-f4b073bc501b.PNG)
+![ProjectileServerSideRewindNotUse](https://user-images.githubusercontent.com/101626318/235426380-56614894-84b3-433e-928f-8246524b6a9b.PNG)
+
+>발사체 무기에서 Fire함수이다. 발사체 무기에서 Fire함수가 호출되면 각각의 발사체 무기에 맞는 발사체가 소환되여 진행하는 방식이다.  
+>ServerSideRewind를 사용할경우와 사용하지 않는 경우로 나누어서 사용하게 된다.
+
+
+
+![LagCompProjectileHitPredict](https://user-images.githubusercontent.com/101626318/235428426-df96b690-01f5-43a2-be85-cb93bdd50268.PNG)
+>ServerSideRewind를 사용할경우 LagComp에서 발사체 예측함수인 PredictProjectilePath함수를 사용해서 발사체의 예상경로로 적이 적중했는지 파악한다.  
+> 발사체의 예측함수, 각종 변수들은 Input으로 입력받는다.
+
+
+	
+</p>
+</details>
+
+--------------------------------------------------------------------------------
+## ProjectileClass
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Projectile.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/Projectile.cpp)
+
+
+- 발사체의 기본이되는 클래스로 이 클래스를 부모로해서 각각의 발사체 클래스들을 만든다.
+- 각각의 발사체들의 기본이 되는 함수들로 이루어져 있으며 
+- 현재 만들어져 있는 클래스들로는 돌격소총에 사용되는 발사체인 ProjectileBullet과 로켓에 사용되는 ProjectileRocket, 수류탄발사기인 ProjectileGrenade클래스들이 있다.
+
+<details><summary>OnHitFunc</summary>
+<p>
+
+![ProjectileBulletOnHitFunc](https://user-images.githubusercontent.com/101626318/235427667-53dfafeb-6d1b-4121-96ee-93320187138b.PNG)
+>발사체의 OnHit함수이다. 발사체가 다른액터에 Hit할경우 함수가 호출되도록 되어있으며 멀티플레이를 위해서 Multicast로 만들어져 있다.  
+>플레이어와 맞을경우와 다른 액터에 맞을경우를 다르게 설정해서 다른 파티클과 사운드가 나오게 설정되어 있다.
+
+	
+</p>
+</details>
+
+<details><summary>ProjectileBulletClass</summary>
+<p>
+
+-----------------------------------------------------------------------------------------
+
+## ProjectileBullet
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileBullet.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Weapon/ProjectileBullet.cpp)
+
+![ProjectileBulletFire](https://user-images.githubusercontent.com/101626318/235428296-c4379776-f0bc-46d8-b043-bcd44fad584f.png)
+
+-돌격소총무기의 발사체로 Tracer로 잔광이 남아서 발사체가 얼마나 진행했는지 확인할수 있다.
+
+<details><summary>OnHitFunc</summary>
+<p>
+
+![BulletOnHit](https://user-images.githubusercontent.com/101626318/235428979-2fb6f8cc-07c6-421e-a3de-51a4245f0aca.PNG)
+	
+>Bullet의 OnHit함수로 캐릭터가 맞을경우 데미지를 주도록 되어있으며 ServerSideRewind를 사용할경우와 사용하지 않을경우로 나누어져 있다.
+
+	
+</p>
+</details>
+	
+</p>
+</details>
+
+
+<details><summary>ProjectileRocektClass</summary>
+<p>
+--------------------------------------------------------------------------
+## ProjectileRocketClass
+	
+
+
+</p>
+</details>
+
+
+<details><summary>ProjectileGrenadeClass</summary>
+<p>
+--------------------------------------------------------------------------
+
+</p>
+</details>
+
 
 
 
