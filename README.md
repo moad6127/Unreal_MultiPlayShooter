@@ -1,4 +1,4 @@
-# *Unreal_MultiPlayShooter*
+# *멀티플레이 TPS 게임*
 
 이 프로젝트는 언리얼 엔진을 사용해서 멀티플레이 3인칭 슈팅게임을 만들었습니다 
 또한 유데미 강좌중 하나인 Unreal Engine 5 C++ Multiplayer Shooter 코스를 기반으로 만들었으며 여기에 몇가지를 추가해서 만들었습니다.
@@ -6,25 +6,43 @@
 
 <details><summary>구분</summary>
 <p>
--멀티플레이 플러그인
+	
+- 멀티플레이 플러그인
 	
 	- Menu
 	- MultiplayerSessionSubsystem
 
--캐릭터
+- 캐릭터
 
 	- 애님인스턴스
  	- 캐릭터 컴포넌트
-		-CombatComponent
-			-전투및 움직임 관련 컴포넌트
-		-BuffComponent
-			-버프 픽업과 관련된 컴포넌트
-		-LagComponent
-			-ServerSideRewind와 관련된 컴포넌트
+		- CombatComponent
+		- BuffComponent
+		- LagComponent
 	- PlayerController
 	- PlayerState
 	
--HUD
+
+- 게임모드
+
+ 	- GameState
+		- Game 전반적인 정보
+ 	- 게임모드
+		- 대난투모드
+		- 팀모드
+		- 깃발뺏기모드
+
+
+- 무기
+
+	- 무기 기능들
+ 	- 히트스캔 무기
+ 	- 발사체 무기
+		- 기본 발사체
+		- 총알 발사체
+		- 로켓 발사체
+		- 수류탄 발사체
+- HUD
 
 	- 캐릭터 HUD
 	- 무기 Pickup HUD
@@ -32,39 +50,16 @@
 	- Elim HUD
 
 
--게임모드
-
- 	- GameState
-		-Game 전반적인 정보
- 	- 맵
-		-로비맵
-		-대난투맵
-		-팀맵
-		-깃발뺏기맵
-
-
--무기
-
-	-무기 기능들
- 	- 히트스캔
-		-권총
-		-샷건
-		-스나이퍼 라이플
- 	- 발사체
-		-AR
-		-로켓런쳐
-		-수류탄발사기
  
 
--픽업
+- 픽업
 
-	-버프 픽업
-		-Health픽업
-		-Shield픽업
-		-Jump픽업	
-		-Speed픽업
-	-탄약 픽업
-		-탄약 종류별로 픽업
+	- 버프 픽업
+		- Health픽업
+		- Shield픽업
+		- Jump픽업	
+		- Speed픽업
+	- 탄약 픽업
 
 </p>
 </details>
@@ -1118,7 +1113,8 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 
 ---------------------------------------------------------------------------
-# *HUD클래스*
+
+# *HUD클래스 && UI*
 
 - [HUD폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/HUD)
 
@@ -1126,6 +1122,249 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 
 게임중 화면에 그려지는 모든것을 HUD라고 한다.
-HUD에는 기본 CharcterOverlayHUD와 WeaponPickupHUD등 여러가지가 있으며 게임중 정보를 알려주는 역할을 하게 된다.
+HUD에는 BlasterHUD가 있으며 BlasterHUD에서 UserWidget으로 만들어진 클래스들을 불러서 화면에 그리게 된다.
+PlayerController에서 HUD클래스를 불러내서 사용할수 있다.
+
+
+--------------------------------------------------------------------------------
+
+## BlasterHUD
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/HUD/BlasterHUD.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/HUD/BlasterHUD.cpp)
+
+
+
+AHUD클래스를 부모로 가지는 클래스로 UserWidget클래스들을 CreateWidget으로 화면에 그리거나 DrawHUD함수를 사용해서 화면에 그리게 된다.
+
+
+<details><summary>조준선 그리기</summary>
+<p>
+
+![BlasterHUD_DrawHUDFunc](https://user-images.githubusercontent.com/101626318/235579011-bad7232b-7b13-416a-8d07-163e458baebe.PNG)
+>DrawHUD기능을 사용해서 조준선의 Left,Right,Top,Bottom,Center를 표현한다.	
+
+![BlasterHUD_DrawCrosshair](https://user-images.githubusercontent.com/101626318/235579015-75be8d0b-d959-4cb3-8986-90dd99de8b7e.PNG)
+>입력으로 텍스쳐,그리는 중심, 퍼지는정도, 색을 받아서 DrawTexture함수로 조준선을 그리는 함수이다.
+	
+![Combat_SetDrawHUD](https://user-images.githubusercontent.com/101626318/235579979-1bee6a4e-1d5c-4e13-815e-c33b00968b03.PNG)
+![Combat_SetDrawHUD_2](https://user-images.githubusercontent.com/101626318/235579980-ea98c8eb-7959-4447-82e7-c5415d82da60.PNG)
+>CombatComp에서 HUD의 텍스쳐와 스프레드를 넘겨주어서 조준선을 그리게 만든다.
+
+	
+	
+- 현재 DrawHUD 함수는 캐릭터의 조준선을 그리는데 사용되며 조준선의 그림들은 총에 저장되서 총마다 다른 조준선을 가지게 된다.
+	
+</p>
+</details>
+
+<details><summary>UserWidet클래스 HUD에 표시하기</summary>
+<p>
+
+![BlasterHUD_UserWidgetCreate](https://user-images.githubusercontent.com/101626318/235580159-680c3381-438f-4092-a14a-d469b9ca1cdc.PNG)
+>UserWidget클래스들을 BlasterHUD로 표시하는 방법이다.   
+>소유자의 컨트롤러를 가져온후 CraetWidget함수를 통해서 화면에 표시하게 된다.
+
+
+	
+</p>
+</details>
+
+<details><summary>KillFeed</summary>
+<p>
+
+![KillFeed_2](https://user-images.githubusercontent.com/101626318/235580485-b3a5f0d7-27b5-4902-a60f-da0107671712.PNG)
+>적 플레이어를 죽일경우 화면 하단의 왼쪽에 킬피드가 나오도록 만들었다.
+>모든 플레이어가 확인할수 있도록 만들었다.
+	
+	
+![GameModeElim_Func](https://user-images.githubusercontent.com/101626318/235580875-0abd06c2-bae0-4e76-8d34-6eebf8b987f7.PNG)
+>플레이어가 죽을경우 GameMode의 PlayerEliminated함수에서 모든 컨트롤러를 가져온후 함수를 호출하게 된다.
+
+![Character_ElimBroadCast](https://user-images.githubusercontent.com/101626318/235580879-21de5dab-8253-4a62-ac12-a14df29aaee4.PNG)
+>Character클래스의 	BroadcastElim를 Client방식으로 만들어서 모든 플레이어에게 보이게 만든후 각 상황에 맞게 텍스트를 정하고 넘겨준후    
+>화면에 표시한다
+	
+
+![ElimTextSet](https://user-images.githubusercontent.com/101626318/235580881-17f54822-51a4-46d4-b29e-4b39cebfca4d.PNG)
+	
+	
+</p>
+</details>
+
+-------------------------------------------------------------------------------------------------
+
+## ReturnToMainMenu UI
+
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/HUD/ReturnToMainMenu.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/HUD/ReturnToMainMenu.cpp)
+
+
+![Exit](https://user-images.githubusercontent.com/101626318/235582685-eb302e92-d9f2-492f-bfb5-b488de41876c.png)
+>게임 도중에 메인메뉴화면으로 나가기 위한 기능으로 버튼을 누르면 메인메뉴화면으로 세션을 나가게 된다.
+
+
+<details><summary>기능</summary>
+<p>
+
+![KeyBind](https://user-images.githubusercontent.com/101626318/235583667-62a8ed0b-43bc-450d-b165-8e80e8901d57.PNG)
+>PlayerController에서 키 바인딩을 통해서 해당키를 누르면 UI가 나오도록 설정했다.
+	
+![ShowMenu](https://user-images.githubusercontent.com/101626318/235584556-f6920ce2-ebeb-45e0-a12a-753ec81cb56f.PNG)
+>버튼을 누르면 호출되는 함수
+
+![MenuSetup](https://user-images.githubusercontent.com/101626318/235584246-2e976627-e228-4d0b-8ebe-f1c3b360cd9b.PNG)
+>키를 누르면 메뉴가 보여지도록 만들고, 마우스 커서를 생성시켜 버튼을 누를수 있게 만들었다.    
+>버튼의 클릭이벤트 함수를 설정하고 세션을 나가기위해서 멀티플레이 플러그인의 델리게이트도 연동시킨다.
+
+	
+	
+![MenuTearDown](https://user-images.githubusercontent.com/101626318/235584252-184d4f7b-766a-4f52-a811-64b09dee08ad.PNG)
+>나가기 버튼을 누르지않고 메뉴를 나가기 위해서 뷰포트를 지우고 바인딩한 함수들을 Remove시키는 기능을 하는 함수이다.
+
+</p>
+</details>
+
+
+<details><summary>나가기 버튼을 눌렀을때</summary>
+<p>
+	
+- 서버캐릭터가 나가기 버튼을 눌렀을경우 서버와 모든클라이언트들까지 메인메뉴로 나가게 되지만 클라이언트가 나가기 버튼을 누를경우 해당 클라이언트만 나가게 된다.  
+- 따라서 자연스럽게 나가기위해서 클라이언트의 캐릭터를 Elim시키면서 나가는 방식을 사용한다.
+	
+![ButtonClick](https://user-images.githubusercontent.com/101626318/235585332-025ad78b-c403-47dd-8923-6c265c4e99d3.PNG)
+>나가기 버튼을 누를경우 해당함수가 호출되면서 캐릭터 클래스의 ServerRPC를 호출하게 된다.
+
+![ServerLeaveGame](https://user-images.githubusercontent.com/101626318/235585470-01c19b4c-97b3-499f-b8f6-b6cd815e8102.PNG)
+>ServerRPC는 게임모드에서 나가기 함수를 호출하도록 한다.
+
+![PlayerLeft](https://user-images.githubusercontent.com/101626318/235585522-defccfbd-b201-4313-8f6d-d0fefd9cdfc0.PNG)
+>게임모드에서 호출된 함수는 해당 캐릭터의 점수를 확인하면서 점수를 제거하고 Elim함수를 호출하게되 캐릭터가 죽는 모션을 취한후 게임을 나가게 된다.
+	
+</p>
+</details>
+
+------------------------------------------------------------------------------------------------
+# *Pickup클래스*
+
+
+- [Pickup폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/Pickups)
+
+![Pickups](https://user-images.githubusercontent.com/101626318/235587205-3c0e3c23-2959-49b6-925f-c61c6e584f18.png)
+
+- 게임에서 픽업을 담당하는 클래스들이다, 캐릭터가 가까이가면 Overlap으로 설정되서 자동으로 획득할수 있게 만들었다.
+- 픽업의 종류로는 크게 버프 픽업과 Ammo픽업이 있으며,   
+- 버프픽업에는 체력회복, 쉴드회복, 스피드업, 점프업이 있으며, Ammo픽업은 모든 Ammo종류의 픽업이 있다.
+- 또한 자동으로 Pickup을 소환해주는 PickupSpawnPoint가 있어서 일정시간이 지나면 자동으로 생성되게 만들었다.
+
+-----------------------------------------------------------------------------------------------------
+## BasePickup클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/Pickup.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/Pickup.cpp)
+
+-모든 픽업의 부모가 되는 클래스로 PickupMesh와 OverlapSpher등이 변수로 있고 OnSpherOverlap함수를 선언만 해두어서 상속받는 클래스에서 기능을 완성시키게 만들었다.
+
+![APickup](https://user-images.githubusercontent.com/101626318/235588288-6b050be3-7f0c-450f-8125-31dd9499b57f.PNG)
+>Picku클래스의 생성자, 기본적인 기능만 존재한다.
+
+
+<details><summary>AmmoPickup</summary>
+<p>
+	
+----------------------------------------------------------------------------------------------------------------------------
+
+## AmmoPickup클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/AmmoPickup.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/AmmoPickup.cpp)
+
+
+- 얻을경우 해당타입에 맞는 총알을 설정된 개수만큼 캐릭터의 현재Ammo에 더해지게 되는 클래스이다.
+
+<details><summary>Overlap</summary>
+<p>
+	
+![AmmoPickupOverlap](https://user-images.githubusercontent.com/101626318/235588948-3a038680-ad8e-4e7e-83b4-3bfa51aaa72a.PNG)
+![CombatPickupAmmo](https://user-images.githubusercontent.com/101626318/235588958-3a783717-65a5-49ba-9114-1238de294f0d.PNG)
+
+>해당 픽업을 Overlap할경우 CombatComp에서 PickupAmmo함수를 호출해서 무기타입에 맞는 Ammo를 더하고 파괴되도록 만들었다.
+
+	
+</p>
+</details>
+	
+-----------------------------------------------------------------------------------------------------
+	
+	
+</p>
+</details>
+
+<details><summary>버프 픽업들 </summary>
+<p>
+
+-----------------------------------------------------------------------
+## BuffPickups
+	
+	
+>버프 픽업에는 체력회복, 쉴드회복, 스피드업, 점프업이 있으며 획득할경우 Overlap함수에서 BuffComp에 해당버프를 호출하는 방식으로 사용된다.
+>각각의 클래스에서는 버프에 필요한 변수들이 저장되어 있으며 BuffComp로 호출할때 넘겨주게 된다.
+
+- Heal	
+	- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/HealthPickup.h)
+	- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/HealthPickup.cpp)
+
+- Shield
+	- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/ShieldPickup.h)
+	- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/ShieldPickup.cpp)
+
+- JumpUp
+	- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/JumpPickup.h)
+	- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/JumpPickup.cpp)
+
+- SpeedUp
+	- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/SpeedPickup.h)
+	- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/SpeedPickup.cpp)
+
+![JumpPickupOverlap](https://user-images.githubusercontent.com/101626318/235590512-5e173339-172e-484d-833d-97f478cba792.PNG)
+>JumpPickup의 Overlap함수이다. Overlap되면 BuffComp로 가지고 있는 변수들을 넘겨주면서 버프를 얻게 된다.
+
+
+</p>
+</details>
+
+----------------------------------------------------------------------------------------------------------------
+## PickupSpawnPoint클래스
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/Pickup.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/Pickups/Pickup.cpp)
+
+> 각종 Pickup클래스들을 자동으로 소환하는 클래스로, Timer를 사용해서 캐릭터가 해당포인트의 Pickup을 먹었을경우 자동으로 소환하게 만들었다.
+
+![PickupSpawnPointClass](https://user-images.githubusercontent.com/101626318/235591569-0a506e0f-5e51-4341-b61a-1f4fe9b2174c.PNG)
+>BeginPlay에서 부터 타이머가 작동하며,   
+> 변수로 소환할 Pickup클래스들의 종류를 설정하고 재소환 시간의 Max와Min을 설정하면 랜덤함수를 사용해서 랜덤하게 Pickup클래스 재소환 시간을 정한다.
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------
+# 참고한 것들
+
+프로젝트의 전반적인 기능은 유데미 강좌중 ``Unreal Engine 5 C++ Multiplayer Shooter`` 을 보고 만들었습니다.
+
+
+프로젝트의 캐릭터와 맵의 리소스 : 언리얼엔진 마켓플레이스의 ``Unreal Learning Kit: Games`` 파일들을 사용
+
+캐릭터 애니메이션 : 에픽게임즈 언리얼엔진의 마켓플레이스 ``애니메이션 스타터 팩`` 의 애니메이션 사용
+
+총기들 : 에픽게임즈 언리얼엔진의 마켓플레이스 ``Military Weapons Silver`` 의 총기와 총기애니메이션, 사운드 사용
+SMG, 수류탄 메쉬 : 언리얼엔진의 마켓플레이스 ``FPS Weapon Bundle`` 에서 사용
+
+버프픽업의 나이아가라 시스템 : 언리얼 엔진의 마켓플레이스 ``Basic Pickups VFX Set (Niagara)`` 사용
+
 
 
