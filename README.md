@@ -1,4 +1,4 @@
-# *Unreal_MultiPlayShooter*
+# *멀티플레이 TP*
 
 이 프로젝트는 언리얼 엔진을 사용해서 멀티플레이 3인칭 슈팅게임을 만들었습니다 
 또한 유데미 강좌중 하나인 Unreal Engine 5 C++ Multiplayer Shooter 코스를 기반으로 만들었으며 여기에 몇가지를 추가해서 만들었습니다.
@@ -60,7 +60,6 @@
 		- Jump픽업	
 		- Speed픽업
 	- 탄약 픽업
-		- 탄약 종류별로 픽업
 
 </p>
 </details>
@@ -1346,4 +1345,26 @@ AHUD클래스를 부모로 가지는 클래스로 UserWidget클래스들을 Crea
 ![PickupSpawnPointClass](https://user-images.githubusercontent.com/101626318/235591569-0a506e0f-5e51-4341-b61a-1f4fe9b2174c.PNG)
 >BeginPlay에서 부터 타이머가 작동하며,   
 > 변수로 소환할 Pickup클래스들의 종류를 설정하고 재소환 시간의 Max와Min을 설정하면 랜덤함수를 사용해서 랜덤하게 Pickup클래스 재소환 시간을 정한다.
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------
+# 참고한 것들
+
+프로젝트의 전반적인 기능은 유데미 강좌중 ``Unreal Engine 5 C++ Multiplayer Shooter`` 을 보고 만들었습니다.
+
+
+프로젝트의 캐릭터와 맵의 리소스 : 언리얼엔진 마켓플레이스의 ``Unreal Learning Kit: Games`` 파일들을 사용
+
+캐릭터 애니메이션 : 에픽게임즈 언리얼엔진의 마켓플레이스 ``애니메이션 스타터 팩`` 의 애니메이션 사용
+
+총기들 : 에픽게임즈 언리얼엔진의 마켓플레이스 ``Military Weapons Silver`` 의 총기와 총기애니메이션, 사운드 사용
+SMG, 수류탄 메쉬 : 언리얼엔진의 마켓플레이스 ``FPS Weapon Bundle`` 에서 사용
+
+버프픽업의 나이아가라 시스템 : 언리얼 엔진의 마켓플레이스 ``Basic Pickups VFX Set (Niagara)`` 사용
+
+
 
