@@ -13,6 +13,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Blaster/BlasterComponents/CombatComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/DecalActor.h"
+#include "Components/DecalComponent.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -81,6 +84,25 @@ void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 	DOREPLIFETIME(AWeapon, WeaponState);
 	DOREPLIFETIME_CONDITION(AWeapon, bUseServerSideRewind,COND_OwnerOnly);
 }
+
+
+
+void AWeapon::SpawnDecal(FHitResult& Result)
+{
+	if (DecalMaterial)
+	{
+		FRotator DecalRotation = Result.ImpactNormal.Rotation();
+		DecalRotation.Roll = FMath::FRandRange(-180.0f, 180.0f);
+
+		auto Decal = UGameplayStatics::SpawnDecalAttached(DecalMaterial, FVector(DecalSize, DecalSize, DecalSize),
+			Result.Component.Get(), Result.BoneName,
+			Result.ImpactPoint, DecalRotation, EAttachLocation::KeepWorldPosition,
+			LifeSpan);
+
+		Decal->SetFadeScreenSize(0.001f);
+	}
+}
+
 
 
 
@@ -318,6 +340,8 @@ void AWeapon::OnEquippedSecondary()
 		}
 	}
 }
+
+
 
 void AWeapon::ShowPickupWidget(bool bShowWidget)
 {

@@ -19,6 +19,7 @@
 #include "Blaster/Weapon/Projectile.h"
 #include "Blaster/Weapon/Shotgun.h"
 #include "Blaster/Weapon/Flag.h"
+#include "Camera/CameraShakeBase.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -185,7 +186,6 @@ void UCombatComponent::FireProjectileWeapon()
 {
 	if (EquippedWeapon &&Character)
 	{
-		Character->StartRecoil();
 		HitTarget = EquippedWeapon->bUseScatter ? EquippedWeapon->TraceEndWithScatter(HitTarget) : HitTarget;
 		if (!Character->HasAuthority())
 		{
@@ -199,7 +199,6 @@ void UCombatComponent::FireHitScanWeapon()
 {
 	if (EquippedWeapon && Character)
 	{
-		Character->StartRecoil();
 		HitTarget = EquippedWeapon->bUseScatter ? EquippedWeapon->TraceEndWithScatter(HitTarget) : HitTarget;
 		if (!Character->HasAuthority())
 		{
@@ -215,7 +214,6 @@ void UCombatComponent::FireShotgun()
 	AShotgun* Shotgun = Cast<AShotgun>(EquippedWeapon);
 	if (Shotgun && Character)
 	{
-		Character->StartRecoil();
 		TArray<FVector_NetQuantize> HitTargets;
 		Shotgun->ShotgunTraceEndWithScatter(HitTarget, HitTargets);
 		if (!Character->HasAuthority())
@@ -314,6 +312,7 @@ void UCombatComponent::LocalFire(const FVector_NetQuantize& TraceHitTarget)
 	if (Character && CombatState == ECombatState::ECS_Unoccupied)
 	{
 		Character->PlayFireMontage(bAiming);
+		RecoilSystem();
 		EquippedWeapon->Fire(TraceHitTarget);
 	}
 }
@@ -808,6 +807,23 @@ void UCombatComponent::OnRep_TheFlag()
 	if (TheFlag != nullptr)
 	{
 		TheFlag->ResetFlag();
+	}
+}
+
+void UCombatComponent::RecoilSystem()
+{
+	Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
+	
+	if (Controller)
+	{
+		float PitchRecoil = FMath::RandRange(0.1f, EquippedWeapon->GetMaxPitchRecoil());
+		float YawRecoil = FMath::RandRange(-1 * EquippedWeapon->GetMaxYawRecoil(), EquippedWeapon->GetMaxYawRecoil());
+		if (FiringCameraShakeClass)
+		{
+			Controller->ClientPlayCameraShake(FiringCameraShakeClass);
+		}
+		Controller->AddPitchInput(PitchRecoil * -1);
+		Controller->AddYawInput(YawRecoil);
 	}
 }
 

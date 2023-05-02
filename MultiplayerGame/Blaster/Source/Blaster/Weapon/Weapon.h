@@ -93,6 +93,22 @@ protected:
 	virtual void OnEquipped();
 	virtual void OnDropped();
 	virtual void OnEquippedSecondary();
+	
+
+	/**
+	* Decal
+	*/
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface* DecalMaterial;
+
+	UPROPERTY(EditAnywhere)
+	float DecalSize = 8.f;
+
+	UPROPERTY(EditAnywhere)
+	float LifeSpan = 5.f;
+
+	void SpawnDecal(FHitResult& Result);
+
 
 	UFUNCTION()
 	virtual void OnSphereOverlap(
@@ -138,6 +154,13 @@ protected:
 
 	UFUNCTION()
 	void OnPingTooHigh(bool bPingTooHigh);
+
+	UPROPERTY(EditAnywhere)
+	float MaxPitchRecoil = 0.3f;
+
+
+	UPROPERTY(EditAnywhere)
+	float MaxYawRecoil = 0.3f;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
@@ -193,6 +216,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	ETeam Team;
+
 public:	
 
 
@@ -211,4 +235,6 @@ public:
 	FORCEINLINE float GetDamage() const { return Damage; }
 	FORCEINLINE float GetHeadShotDamage() const { return HeadShotDamage; }
 	FORCEINLINE ETeam GetTeam() const { return Team; }
+	FORCEINLINE float GetMaxPitchRecoil() const { return MaxPitchRecoil; }
+	FORCEINLINE float GetMaxYawRecoil() const { return MaxYawRecoil; }
 };

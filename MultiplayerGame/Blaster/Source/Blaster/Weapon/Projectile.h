@@ -49,7 +49,19 @@ protected:
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	UFUNCTION(NetMulticast, Reliable)
-	void Multicast_OnHit(AActor* OtherActor);
+	void Multicast_OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	/**
+	* Decal
+	*/
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface* DecalMaterial;
+
+	UPROPERTY(EditAnywhere)
+	float DecalSize =  8.f;
+
+	UPROPERTY(EditAnywhere)
+	float LifeSpan = 5.f;
 
 
 

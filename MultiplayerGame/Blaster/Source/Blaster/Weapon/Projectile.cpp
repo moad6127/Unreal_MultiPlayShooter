@@ -11,6 +11,8 @@
 #include "Blaster/Blaster.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Engine/DecalActor.h"
+#include "Components/DecalComponent.h"
 
 AProjectile::AProjectile()
 {
@@ -71,12 +73,12 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	if (HasAuthority())
 	{
-		Multicast_OnHit(OtherActor);
+		Multicast_OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 	}
 	Destroy();
 }
 
-void AProjectile::Multicast_OnHit_Implementation(AActor* OtherActor)
+void AProjectile::Multicast_OnHit_Implementation(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor->Implements<UInteractWithCrosshairsInterface>())
 	{
@@ -98,6 +100,22 @@ void AProjectile::Multicast_OnHit_Implementation(AActor* OtherActor)
 		if (ImpactSound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+		}
+		if (DecalMaterial)
+		{
+			FRotator DecalRotation = Hit.ImpactNormal.Rotation();
+			DecalRotation.Roll = FMath::FRandRange(-180.0f, 180.0f);
+			//ADecalActor* DecalActor = GetWorld()->SpawnActor<ADecalActor>(Result.ImpactPoint, DecalRotation);
+
+			auto Decal = UGameplayStatics::SpawnDecalAttached(DecalMaterial, FVector(DecalSize, DecalSize, DecalSize),
+				Hit.Component.Get(),
+				FName(),
+				Hit.ImpactPoint,
+				DecalRotation,
+				EAttachLocation::KeepWorldPosition,
+				LifeSpan);
+
+			Decal->SetFadeScreenSize(0.001f);
 		}
 	}
 

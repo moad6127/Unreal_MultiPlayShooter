@@ -74,18 +74,7 @@ public:
 
 	void SetTeamColor(ETeam Team);
 
-	/**
-	* ReColi
-	*/
-	void InitializeRecoilTimeline();
 
-	UFUNCTION()
-		void StartHorizontalRecoil(float Value);
-
-	UFUNCTION()
-		void StartVerticalRecoil(float Value);
-
-	void StartRecoil();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -391,16 +380,6 @@ private:
 	class ABlasterGameMode* BlasterGameMode;
 
 
-	/**
-	* Recoil
-	*/
-	FTimeline RecoilTimeline;
-
-	UPROPERTY(EditAnywhere)
-	UCurveFloat* VerticalCurve;
-
-	UPROPERTY(EditAnywhere)
-	UCurveFloat* HorizontalCurve;
 public:	
 
 	void SetOverlappingWeapon(AWeapon* Weapon);

@@ -253,6 +253,16 @@ private:
 
 	UFUNCTION()
 	void OnRep_TheFlag();
+
+
+	/**
+	* Recoil && CameraShake
+	*/
+	void RecoilSystem();
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TSubclassOf<class UCameraShakeBase> FiringCameraShakeClass;
+
 public:	
 	FORCEINLINE int32 GetGrenade()const { return Grenade; }
 	bool ShouldSwapWeapon();

@@ -97,6 +97,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 				GetActorLocation()
 			);
 		}
+		SpawnDecal(FireHit);
 
 	}
 }
