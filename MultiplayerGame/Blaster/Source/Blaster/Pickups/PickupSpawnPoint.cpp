@@ -16,6 +16,25 @@ void APickupSpawnPoint::BeginPlay()
 	StartSpawnPickupTimer((AActor*)nullptr);
 }
 
+void APickupSpawnPoint::StartSpawnPickupTimer(AActor* DestroyedActor)
+{
+	const float SpawnTime = FMath::FRandRange(SpawnPickupTimeMin, SpawnPickupTimeMax);
+	GetWorldTimerManager().SetTimer(
+		SpawnPickupTimer,
+		this,
+		&APickupSpawnPoint::SpawnPickupTimerFinish,
+		SpawnTime
+	);
+}
+
+void APickupSpawnPoint::SpawnPickupTimerFinish()
+{
+	if (HasAuthority())
+	{
+		SpawnPickup();
+	}
+}
+
 void APickupSpawnPoint::SpawnPickup()
 {
 	int32 NumPickupClasses = PickupClasses.Num();
@@ -29,25 +48,6 @@ void APickupSpawnPoint::SpawnPickup()
 			SpawnedPickup->OnDestroyed.AddDynamic(this, &APickupSpawnPoint::StartSpawnPickupTimer);
 		}
 	}
-}
-
-void APickupSpawnPoint::SpawnPickupTimerFinish()
-{
-	if (HasAuthority())
-	{
-		SpawnPickup();
-	}
-}
-
-void APickupSpawnPoint::StartSpawnPickupTimer(AActor* DestroyedActor)
-{
-	const float SpawnTime = FMath::FRandRange(SpawnPickupTimeMin, SpawnPickupTimeMax);
-	GetWorldTimerManager().SetTimer(
-		SpawnPickupTimer,
-		this,
-		&APickupSpawnPoint::SpawnPickupTimerFinish,
-		SpawnTime
-	);
 }
 
 void APickupSpawnPoint::Tick(float DeltaTime)

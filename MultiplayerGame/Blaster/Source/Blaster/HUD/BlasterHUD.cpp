@@ -61,10 +61,8 @@ void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
 						);
 						CanvasSlot->SetPosition(NewPosition);
 					}
-					
 				}
 			}
-
 			ElimMessages.Add(ElimAnnouncementWidget);
 
 			FTimerHandle ElimMsgTimer;
