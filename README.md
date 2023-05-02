@@ -1118,7 +1118,8 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 
 ---------------------------------------------------------------------------
-# *HUD클래스*
+
+# *HUD클래스 && UI*
 
 - [HUD폴더](https://github.com/moad6127/Unreal_MultiPlayShooter/tree/master/MultiplayerGame/Blaster/Source/Blaster/HUD)
 
@@ -1126,6 +1127,79 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 
 
 게임중 화면에 그려지는 모든것을 HUD라고 한다.
-HUD에는 기본 CharcterOverlayHUD와 WeaponPickupHUD등 여러가지가 있으며 게임중 정보를 알려주는 역할을 하게 된다.
+HUD에는 BlasterHUD가 있으며 BlasterHUD에서 UserWidget으로 만들어진 클래스들을 불러서 화면에 그리게 된다.
+PlayerController에서 HUD클래스를 불러내서 사용할수 있다.
+
+
+--------------------------------------------------------------------------------
+
+## BlasterHUD
+
+- [헤더파일](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/HUD/BlasterHUD.h)
+- [CPP](https://github.com/moad6127/Unreal_MultiPlayShooter/blob/master/MultiplayerGame/Blaster/Source/Blaster/HUD/BlasterHUD.cpp)
+
+
+
+AHUD클래스를 부모로 가지는 클래스로 UserWidget클래스들을 CreateWidget으로 화면에 그리거나 DrawHUD함수를 사용해서 화면에 그리게 된다.
+
+
+<details><summary>조준선 그리기</summary>
+<p>
+
+![BlasterHUD_DrawHUDFunc](https://user-images.githubusercontent.com/101626318/235579011-bad7232b-7b13-416a-8d07-163e458baebe.PNG)
+>DrawHUD기능을 사용해서 조준선의 Left,Right,Top,Bottom,Center를 표현한다.	
+
+![BlasterHUD_DrawCrosshair](https://user-images.githubusercontent.com/101626318/235579015-75be8d0b-d959-4cb3-8986-90dd99de8b7e.PNG)
+>입력으로 텍스쳐,그리는 중심, 퍼지는정도, 색을 받아서 DrawTexture함수로 조준선을 그리는 함수이다.
+	
+![Combat_SetDrawHUD](https://user-images.githubusercontent.com/101626318/235579979-1bee6a4e-1d5c-4e13-815e-c33b00968b03.PNG)
+![Combat_SetDrawHUD_2](https://user-images.githubusercontent.com/101626318/235579980-ea98c8eb-7959-4447-82e7-c5415d82da60.PNG)
+>CombatComp에서 HUD의 텍스쳐와 스프레드를 넘겨주어서 조준선을 그리게 만든다.
+
+	
+	
+- 현재 DrawHUD 함수는 캐릭터의 조준선을 그리는데 사용되며 조준선의 그림들은 총에 저장되서 총마다 다른 조준선을 가지게 된다.
+	
+</p>
+</details>
+
+<details><summary>UserWidet클래스 HUD에 표시하기</summary>
+<p>
+
+![BlasterHUD_UserWidgetCreate](https://user-images.githubusercontent.com/101626318/235580159-680c3381-438f-4092-a14a-d469b9ca1cdc.PNG)
+>UserWidget클래스들을 BlasterHUD로 표시하는 방법이다.   
+>소유자의 컨트롤러를 가져온후 CraetWidget함수를 통해서 화면에 표시하게 된다.
+
+
+	
+</p>
+</details>
+
+<details><summary>KillFeed</summary>
+<p>
+
+![KillFeed_2](https://user-images.githubusercontent.com/101626318/235580485-b3a5f0d7-27b5-4902-a60f-da0107671712.PNG)
+>적 플레이어를 죽일경우 화면 하단의 왼쪽에 킬피드가 나오도록 만들었다.
+>모든 플레이어가 확인할수 있도록 만들었다.
+	
+	
+![GameModeElim_Func](https://user-images.githubusercontent.com/101626318/235580875-0abd06c2-bae0-4e76-8d34-6eebf8b987f7.PNG)
+>플레이어가 죽을경우 GameMode의 PlayerEliminated함수에서 모든 컨트롤러를 가져온후 함수를 호출하게 된다.
+
+![Character_ElimBroadCast](https://user-images.githubusercontent.com/101626318/235580879-21de5dab-8253-4a62-ac12-a14df29aaee4.PNG)
+>Character클래스의 	BroadcastElim를 Client방식으로 만들어서 모든 플레이어에게 보이게 만든후 각 상황에 맞게 텍스트를 정하고 넘겨준후    
+>화면에 표시한다
+	
+
+![ElimTextSet](https://user-images.githubusercontent.com/101626318/235580881-17f54822-51a4-46d4-b29e-4b39cebfca4d.PNG)
+	
+	
+</p>
+</details>
+
+-------------------------------------------------------------------------------------------------
+
+## ReturnToMainMenu UI
+
 
 
