@@ -22,7 +22,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = GetOwner();
 		SpawnParams.Instigator = InstigatorPawn;
-
+		
 		AProjectile* SpawnProjectile = nullptr;
 		if (bUseServerSideRewind)
 		{

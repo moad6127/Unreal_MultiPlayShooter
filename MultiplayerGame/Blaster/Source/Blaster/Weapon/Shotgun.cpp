@@ -62,27 +62,28 @@ void AShotgun::FireShotgun(const TArray<FVector_NetQuantize>& HitTargets)
 						HitMap.Emplace(BlasterCharacter, 1);
 					}
 				}
-
-				if (ImpactParticle)
-				{
-					UGameplayStatics::SpawnEmitterAtLocation(
-						GetWorld(),
-						ImpactParticle,
-						FireHit.ImpactPoint,
-						FireHit.ImpactNormal.Rotation()
-					);
-				}
-				if (HitSound)
-				{
-					UGameplayStatics::PlaySoundAtLocation(
-						this,
-						HitSound,
-						FireHit.ImpactPoint,
-						.5f,
-						FMath::FRandRange(-.5f, .5f)
-					);
-				}
 			}
+			if (ImpactParticle)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(
+					GetWorld(),
+					ImpactParticle,
+					FireHit.ImpactPoint,
+					FireHit.ImpactNormal.Rotation()
+				);
+			}
+			if (HitSound)
+			{
+				UGameplayStatics::PlaySoundAtLocation(
+					this,
+					HitSound,
+					FireHit.ImpactPoint,
+					.5f,
+					FMath::FRandRange(-.5f, .5f)
+				);
+			}
+
+			SpawnDecal(FireHit);
 		}
 		TArray<ABlasterCharacter*> HitCharacters;
 
