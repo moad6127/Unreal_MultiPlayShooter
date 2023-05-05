@@ -831,6 +831,40 @@ ServerSideRewind는 게임에 인터넷등의 문제로 인해서 Ping이 높아
 ![Weapons](https://user-images.githubusercontent.com/101626318/235296634-58b3b845-ba03-4651-9c24-22e51e0355e0.png)
 - 총과 관련된 모든 클래스들이 있는 폴더로 기본 베이스가되는 Weapon클래스와 Weapon클래스를 부모로 하는 히트스캔무기와 발사체 무기, 샷건등이 있고, 발사체 무기들의 발사체 클래스들도 모여있으며, 총의 탄피 클래스, 깃발뺏기 모드에서 사용되는 깃발도 Weapon폴더에 모여있다.
 
+- 총알 자국과 반동시스템을 만들어서 총을 쏠때마다 반동이오고 맞은 액터에 총알 자국이 일정시간 생기게 만들었다.
+
+<details><summary>총알자국</summary>
+<p>
+
+![BulletHole](https://user-images.githubusercontent.com/101626318/236421918-8faed5ee-4ee8-4489-8750-750600e26693.png)
+
+![Weapon_SpawnDecal](https://user-images.githubusercontent.com/101626318/236421996-b58a7b1c-9bd9-4ba9-9e0e-cbd4e57559bc.PNG)
+
+> 총의 Fire함수에서 Result값을 받아서 함수를 호출한다.  
+> UGameplayStatics라이브러리에서 SpawnDecalAttached함수를 사용해서 총알자국을 Decal로 만들었다.  
+> 기본으로 생성했을때는 캐릭터가 일정거리 멀어지면 총알자국이 희미해지며 사라지게 되서 SetFadeScreenSize함수를 통해 캐릭터가 멀어져도 총알자국이 사라지지않게 만들었다.
+
+
+	
+</p>
+</details>
+
+<details><summary>반동 시스템</summary>
+<p>
+
+![RecoliBulletHole](https://user-images.githubusercontent.com/101626318/236423431-fc267928-363d-43e8-929b-5c6caff17563.png)
+
+
+![RecoilSystem](https://user-images.githubusercontent.com/101626318/236423456-e08b0496-e070-4b29-a341-b8dc22a7235c.PNG)
+>총마다 다른 MaxRecoil을 받고 랜덤함수를 사용해서 총을 발사할때마다 다른 반동을 나타내도록 만들었다.   
+>또한 CameraShake블루프린트를 만들어서 총을 발사할때 자연스럽게 화면이 흔들리게 만들었다.
+
+	
+</p>
+</details>
+
+
+
 --------------------------------------------------------------------------
 ## BaseWeapon클래스
 
